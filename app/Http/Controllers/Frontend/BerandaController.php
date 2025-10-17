@@ -16,10 +16,8 @@ class BerandaController extends Controller
     public function index()
     {
         // Ambil data-data statis seperti biasa
-        $landingPage = LandingPage::first();
         $pelayanan = Pelayanan::whereIn('id', [7, 10, 13])->get();
         $aparatur = Aparatur::orderBy('posisi', 'asc')->paginate(4);
-        $berita = Berita::latest()->limit(6)->get();
 
 
         // -------------------------------------------------------------
@@ -30,10 +28,8 @@ class BerandaController extends Controller
         // Data Jenis Kelamin
 
         return view('frontend.beranda.index', [
-            'landingPage' => $landingPage,
             'pelayanan' => $pelayanan,
             'aparatur' => $aparatur,
-            'berita' => $berita,
             'totalPenduduk' => $totalPenduduk,
         ]);
     }

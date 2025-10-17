@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\DokumenPersyaratan;
-use App\Models\Masyarakat;
+use App\Models\Mahasiswa;
 use App\Models\Pelayanan;
 use App\Models\Pengajuan;
 use App\Services\FcmService; // ✅ TAMBAHKAN INI
@@ -48,14 +48,14 @@ class PengajuanController extends Controller
     public function cek(Request $request, $id)
     {
         $pelayanan = Pelayanan::findOrFail($id);
-        $masyarakat = Masyarakat::where('nik', $request->nik)->first();
-        $nik = Masyarakat::where('nik', $request->nik)->value('nik');
+        $Mahasiswa = Mahasiswa::where('nik', $request->nik)->first();
+        $nik = Mahasiswa::where('nik', $request->nik)->value('nik');
         if (!$nik) {
             return back()->with('error', 'NIK tidak ditemukan, Silahkan daftar ke kelurahan tipulu');
         }
 
         if ($pelayanan->nama === "Surat Keterangan Belum Nikah") {
-            if ($masyarakat->status !== "Belum Kawin" && $masyarakat->status !== "Belum Menikah") {
+            if ($Mahasiswa->status !== "Belum Kawin" && $Mahasiswa->status !== "Belum Menikah") {
             return back()->with('error', 'Anda sudah menikah, tidak bisa mengajukan surat ini.');
         }
     }
@@ -68,16 +68,16 @@ class PengajuanController extends Controller
         $pelayanan = Pelayanan::findOrFail($id);
 
         if ($nik) {
-            $masyarakat = Masyarakat::where('nik', $nik)->first();
+            $Mahasiswa = Mahasiswa::where('nik', $nik)->first();
 
-            if (!$masyarakat) {
+            if (!$Mahasiswa) {
                 return redirect()->back()->with('error', 'Data penduduk tidak ditemukan.');
             }
         } else {
-            $masyarakat = null;
+            $Mahasiswa = null;
         }
 
-        return view('frontend.pengajuan.detail', compact('pelayanan', 'masyarakat'));
+        return view('frontend.pengajuan.detail', compact('pelayanan', 'Mahasiswa'));
     }
 
 
@@ -113,9 +113,9 @@ class PengajuanController extends Controller
                 'pekerjaan'        => 'required|string',
             ]);
         } else {
-            // Layanan biasa -> nik harus ada di tabel masyarakat
-            $rules['nik'] = 'required|exists:masyarakats,nik';
-            $masyarakat = Masyarakat::where('nik', $rules['nik'])->first();
+            // Layanan biasa -> nik harus ada di tabel Mahasiswa
+            $rules['nik'] = 'required|exists:Mahasiswas,nik';
+            $Mahasiswa = Mahasiswa::where('nik', $rules['nik'])->first();
         }
 
         $data = $request->validate($rules);
@@ -139,18 +139,6 @@ class PengajuanController extends Controller
                     'tanggal_meninggal'        => 'required|date',
                     'tempat_meninggal' => 'required|string',
                     'penyebab'       => 'required|string',
-                ]);
-
-                Kematian::create([
-                    'pengajuan_id'   => $pengajuan->id,
-                    'nama'           => $request->nama,
-                    'jenis_kelamin'  => $request->jenis_kelamin,
-                    'umur'           => $request->umur,
-                    'alamat'         => $request->alamat,
-                    'hari'           => $request->hari,
-                    'tanggal_meninggal'        => $request->tanggal_meninggal,
-                    'tempat_meninggal' => $request->tempat_meninggal,
-                    'penyebab'       => $request->penyebab,
                 ]);
             }
 
@@ -184,26 +172,12 @@ class PengajuanController extends Controller
                     'penanggung_jawab' => 'required|string',
                 ]);
 
-                // Simpan nama usaha di tabel pengajuans
-                domisiliUsahaYayasan::create([
-                    'pengajuan_id' => $pengajuan->id,
-                    'nama_usaha' => $request->nama_usaha,
-                    'jenis_kegiatan_usaha' => $request->jenis_kegiatan_usaha,
-                    'alamat_usaha' => $request->alamat_usaha,
-                    'penanggung_jawab' => $request->penanggung_jawab,
-                ]);
             } elseif ($pelayanan && $pelayanan->nama === "Surat Keterangan Memiliki Usaha (SKU)") {
                 $request->validate([
                     'nama_usaha' => 'required|string',
                     'tahun_berdiri' => 'required|date_format:Y',
                 ]);
 
-                // Simpan nama usaha di tabel pengajuans
-                Usaha::create([
-                    'pengajuan_id' => $pengajuan->id,
-                    'nama_usaha' => $request->nama_usaha,
-                    'tahun_berdiri' => $request->tahun_berdiri,
-                ]);
             } elseif ($pelayanan && $pelayanan->nama === "Surat Izin Keramaian") {
                 $request->validate([
                     'nama_acara'      => 'required|string',
@@ -212,16 +186,6 @@ class PengajuanController extends Controller
                     'tanggal'         => 'required|date',
                     'tempat'          => 'required|string',
                     'pukul'           => 'nullable|string',
-                ]);
-
-                Keramaian::create([
-                    'pengajuan_id'   => $pengajuan->id,
-                    'nama_acara'     => $request->nama_acara,
-                    'penyelenggara'  => $request->penyelenggara,
-                    'deskripsi_acara' => $request->deskripsi_acara,
-                    'tanggal'        => $request->tanggal,
-                    'tempat'         => $request->tempat,
-                    'pukul'          => $request->pukul,
                 ]);
             } elseif ($pelayanan && $pelayanan->nama === "Surat Keterangan Tempat Tinggal Sementara") {
                 $request->validate([
@@ -236,21 +200,6 @@ class PengajuanController extends Controller
                     'agama'            => 'required|string',
                     'status'           => 'required|string',
                     'pekerjaan'        => 'required|string',
-                ]);
-
-                TempatTinggalSementara::create([
-                    'pengajuan_id'     => $pengajuan->id,
-                    'nama'             => $request->nama,
-                    'nik'              => $request->nik,
-                    'alamat_sementara' => $request->alamat_sementara,
-                    'jenis_kelamin'    => $request->jenis_kelamin,
-                    'RT'               => $request->RT,
-                    'RW'               => $request->RW,
-                    'tgl_lahir'        => $request->tgl_lahir,
-                    'tempat_lahir'     => $request->tempat_lahir,
-                    'agama'            => $request->agama,
-                    'status'           => $request->status,
-                    'pekerjaan'        => $request->pekerjaan,
                 ]);
             }
 
@@ -280,9 +229,9 @@ class PengajuanController extends Controller
                 // Untuk layanan ini, nama diambil langsung dari input form yang sudah divalidasi
                 $pengajuNama = $data['nama'];
             } else {
-                // Untuk layanan lain, ambil dari relasi 'masyarakat' yang ada di model Pengajuan.
+                // Untuk layanan lain, ambil dari relasi 'Mahasiswa' yang ada di model Pengajuan.
                 // Ini lebih andal karena model $pengajuan sudah pasti ada.
-                $pengajuNama = optional($pengajuan->masyarakat)->nama;
+                $pengajuNama = optional($pengajuan->Mahasiswa)->nama;
             }
 
             // Sediakan nilai fallback (pengganti) jika nama tetap kosong karena alasan apapun
