@@ -10,12 +10,7 @@ use App\Models\Pelayanan;
 use App\Models\Pengajuan;
 use App\Services\FcmService; // ✅ TAMBAHKAN INI
 use Illuminate\Http\Request;
-use App\Models\Kematian;
-use App\Models\Usaha;
-use App\Models\Keramaian;
-use App\Models\DomisiliUsahaYayasan;
-use App\Models\PindahPenduduk;
-use App\Models\TempatTinggalSementara;
+use App\Models\KeteranganBeasiswa;
 use Illuminate\Support\Facades\Log;
 
 class PengajuanController extends Controller
@@ -154,16 +149,6 @@ class PengajuanController extends Controller
                     'pengikut'       => 'nullable|integer', // kalau jumlah orang
                 ]);
 
-                PindahPenduduk::create([
-                    'pengajuan_id'   => $pengajuan->id,
-                    'desa_kelurahan' => $request->desa_kelurahan,
-                    'kecamatan'      => $request->kecamatan,
-                    'kab_kota'       => $request->kab_kota,
-                    'provinsi'       => $request->provinsi,
-                    'tanggal_pindah' => $request->tanggal_pindah,
-                    'alasan_pindah'  => $request->alasan_pindah,
-                    'pengikut'       => $request->pengikut,
-                ]);
             } elseif ($pelayanan && $pelayanan->nama === "Surat Keterangan Domisili Usaha dan Yayasan") {
                 $request->validate([
                     'nama_usaha' => 'required|string',
