@@ -31,44 +31,44 @@ class PengajuanController extends Controller
     public function index($id)
     {
         $pelayanan = Pelayanan::find($id);
-        $title = "Form Cek NIK";
+        $title = "Form Cek nim";
 
         // Kalau layanan = Tempat Tinggal Sementara → langsung ke detail
         if ($pelayanan && $pelayanan->nama === "Surat Keterangan Tempat Tinggal Sementara") {
             return redirect()->route('pengajuan.detail', [
                 'id' => $id,
-                'nik' => null // nanti di form detail diisi manual
+                'nim' => null // nanti di form detail diisi manual
             ]);
         }
 
-        // Kalau layanan lain → tetap ke form cek NIK
+        // Kalau layanan lain → tetap ke form cek nim
         return view('frontend.pengajuan.index', compact('title', 'id'));
     }
 
     public function cek(Request $request, $id)
     {
         $pelayanan = Pelayanan::findOrFail($id);
-        $Mahasiswa = Mahasiswa::where('nik', $request->nik)->first();
-        $nik = Mahasiswa::where('nik', $request->nik)->value('nik');
-        if (!$nik) {
-            return back()->with('error', 'NIK tidak ditemukan, Silahkan daftar ke kelurahan tipulu');
+        $Mahasiswa = Mahasiswa::where('nim', $request->nim)->first();
+        $nim = Mahasiswa::where('nim', $request->nim)->value('nim');
+        if (!$nim) {
+            return back()->with('error', 'nim tidak ditemukan, Silahkan daftar ke kelurahan tipulu');
         }
 
-        if ($pelayanan->nama === "Surat Keterangan Belum Nikah") {
-            if ($Mahasiswa->status !== "Belum Kawin" && $Mahasiswa->status !== "Belum Menikah") {
-            return back()->with('error', 'Anda sudah menikah, tidak bisa mengajukan surat ini.');
+        if ($pelayanan->nama === "Surat Keterangan Belum nimah") {
+            if ($Mahasiswa->status !== "Belum Kawin" && $Mahasiswa->status !== "Belum Menimah") {
+            return back()->with('error', 'Anda sudah menimah, tidak bisa mengajukan surat ini.');
         }
     }
 
-        return redirect()->route('pengajuan.detail', ['id' => $id, 'nik' => $nik]);
+        return redirect()->route('pengajuan.detail', ['id' => $id, 'nim' => $nim]);
     }
 
-    public function detail($id, $nik = null)
+    public function detail($id, $nim = null)
     {
         $pelayanan = Pelayanan::findOrFail($id);
 
-        if ($nik) {
-            $Mahasiswa = Mahasiswa::where('nik', $nik)->first();
+        if ($nim) {
+            $Mahasiswa = Mahasiswa::where('nim', $nim)->first();
 
             if (!$Mahasiswa) {
                 return redirect()->back()->with('error', 'Data penduduk tidak ditemukan.');
@@ -98,9 +98,9 @@ class PengajuanController extends Controller
 
         // Jika pelayanan = Surat Keterangan Tempat Tinggal Sementara
         if ($pelayanan && $pelayanan->nama === "Surat Keterangan Tempat Tinggal Sementara") {
-            $rules['nik'] = 'required|digits:16';
+            $rules['nim'] = 'required|digits:16';
             $rules = array_merge($rules, [
-                'nik'              => 'required|string',
+                'nim'              => 'required|string',
                 'nama'             => 'required|string',
                 'alamat_sementara' => 'required|string',
                 'jenis_kelamin'    => 'required|string',
@@ -113,16 +113,16 @@ class PengajuanController extends Controller
                 'pekerjaan'        => 'required|string',
             ]);
         } else {
-            // Layanan biasa -> nik harus ada di tabel Mahasiswa
-            $rules['nik'] = 'required|exists:Mahasiswas,nik';
-            $Mahasiswa = Mahasiswa::where('nik', $rules['nik'])->first();
+            // Layanan biasa -> nim harus ada di tabel Mahasiswa
+            $rules['nim'] = 'required|exists:Mahasiswas,nim';
+            $Mahasiswa = Mahasiswa::where('nim', $rules['nim'])->first();
         }
 
         $data = $request->validate($rules);
 
         try {
             $pengajuan = Pengajuan::create([
-                'nik' => $data['nik'],
+                'nim' => $data['nim'],
                 'pelayanan_id' => $data['pelayanan_id'],
                 'no_hp' => $data['no_hp'],
                 'keperluan' => $data['keperluan'] ?? null,
@@ -190,7 +190,7 @@ class PengajuanController extends Controller
             } elseif ($pelayanan && $pelayanan->nama === "Surat Keterangan Tempat Tinggal Sementara") {
                 $request->validate([
                     'nama'             => 'required|string',
-                    'nik'              => 'required|string',
+                    'nim'              => 'required|string',
                     'alamat_sementara' => 'required|string',
                     'jenis_kelamin'    => 'required|string',
                     'RT'               => 'required|integer',
@@ -209,13 +209,13 @@ class PengajuanController extends Controller
             foreach ($data['dokumen'] as $persyaratanId => $file) {
                 if ($request->hasFile("dokumen.$persyaratanId")) {
                     $file = $request->file("dokumen.$persyaratanId");
-                    $filename = $data['nik'] . '-' . $persyaratanId . '-' . time() . '.' . $file->getClientOriginalExtension();
+                    $filename = $data['nim'] . '-' . $persyaratanId . '-' . time() . '.' . $file->getClientOriginalExtension();
                     $file->storeAs('public/dokumen', $filename);
                     $path = 'storage/dokumen/' . $filename;
 
                     DokumenPersyaratan::create([
                         'pengajuan_id' => $pengajuan->id,
-                        'nik' => $data['nik'],
+                        'nim' => $data['nim'],
                         'pelayanan_id' => $data['pelayanan_id'],
                         'persyaratan_id' => $persyaratanId,
                         'dokumen' => $path,
@@ -248,13 +248,13 @@ class PengajuanController extends Controller
                     'pelayanan_id' => (string) $pengajuan->pelayanan_id,
                     'pelayanan_nama' => $pelayananNama,
                     'pengaju_nama' => $namaUntukNotif,
-                    'pengaju_nik' => $pengajuan->nik,
+                    'pengaju_nim' => $pengajuan->nim,
                 ]
             );
 
             Log::info('Pengajuan berhasil dibuat', [
                 'pengajuan_id' => $pengajuan->id,
-                'nik' => $pengajuan->nik,
+                'nim' => $pengajuan->nim,
                 'pelayanan' => $pelayananNama
             ]);
 
