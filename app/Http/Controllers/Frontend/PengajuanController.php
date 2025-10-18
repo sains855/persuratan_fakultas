@@ -78,11 +78,8 @@ class PengajuanController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi dasar
-        // Ambil dulu pelayanan
         $pelayanan = Pelayanan::find($request->pelayanan_id);
 
-        // Validasi dasar
         $rules = [
             'pelayanan_id' => 'required',
             'no_hp' => 'required|string|digits_between:10,15',
@@ -97,15 +94,9 @@ class PengajuanController extends Controller
             $rules = array_merge($rules, [
                 'nim'              => 'required|string',
                 'nama'             => 'required|string',
-                'alamat_sementara' => 'required|string',
-                'jenis_kelamin'    => 'required|string',
-                'RT'               => 'required|integer',
-                'RW'               => 'required|integer',
                 'tgl_lahir'        => 'required|date',
                 'tempat_lahir'     => 'required|string',
-                'agama'            => 'required|string',
-                'status'           => 'required|string',
-                'pekerjaan'        => 'required|string',
+                ''
             ]);
         } else {
             // Layanan biasa -> nim harus ada di tabel Mahasiswa
