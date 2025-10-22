@@ -12,17 +12,6 @@ class ListpelayananController extends Controller
 {
     $title = 'List Pelayanan';
 
-    // Id/layanan yang harusnya offline
-    $offlineNames = [
-        'Surat Pengantar Nikah',
-        'Pengurusan Kartu Keluarga (KK)',
-        'Pengurusan KTP',
-        'Surat Keterangan Ahli Waris',
-        'Surat Keterangan Hak Tanah'
-    ];
-
-    // Online = semua kecuali daftar offline
-    $pelayanan = Pelayanan::whereNotIn('nama', $offlineNames)->get();
 
     return view('frontend.list-pelayanan.index', compact('title', 'pelayanan'));
 }

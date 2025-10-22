@@ -27,7 +27,6 @@ class PengajuanController extends Controller
     {
         $pelayanan = Pelayanan::find($id);
         $title = "Form Cek nim";
-
         // Kalau layanan = Tempat Tinggal Sementara → langsung ke detail
         if ($pelayanan && $pelayanan->nama === "Surat Keterangan Tempat Tinggal Sementara") {
             return redirect()->route('pengajuan.detail', [
@@ -37,21 +36,21 @@ class PengajuanController extends Controller
         }
 
         // Kalau layanan lain → tetap ke form cek nim
-        return view('frontend.pengajuan.index', compact('title', 'id'));
+        return view('pengajuan.detail', compact('title', 'id'));
     }
 
     public function cek(Request $request, $id)
     {
         $pelayanan = Pelayanan::findOrFail($id);
-        $Mahasiswa = Mahasiswa::where('nim', $request->nim)->first();
+        $KeteranganBeasiswa = KeteranganBeasiswa::where('Mahasiswa_nim', $request->nim)->first();
         $nim = Mahasiswa::where('nim', $request->nim)->value('nim');
         if (!$nim) {
             return back()->with('error', 'nim tidak ditemukan, Silahkan daftar ke kelurahan tipulu');
         }
 
-        if ($pelayanan->nama === "Surat Keterangan Belum nimah") {
-            if ($Mahasiswa->status !== "Belum Kawin" && $Mahasiswa->status !== "Belum Menimah") {
-            return back()->with('error', 'Anda sudah menimah, tidak bisa mengajukan surat ini.');
+        if ($pelayanan->nama === "Surat Keterangan Belum Menerima Beasiswa") {
+            if ($KeteranganBeasiswa->status !== "Menerima Beasiswa") {
+            return back()->with('error', 'Anda sudah menerima Beasiswa, tidak bisa mengajukan surat ini.');
         }
     }
 

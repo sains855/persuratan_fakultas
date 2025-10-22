@@ -32,8 +32,7 @@ class AparaturController extends Controller
             'nip' => 'required|unique:aparaturs,nip',
             'nama' => 'required',
             'jabatan' => 'required',
-            'posisi' => 'required',
-            'foto' => 'required|mimes:jpg,png,webp,jpeg',
+            'pangkat/gol' => 'required',
         ]);
 
         try {

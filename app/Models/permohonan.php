@@ -17,6 +17,6 @@ class Permohonan extends Model
     }
     public function mahasiswa()
     {
-        return $this->hasMany(Mahasiswa::class, 'nim', 'nim');
+        return $this->hasMany(Mahasiswa::class, 'mahasiswa_nim', 'nim');
     }
 }

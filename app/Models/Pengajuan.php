@@ -12,9 +12,9 @@ class Pengajuan extends Model
     protected $guarded = ['id'];
 
     // --- Relasi yang sudah ada ---
-    public function masyarakat()
+    public function Mahasiswa()
     {
-        return $this->belongsTo(Masyarakat::class, 'nik', 'nik');
+        return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
     }
 
     public function pelayanan()
@@ -26,51 +26,10 @@ class Pengajuan extends Model
     {
         return $this->hasMany(DokumenPersyaratan::class);
     }
-    
+
     public function verifikasiByAparatur($aparatur_id)
     {
         return $this->hasMany(Verifikasi::class)->where('aparatur_id', $aparatur_id);
     }
-
-    public function kematian()
-    {
-        return $this->hasOne(Kematian::class);
-    }
-
-    public function pindahPenduduk()
-    {
-        return $this->hasOne(PindahPenduduk::class);
-    }
-
-    public function domisiliUsahaYayasan()
-    {
-        return $this->hasOne(DomisiliUsahaYayasan::class);
-    }
-
-    public function usaha()
-    {
-        return $this->hasOne(Usaha::class);
-    }
-
-    public function keramaian()
-    {
-        return $this->hasOne(Keramaian::class);
-    }
-
-
-    // =======================================================
-    // ▼▼▼ METHOD RELASI YANG HILANG TELAH SAYA TAMBAHKAN DI SINI ▼▼▼
-    // =======================================================
-    /**
-     * Mendefinisikan relasi one-to-one ke TempatTinggalSementara.
-     */
-    public function tempatTinggalSementara()
-    {
-        // Asumsi nama modelnya adalah TempatTinggalSementara
-        return $this->hasOne(TempatTinggalSementara::class);
-    }
-    // =======================================================
-    // ▲▲▲ PENAMBAHAN SELESAI ▲▲▲
-    // =======================================================
 }
 
