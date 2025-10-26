@@ -18,4 +18,8 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(KeteranganBeasiswa::class, 'mahasiswa_nim', 'id');
     }
+    public function Alumni()
+    {
+        return $this->belongsTo(Alumni::class, 'mahasiswa_nim', 'id');
+    }
 }

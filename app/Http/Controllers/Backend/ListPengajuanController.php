@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Aparatur;
+use App\Models\ttd;
 use App\Models\DokumenPersyaratan;
 use App\Models\Pengajuan;
 use App\Models\Persyaratan;
@@ -24,8 +24,8 @@ class ListPengajuanController extends Controller
     {
         $title = "List Pengajuan";
         $pengajuan = Pengajuan::with(['pelayanan', 'masyarakat', 'dokumenPersyaratan.persyaratan'])->orderByDesc('id')->get();
-        $aparaturs = Aparatur::get(['id', 'nama']);
-        return view('backend.list-pengajuan.index', compact('title', 'pengajuan', 'aparaturs'));
+        $ttds = ttd::get(['id', 'nama']);
+        return view('backend.list-pengajuan.index', compact('title', 'pengajuan', 'ttds'));
     }
 
     public function verifikasi(Request $request, $id)
@@ -34,9 +34,9 @@ class ListPengajuanController extends Controller
             $status = $request->input('status', 'Ditolak');
             $alasan = $request->input('alasan');
 
-            // Cari data verifikasi lama (dari aparatur yang sama)
+            // Cari data verifikasi lama (dari ttd yang sama)
             $verifikasi = Verifikasi::where('pengajuan_id', $id)
-                ->where('aparatur_id', 4) // ubah ke Auth::user()->aparatur_id jika sudah dinamis
+                ->where('ttd_id', 4) // ubah ke Auth::user()->ttd_id jika sudah dinamis
                 ->first();
 
             if ($verifikasi) {
@@ -51,7 +51,7 @@ class ListPengajuanController extends Controller
                     'pengajuan_id' => $id,
                     'status' => $status . ' oleh ' . Auth::user()->username,
                     'alasan' => $alasan,
-                    'aparatur_id' => 4, // atau Auth::user()->aparatur_id
+                    'ttd_id' => 4, // atau Auth::user()->ttd_id
                 ]);
             }
 
@@ -143,7 +143,7 @@ public function handleCetakDownload(Request $request, $id)
             // Validasi input dari form
             $request->validate([
                 'tgl_cetak' => 'required|date',
-                'aparatur_id' => 'required|exists:aparaturs,id',
+                'ttd_id' => 'required|exists:ttds,id',
             ]);
 
             // Ambil semua data yang mungkin dibutuhkan dengan Eager Loading
@@ -157,7 +157,7 @@ public function handleCetakDownload(Request $request, $id)
                 'tempatTinggalSementara'
             ])->findOrFail($id);
 
-            $aparatur = Aparatur::findOrFail($request->aparatur_id);
+            $ttd = ttd::findOrFail($request->ttd_id);
             $landingpage = LandingPage::first();
 
             // Siapkan semua data yang akan dikirim ke view PDF
@@ -201,9 +201,9 @@ public function handleCetakDownload(Request $request, $id)
                 ),
                 'rt' => str_pad($pengajuan->masyarakat->RT ?? 0, 3, '0', STR_PAD_LEFT),
                 'rw' => str_pad($pengajuan->masyarakat->RW ?? 0, 3, '0', STR_PAD_LEFT),
-                'jabatan' => ucwords(strtolower($aparatur->jabatan)),
-                'aparatur' => ucwords(strtolower($aparatur->nama)),
-                'aparatur_nip' => $aparatur->nip,
+                'jabatan' => ucwords(strtolower($ttd->jabatan)),
+                'ttd' => ucwords(strtolower($ttd->nama)),
+                'ttd_nip' => $ttd->nip,
                 'nama_md' => ucwords(strtolower(optional($pengajuan->kematian)->nama)),
                 'jenis_kelamin_md' => ucwords(strtolower(optional($pengajuan->kematian)->jenis_kelamin)),
                 'umur' => optional($pengajuan->kematian)->umur,

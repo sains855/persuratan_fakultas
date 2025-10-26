@@ -12,7 +12,7 @@ class ListpelayananController extends Controller
 {
     $title = 'List Pelayanan';
 
-
+    $pelayanan = Pelayanan::where('nama')->get();
     return view('frontend.list-pelayanan.index', compact('title', 'pelayanan'));
 }
 
