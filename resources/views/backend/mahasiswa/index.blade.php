@@ -72,18 +72,33 @@
         </div>
         @endif
 
+        @if(session('error'))
+        <div id="errorNotification" class="fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-2xl z-[10000] animate-slide-in max-w-md">
+            <div class="flex items-center gap-3">
+                <i class="fa fa-exclamation-circle text-2xl"></i>
+                <div>
+                    <p class="font-bold">Gagal!</p>
+                    <p class="text-sm">{{ session('error') }}</p>
+                </div>
+                <button onclick="closeErrorNotification()" class="ml-4 text-white hover:text-gray-200">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+        @endif
+
        <!-- Card -->
        <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-3 sm:p-6 border border-blue-200">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
                 <h2 class="text-lg sm:text-xl lg:text-2xl font-extrabold text-blue-800 tracking-wide flex items-center gap-2">
-                    <i class="fa fa-list-alt text-blue-600"></i> Daftar {{ $title }}
+                    <i class="fa fa-graduation-cap text-blue-600"></i> Daftar {{ $title }}
                 </h2>
 
                 <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto relative z-50">
                     <!-- Form Search -->
-                    <form method="GET" action="{{ url('/masyarakat') }}"
+                    <form method="GET" action="{{ url('/mahasiswa') }}"
                         class="flex w-full sm:w-auto">
-                        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama / NIK / alamat..."
+                        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama / NIM / Prodi..."
                             class="border border-blue-300 rounded-l-lg px-3 py-2 text-sm w-full sm:w-64 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
                         <button type="submit" class="bg-blue-600 text-white px-3 py-2 rounded-r-lg hover:bg-blue-700 transition">
                             <i class="fa fa-search"></i>
@@ -93,7 +108,7 @@
                     <!-- Tombol Tambah -->
                     <button id="openModalBtn"
                         class="relative z-50 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 hover:from-blue-700 hover:to-blue-600 shadow-md transition text-xs sm:text-sm w-full sm:w-auto justify-center">
-                        <i class="fa fa-plus"></i> Masyarakat
+                        <i class="fa fa-plus"></i> Mahasiswa
                     </button>
                 </div>
             </div>
@@ -105,37 +120,42 @@
                             <th class="px-2 sm:px-4 py-3 text-center w-12">No</th>
                             <th class="px-2 sm:px-4 py-3 text-left min-w-[200px]">Nama</th>
                             <th class="px-2 sm:px-4 py-3 text-left min-w-[150px]">TTL</th>
-                            <th class="px-2 sm:px-4 py-3 text-left">Status</th>
-                            <th class="px-2 sm:px-4 py-3 text-left">Agama</th>
+                            <th class="px-2 sm:px-4 py-3 text-left">Fakultas</th>
+                            <th class="px-2 sm:px-4 py-3 text-left">Prodi</th>
+                            <th class="px-2 sm:px-4 py-3 text-left">Kontak</th>
                             <th class="px-2 sm:px-4 py-3 text-center w-20">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-700 text-sm bg-white">
-                        @forelse ($masyarakat as $data)
+                        @forelse ($mahasiswa as $data)
                             <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
                                 <td class="px-2 sm:px-4 py-3 text-center font-semibold text-blue-600 align-top">
-                                    {{ $masyarakat->firstItem() + $loop->index }}
+                                    {{ $mahasiswa->firstItem() + $loop->index }}
                                 </td>
                                 <td class="px-2 sm:px-4 py-3 align-top">
                                     <div class="d-flex flex-column">
                                         <p class="font-bold text-sm">{{ $data->nama }}</p>
-                                        <p class="opacity-75 text-xs">Nik:{{ $data->nik }}</p>
-                                        <p class="opacity-75 text-xs">RT:{{ $data->RT }}</p>
-                                        <p class="opacity-75 text-xs">RW:{{ $data->RW }}</p>
-                                        <p class="opacity-75 text-xs break-words max-w-[200px]">Alamat:{{ $data->alamat }}</p>
+                                        <p class="opacity-75 text-xs">NIM: {{ $data->nim }}</p>
+                                        <p class="opacity-75 text-xs break-words max-w-[200px]">Alamat: {{ $data->alamat }}</p>
                                     </div>
                                 </td>
                                 <td class="px-2 sm:px-4 py-3 text-sm align-top">{{ $data->tempat_lahir . ', ' . $data->tgl_lahir }}</td>
-                                <td class="px-2 sm:px-4 py-3 text-sm align-top">{{ $data->status }}</td>
-                                <td class="px-2 sm:px-4 py-3 text-sm align-top">{{ $data->agama }}</td>
+                                <td class="px-2 sm:px-4 py-3 text-sm align-top">{{ $data->Fakultas }}</td>
+                                <td class="px-2 sm:px-4 py-3 text-sm align-top">{{ $data->{'Prodi/jurusan'} }}</td>
+                                <td class="px-2 sm:px-4 py-3 align-top">
+                                    <div class="text-xs">
+                                        <p><i class="fa fa-phone text-blue-600"></i> {{ $data->No_Hp ?? '-' }}</p>
+                                        <p><i class="fa fa-envelope text-blue-600"></i> {{ $data->email }}</p>
+                                    </div>
+                                </td>
                                 <td class="px-2 sm:px-4 py-3 text-center align-top">
                                     <div class="flex justify-center gap-2">
-                                        <a href="{{ route('masyarakat.edit', $data->nik) }}"
+                                        <a href="{{ route('mahasiswa.edit', $data->nim) }}"
                                             class="text-yellow-500 hover:text-yellow-600 transition transform hover:scale-110 p-1"
                                             title="Edit">
                                             <i class="fa fa-edit text-sm sm:text-lg"></i>
                                         </a>
-                                        <button onclick="confirmDelete('{{ route('masyarakat.delete', $data->nik) }}', '{{ $data->nama }}')"
+                                        <button onclick="confirmDelete('{{ route('mahasiswa.delete', $data->nim) }}', '{{ $data->nama }}')"
                                             class="text-red-500 hover:text-red-600 transition transform hover:scale-110 p-1"
                                             title="Hapus">
                                             <i class="fa fa-trash text-sm sm:text-lg"></i>
@@ -145,7 +165,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center p-6 text-gray-500">
+                                <td colspan="7" class="text-center p-6 text-gray-500">
                                     <i class="fa fa-inbox text-2xl mb-2 block"></i>
                                     Tidak Ada Data
                                 </td>
@@ -154,29 +174,29 @@
                     </tbody>
                 </table>
                 <!-- Pagination -->
-                @if ($masyarakat->hasPages())
-                    <div class="mt-6 w-full flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 text-sm text-gray-700">
+                @if ($mahasiswa->hasPages())
+                    <div class="mt-6 w-full flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 text-sm text-gray-700 p-4">
                         <div class="text-center sm:text-left text-gray-600 w-full sm:w-auto">
                             Menampilkan
                             <span class="font-semibold text-blue-600">
-                                {{ $masyarakat->firstItem() }}–{{ $masyarakat->lastItem() }}
+                                {{ $mahasiswa->firstItem() }}–{{ $mahasiswa->lastItem() }}
                             </span>
                             dari
-                            <span class="font-semibold text-blue-600">{{ $masyarakat->total() }}</span> data
+                            <span class="font-semibold text-blue-600">{{ $mahasiswa->total() }}</span> data
                         </div>
 
                         <!-- Tombol Navigasi -->
                         <div class="flex flex-wrap justify-center gap-2 w-full sm:w-auto">
                             {{-- Tombol Previous --}}
-                            @if ($masyarakat->onFirstPage())
+                            @if ($mahasiswa->onFirstPage())
                                 <span class="px-3 py-2 bg-gray-200 text-gray-400 rounded-lg cursor-not-allowed">&laquo;</span>
                             @else
-                                <a href="{{ $masyarakat->previousPageUrl() }}" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">&laquo;</a>
+                                <a href="{{ $mahasiswa->previousPageUrl() }}" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">&laquo;</a>
                             @endif
 
                             {{-- Tombol Halaman --}}
-                            @foreach ($masyarakat->getUrlRange(1, $masyarakat->lastPage()) as $page => $url)
-                                @if ($page == $masyarakat->currentPage())
+                            @foreach ($mahasiswa->getUrlRange(1, $mahasiswa->lastPage()) as $page => $url)
+                                @if ($page == $mahasiswa->currentPage())
                                     <span class="px-3 py-2 bg-blue-600 text-white rounded-lg font-bold">{{ $page }}</span>
                                 @else
                                     <a href="{{ $url }}" class="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">{{ $page }}</a>
@@ -184,8 +204,8 @@
                             @endforeach
 
                             {{-- Tombol Next --}}
-                            @if ($masyarakat->hasMorePages())
-                                <a href="{{ $masyarakat->nextPageUrl() }}" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">&raquo;</a>
+                            @if ($mahasiswa->hasMorePages())
+                                <a href="{{ $mahasiswa->nextPageUrl() }}" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">&raquo;</a>
                             @else
                                 <span class="px-3 py-2 bg-gray-200 text-gray-400 rounded-lg cursor-not-allowed">&raquo;</span>
                             @endif
@@ -194,26 +214,21 @@
                 @endif
             </div>
 
-            <!-- Mobile Card View - Updated to match pelayanan style -->
+            <!-- Mobile Card View -->
             <div class="mobile-card-view space-y-3">
-                @forelse ($masyarakat as $data)
+                @forelse ($mahasiswa as $data)
                     <div class="bg-white rounded-lg border border-blue-200 shadow-sm p-4">
                         <div class="flex justify-between items-start mb-3">
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-2">
                                     <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
-                                        {{-- UBAH MENJADI SEPERTI INI --}}
-                                        {{ $masyarakat->firstItem() + $loop->index }}
+                                        {{ $mahasiswa->firstItem() + $loop->index }}
                                     </span>
                                     <h3 class="font-semibold text-gray-800 text-sm">{{ $data->nama }}</h3>
                                 </div>
 
                                 <div class="text-xs text-gray-600 mb-2">
-                                    <strong>NIK:</strong> {{ $data->nik }}
-                                </div>
-
-                                <div class="text-xs text-gray-600 mb-2">
-                                    <strong>RT/RW:</strong> {{ $data->RT }} / {{ $data->RW }}
+                                    <strong>NIM:</strong> {{ $data->nim }}
                                 </div>
 
                                 <div class="text-xs text-gray-600 mb-2">
@@ -226,21 +241,29 @@
                                 </div>
 
                                 <div class="text-xs text-gray-600 mb-2">
-                                    <strong>Status:</strong> {{ $data->status }}
+                                    <strong>Fakultas:</strong> {{ $data->Fakultas }}
+                                </div>
+
+                                <div class="text-xs text-gray-600 mb-2">
+                                    <strong>Prodi/Jurusan:</strong> {{ $data->{'Prodi/jurusan'} }}
+                                </div>
+
+                                <div class="text-xs text-gray-600 mb-2">
+                                    <strong>No HP:</strong> {{ $data->No_Hp ?? '-' }}
                                 </div>
 
                                 <div class="text-xs text-gray-600 mb-3">
-                                    <strong>Agama:</strong> {{ $data->agama }}
+                                    <strong>Email:</strong> {{ $data->email }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
-                            <a href="{{ route('masyarakat.edit', $data->nik) }}"
+                            <a href="{{ route('mahasiswa.edit', $data->nim) }}"
                                 class="bg-yellow-500 text-white px-3 py-1 rounded text-xs hover:bg-yellow-600 transition flex items-center gap-1">
                                 <i class="fa fa-edit"></i> Edit
                             </a>
-                            <button onclick="confirmDelete('{{ route('masyarakat.delete', $data->nik) }}', '{{ $data->nama }}')"
+                            <button onclick="confirmDelete('{{ route('mahasiswa.delete', $data->nim) }}', '{{ $data->nama }}')"
                                 class="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600 transition flex items-center gap-1">
                                 <i class="fa fa-trash"></i> Hapus
                             </button>
@@ -254,9 +277,9 @@
                 @endforelse
 
                 <!-- Pagination -->
-                @if ($masyarakat->hasPages())
+                @if ($mahasiswa->hasPages())
                     <div class="mt-6">
-                        {{ $masyarakat->links('vendor.pagination.tailwind') }}
+                        {{ $mahasiswa->links('vendor.pagination.tailwind') }}
                     </div>
                 @endif
             </div>
@@ -275,20 +298,20 @@
             <!-- Header Modal -->
             <div class="sticky top-0 bg-gradient-to-br from-white to-blue-50 pt-6 pb-4 border-b border-blue-200 px-6">
                 <h3 class="text-lg sm:text-xl font-bold text-blue-700 flex items-center gap-2">
-                    <i class="fa fa-plus-circle text-blue-500"></i> Tambah Masyarakat
+                    <i class="fa fa-plus-circle text-blue-500"></i> Tambah Mahasiswa
                 </h3>
             </div>
 
             <!-- Form -->
-            <form method="POST" action="{{ route('masyarakat.store') }}" class="p-4 sm:p-6" id="formMasyarakat">
+            <form method="POST" action="{{ route('mahasiswa.store') }}" class="p-4 sm:p-6" id="formMahasiswa">
                 @csrf
                 <div class="space-y-4">
-                    <!-- NIK -->
+                    <!-- NIM -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-600 mb-1">NIK <span class="text-red-500">*</span></label>
-                        <input type="text" name="nik" value="{{ old('nik') }}"
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">NIM <span class="text-red-500">*</span></label>
+                        <input type="text" name="nim" value="{{ old('nim') }}"
                             class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
-                        @error('nik')
+                        @error('nim')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -299,34 +322,6 @@
                         <input type="text" name="nama" value="{{ old('nama') }}"
                             class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
                         @error('nama')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-600 mb-1">RT <span class="text-red-500">*</span></label>
-                        <input type="text" name="RT" value="{{ old('RT') }}"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
-                        @error('RT')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-600 mb-1">RW <span class="text-red-500">*</span></label>
-                        <input type="text" name="RW" value="{{ old('RW') }}"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
-                        @error('RW')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Alamat -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-600 mb-1">Alamat <span class="text-red-500">*</span></label>
-                        <textarea name="alamat"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400" rows="3">{{ old('alamat') }}</textarea>
-                        @error('alamat')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -354,68 +349,54 @@
                         </div>
                     </div>
 
-                    <!-- Row untuk Status dan Agama -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Status -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Status <span class="text-red-500">*</span></label>
-                            <select name="status"
-                                class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
-                                <option value="">-- Pilih Status --</option>
-                                <option value="Belum Kawin" {{ old('status') == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin</option>
-                                <option value="Kawin" {{ old('status') == 'Kawin' ? 'selected' : '' }}>Kawin</option>
-                                <option value="Kawin belum tercatat" {{ old('status') == 'Kawin Belum Tercatat' ? 'selected' : '' }}>Kawin belum tercatat</option>
-                                <option value="Cerai Mati" {{ old('status') == 'Cerai Mati' ? 'selected' : '' }}>Cerai Mati</option>
-                            </select>
-                            @error('status')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Agama -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Agama <span class="text-red-500">*</span></label>
-                            <select name="agama"
-                                class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
-                                <option value="">-- Pilih Agama --</option>
-                                <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
-                                <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
-                                <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
-                                <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
-                                <option value="Budha" {{ old('agama') == 'Budha' ? 'selected' : '' }}>Budha</option>
-                                <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
-                            </select>
-                            @error('agama')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    <!-- Fakultas -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Fakultas <span class="text-red-500">*</span></label>
+                        <input type="text" name="Fakultas" value="{{ old('Fakultas') }}"
+                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        @error('Fakultas')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <!-- Row untuk Pekerjaan dan Jenis Kelamin -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Pekerjaan -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Pekerjaan <span class="text-red-500">*</span></label>
-                            <input type="text" name="pekerjaan" value="{{ old('pekerjaan') }}"
-                                class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
-                            @error('pekerjaan')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    <!-- Prodi/Jurusan -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Prodi/Jurusan <span class="text-red-500">*</span></label>
+                        <input type="text" name="Prodi/jurusan" value="{{ old('Prodi/jurusan') }}"
+                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        @error('Prodi/jurusan')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                        <!-- Jenis Kelamin -->
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-600 mb-1">Jenis Kelamin <span class="text-red-500">*</span></label>
-                            <select name="jk"
-                                class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
-                                <option value="">-- Pilih Jenis Kelamin --</option>
-                                <option value="Laki-laki" {{ old('jk') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                <option value="Perempuan" {{ old('jk') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                            </select>
-                            @error('jk')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    <!-- Alamat -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Alamat <span class="text-red-500">*</span></label>
+                        <textarea name="alamat"
+                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400" rows="3">{{ old('alamat') }}</textarea>
+                        @error('alamat')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- No HP -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">No HP</label>
+                        <input type="text" name="No_Hp" value="{{ old('No_Hp') }}"
+                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        @error('No_Hp')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Email <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" value="{{ old('email') }}"
+                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        @error('email')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                 </div>
@@ -451,7 +432,7 @@
                 Konfirmasi Hapus
             </h3>
             <p class="text-sm text-gray-500 text-center mb-6">
-                Apakah Anda yakin ingin menghapus data masyarakat <strong id="deleteNama" class="text-gray-900"></strong>?
+                Apakah Anda yakin ingin menghapus data mahasiswa <strong id="deleteNama" class="text-gray-900"></strong>?
             </p>
 
             <!-- Action Buttons -->
@@ -470,75 +451,77 @@
 
 @push('scripts')
     <script>
-            // Fungsi untuk menutup notifikasi sukses
-    function closeSuccessNotification() {
-        const notif = document.getElementById('successNotification');
-        if (notif) {
-            notif.style.animation = 'slide-out 0.3s ease-out';
-            setTimeout(() => notif.remove(), 300);
-        }
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-    const pageKey = window.location.pathname; // unik per halaman
-    const scrollPosition = localStorage.getItem(`${pageKey}-scroll`);
-    const activePage = localStorage.getItem(`${pageKey}-page`);
-    const searchQuery = localStorage.getItem(`${pageKey}-search`);
-
-    // === 1️⃣ Restore posisi scroll jika sebelumnya tersimpan ===
-    if (scrollPosition) {
-        window.scrollTo(0, parseInt(scrollPosition));
-    }
-
-
-    window.addEventListener('beforeunload', () => {
-        localStorage.setItem(`${pageKey}-scroll`, window.scrollY);
-    });
-
-    // === 3️⃣ Simpan dan restore input pencarian ===
-    const searchInput = document.querySelector('input[name="q"]');
-    if (searchInput) {
-        if (searchQuery && !searchInput.value) {
-            searchInput.value = searchQuery;
+        // Fungsi untuk menutup notifikasi sukses
+        function closeSuccessNotification() {
+            const notif = document.getElementById('successNotification');
+            if (notif) {
+                notif.style.animation = 'slide-out 0.3s ease-out';
+                setTimeout(() => notif.remove(), 300);
+            }
         }
 
-        searchInput.addEventListener('input', () => {
-            localStorage.setItem(`${pageKey}-search`, searchInput.value);
-        });
-    }
-
-    // === 4️⃣ Simpan halaman pagination terakhir yang dikunjungi ===
-    const paginationLinks = document.querySelectorAll('.pagination a');
-    paginationLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            localStorage.setItem(`${pageKey}-page`, link.href);
-        });
-    });
-
-    // === 5️⃣ Redirect otomatis ke halaman pagination terakhir (jika masih valid) ===
-    if (activePage && window.location.href !== activePage && !window.location.search.includes('page=')) {
-        window.location.href = activePage;
-    }
-
-    // === 6️⃣ Bersihkan cache jika sudah submit form (supaya tidak restore state lama) ===
-    const form = document.getElementById('formMasyarakat');
-    if (form) {
-        form.addEventListener('submit', () => {
-            localStorage.removeItem(`${pageKey}-scroll`);
-            localStorage.removeItem(`${pageKey}-page`);
-            localStorage.removeItem(`${pageKey}-search`);
-        });
-    }
-});
-
-    // Auto close notifikasi sukses setelah 5 detik
-    document.addEventListener('DOMContentLoaded', function() {
-        const successNotif = document.getElementById('successNotification');
-        if (successNotif) {
-            setTimeout(() => {
-                closeSuccessNotification();
-            }, 5000);
+        // Fungsi untuk menutup notifikasi error
+        function closeErrorNotification() {
+            const notif = document.getElementById('errorNotification');
+            if (notif) {
+                notif.style.animation = 'slide-out 0.3s ease-out';
+                setTimeout(() => notif.remove(), 300);
+            }
         }
-    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageKey = window.location.pathname;
+            const scrollPosition = localStorage.getItem(`${pageKey}-scroll`);
+            const searchQuery = localStorage.getItem(`${pageKey}-search`);
+
+            // Restore posisi scroll
+            if (scrollPosition) {
+                window.scrollTo(0, parseInt(scrollPosition));
+            }
+
+            window.addEventListener('beforeunload', () => {
+                localStorage.setItem(`${pageKey}-scroll`, window.scrollY);
+            });
+
+            // Restore input pencarian
+            const searchInput = document.querySelector('input[name="q"]');
+            if (searchInput) {
+                if (searchQuery && !searchInput.value) {
+                    searchInput.value = searchQuery;
+                }
+
+                searchInput.addEventListener('input', () => {
+                    localStorage.setItem(`${pageKey}-search`, searchInput.value);
+                });
+            }
+
+            // Bersihkan cache jika sudah submit form
+            const form = document.getElementById('formMahasiswa');
+            if (form) {
+                form.addEventListener('submit', () => {
+                    localStorage.removeItem(`${pageKey}-scroll`);
+                    localStorage.removeItem(`${pageKey}-search`);
+                });
+            }
+        });
+
+        // Auto close notifikasi
+        document.addEventListener('DOMContentLoaded', function() {
+            const successNotif = document.getElementById('successNotification');
+            if (successNotif) {
+                setTimeout(() => {
+                    closeSuccessNotification();
+                }, 5000);
+            }
+
+            const errorNotif = document.getElementById('errorNotification');
+            if (errorNotif) {
+                setTimeout(() => {
+                    closeErrorNotification();
+                }, 5000);
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('modal');
             const modalContent = document.getElementById('modalContent');
@@ -594,21 +577,18 @@
             });
 
             // ============ VALIDASI FORM DENGAN PESAN BAHASA INDONESIA ============
-            const form = document.getElementById('formMasyarakat');
+            const form = document.getElementById('formMahasiswa');
 
             // Pesan error dalam bahasa Indonesia
             const pesanError = {
-                nik: 'NIK harus diisi dan terdiri dari 16 digit angka',
+                nim: 'NIM harus diisi',
                 nama: 'Nama harus diisi',
-                RT: 'RT harus diisi',
-                RW: 'RW harus diisi',
-                alamat: 'Alamat harus diisi',
                 tempat_lahir: 'Tempat lahir harus diisi',
                 tgl_lahir: 'Tanggal lahir harus diisi',
-                status: 'Status harus dipilih',
-                agama: 'Agama harus dipilih',
-                pekerjaan: 'Pekerjaan harus diisi',
-                jk: 'Jenis kelamin harus dipilih'
+                Fakultas: 'Fakultas harus diisi',
+                'Prodi/jurusan': 'Prodi/Jurusan harus diisi',
+                alamat: 'Alamat harus diisi',
+                email: 'Email harus diisi dengan format yang benar'
             };
 
             // Validasi form sebelum submit
@@ -627,27 +607,19 @@
 
                     const value = field.value.trim();
 
-                    // Cek apakah field kosong
-                    if (!value) {
+                    // Cek apakah field kosong (kecuali No_Hp yang optional)
+                    if (!value && fieldName !== 'No_Hp') {
                         tampilkanError(field, pesanError[fieldName]);
                         hasError = true;
                         if (!firstErrorField) firstErrorField = field;
                         return;
                     }
 
-                    // Validasi khusus untuk NIK (harus 16 digit)
-                    if (fieldName === 'nik') {
-                        if (!/^\d{16}$/.test(value)) {
-                            tampilkanError(field, 'NIK harus terdiri dari 16 digit angka');
-                            hasError = true;
-                            if (!firstErrorField) firstErrorField = field;
-                        }
-                    }
-
-                    // Validasi khusus untuk RT dan RW (harus angka)
-                    if ((fieldName === 'RT' || fieldName === 'RW')) {
-                        if (!/^\d+$/.test(value)) {
-                            tampilkanError(field, `${fieldName} harus berupa angka`);
+                    // Validasi khusus untuk email
+                    if (fieldName === 'email' && value) {
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailRegex.test(value)) {
+                            tampilkanError(field, 'Format email tidak valid');
                             hasError = true;
                             if (!firstErrorField) firstErrorField = field;
                         }
@@ -747,32 +719,10 @@
                 }, 5000);
             }
 
-            // Validasi real-time untuk NIK (hanya angka dan maksimal 16 digit)
-            const nikInput = form.querySelector('[name="nik"]');
-            if (nikInput) {
-                nikInput.addEventListener('input', function(e) {
-                    // Hanya izinkan angka
-                    this.value = this.value.replace(/[^0-9]/g, '');
-
-                    // Batasi maksimal 16 digit
-                    if (this.value.length > 16) {
-                        this.value = this.value.slice(0, 16);
-                    }
-                });
-            }
-
-            // Validasi real-time untuk RT dan RW (hanya angka)
-            const rtInput = form.querySelector('[name="RT"]');
-            const rwInput = form.querySelector('[name="RW"]');
-
-            if (rtInput) {
-                rtInput.addEventListener('input', function(e) {
-                    this.value = this.value.replace(/[^0-9]/g, '');
-                });
-            }
-
-            if (rwInput) {
-                rwInput.addEventListener('input', function(e) {
+            // Validasi real-time untuk No HP (hanya angka)
+            const noHpInput = form.querySelector('[name="No_Hp"]');
+            if (noHpInput) {
+                noHpInput.addEventListener('input', function(e) {
                     this.value = this.value.replace(/[^0-9]/g, '');
                 });
             }

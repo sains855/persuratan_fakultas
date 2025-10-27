@@ -4,8 +4,8 @@
 
    <div class="p-5 border-b border-gray-700 flex items-center gap-4">
         <div class="bg-gray-800 p-2 rounded-xl flex items-center justify-center">
-            <img src="/assets/img/APP%20LOGO.png" 
-                alt="Logo" 
+            <img src="/assets/img/APP%20LOGO.png"
+                alt="Logo"
                 class="w-14 h-14 sm:w-16 sm:h-16 object-contain rounded-lg shadow-md">
         </div>
         <div class="flex flex-col">
@@ -24,7 +24,7 @@
         {{-- Master Data --}}
         @php
             // Tentukan apakah salah satu submenu sedang aktif
-            $masterActive = in_array($title, ['Masyarakat', 'Persyaratan', 'Pelayanan', 'Manajemen Landing Page', 'Berita', 'Aparatur']);
+            $masterActive = in_array($title, ['Mahasiswa', 'Persyaratan', 'Pelayanan', 'Manajemen Landing Page', 'Berita', 'Aparatur']);
         @endphp
 
         <div class="space-y-1">
@@ -45,8 +45,8 @@
 
             <div id="masterDataDropdown"
                 class="ml-8 space-y-1 {{ $masterActive ? '' : 'hidden' }}">
-                <a href="{{ route('masyarakat') }}"
-                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Masyarakat' ? 'bg-blue-500' : '' }}">Masyarakat</a>
+                <a href="{{ route('mahasiswa') }}"
+                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Mahasiswa' ? 'bg-blue-500' : '' }}">Mahasiswa</a>
                 <a href="{{ route('persyaratan') }}"
                     class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Persyaratan' ? 'bg-blue-500' : '' }}">Persyaratan</a>
                 <a href="{{ route('pelayanan') }}"

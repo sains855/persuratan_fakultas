@@ -54,58 +54,6 @@
                     <p class="mt-2 text-xs text-slate-400">Jumlah pengajuan masuk</p>
                 </div>
             </div>
-
-
-            {{-- Card: Aparatur --}}
-
-            <div
-                class="bg-white dark:bg-slate-800 shadow-sm rounded-2xl p-5 flex items-center space-x-4 ring-1 ring-slate-100 hover:shadow-lg transition">
-                <div class="flex-shrink-0 p-3 rounded-full bg-red-50 dark:bg-red-900/20">
-                    <!-- Icon (user-group) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M17 20h5v-1a4 4 0 00-4-4h-1M9 20H4v-1a4 4 0 014-4h1m0 0a4 4 0 100-8 4 4 0 000 8zm6 0a4 4 0 100-8 4 4 0 000 8z" />
-                    </svg>
-                </div>
-
-                <div class="flex-1">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-slate-500 dark:text-slate-300">Aparatur</p>
-                            <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white" aria-live="polite">
-                                {{ number_format($jumlahAparatur ?? 0, 0, ',', '.') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card: Penduduk -->
-            <div
-                class="bg-white dark:bg-slate-800 shadow-sm rounded-2xl p-5 flex items-center space-x-4 ring-1 ring-slate-100 hover:shadow-lg transition">
-                <div class="flex-shrink-0 p-3 rounded-full bg-indigo-50 dark:bg-indigo-900/20">
-                    <!-- Icon (people) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M17 20h5v-1a4 4 0 00-4-4h-1M9 20H4v-1a4 4 0 014-4h1m0 0a4 4 0 100-8 4 4 0 000 8z" />
-                    </svg>
-                </div>
-
-                <div class="flex-1">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-slate-500 dark:text-slate-300">Jumlah Mahasiswa</p>
-                            <p class="mt-1 text-2xl font-bold text-slate-900 dark:text-white" aria-live="polite">
-                                {{ number_format($jumlahMahasiswa ?? 0, 0, ',', '.') }}
-                            </p>
-                        </div>
-                    </div>
-                    <p class="mt-2 text-xs text-slate-400">Data ter-update terakhir</p>
-                </div>
-            </div>
-
         </div>
     </div>
 @endsection

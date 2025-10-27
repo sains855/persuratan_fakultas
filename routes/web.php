@@ -8,7 +8,7 @@ use App\Http\Controllers\Backend\LandingPageController;
 use App\Http\Controllers\Backend\ListPengajuanController;
 use App\Http\Controllers\Backend\PersyaratanController;
 use App\Http\Controllers\Backend\PelayananController;
-use App\Http\Controllers\Backend\MasyarakatController;
+use App\Http\Controllers\Backend\MahasiswaController;
 use App\Http\Controllers\Frontend\BerandaController;
 use App\Http\Controllers\Frontend\DetailBeritaController;
 use App\Http\Controllers\Frontend\ListpelayananController as FrontendListpelayananController;
@@ -93,11 +93,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/persyaratan/delete/{id}', [PersyaratanController::class, 'delete'])->name('persyaratan.delete');
 
 
-    Route::get('/masyarakat', [MasyarakatController::class, 'index'])->name('masyarakat');
-    Route::get('/masyarakat/edit/{id}', [MasyarakatController::class, 'edit'])->name('masyarakat.edit');
-    Route::post('/masyarakat/store', [MasyarakatController::class, 'store'])->name('masyarakat.store');
-    Route::put('/masyarakat/update/{id}', [MasyarakatController::class, 'update'])->name('masyarakat.update');
-    Route::get('/masyarakat/delete/{id}', [MasyarakatController::class, 'delete'])->name('masyarakat.delete');
+    Route::get('/Mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa');
+    Route::get('/Mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+    Route::post('/Mahasiswa/store', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
+    Route::put('/Mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
+    Route::get('/Mahasiswa/delete/{id}', [MahasiswaController::class, 'delete'])->name('mahasiswa.delete');
 
     Route::get('/pelayanan', [PelayananController::class, 'index'])->name('pelayanan');
     Route::get('/pelayanan/edit/{id}', [PelayananController::class, 'edit'])->name('pelayanan.edit');
@@ -141,6 +141,6 @@ Route::middleware(['auth'])->group(function () {
     // ✅ ROUTE INI SUDAH DIPINDAHKAN KE LUAR (lihat baris 41-43)
     // Route::post('/list-pengajuan/{id}/cetak-stream', [ListPengajuanController::class, 'handleCetakStream'])->name('list-pengajuan.cetak.stream');
     // Route::post('/list-pengajuan/{id}/cetak-download', [ListPengajuanController::class, 'handleCetakDownload'])->name('list-pengajuan.cetak.download');
-    
+
     Route::delete('/list-pengajuan/{id}', [ListPengajuanController::class, 'destroy'])->name('list-pengajuan.destroy');
 });

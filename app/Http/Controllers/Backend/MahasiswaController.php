@@ -15,18 +15,18 @@ class MahasiswaController extends Controller
                   ->orWhere('nim', 'like', '%' . $request->q . '%')
                   ->orWhere('Prodi/jurusan', 'like', '%' . $request->q . '%');
         }
-        $masyarakat = $query->orderBy('nama', 'asc')->paginate(10);
+        $mahasiswa = $query->orderBy('nama', 'asc')->paginate(10);
         // Simpan parameter pencarian agar tetap ada saat berpindah halaman
-        $masyarakat->appends(['q' => $request->q]);
-        return view('backend.masyarakat.index', compact('title', 'masyarakat'))
+        $mahasiswa->appends(['q' => $request->q]);
+        return view('backend.mahasiswa.index', compact('title', 'mahasiswa'))
                ->with('q', $request->q);
     }
 
     public function edit($id)
     {
         $title = "Edit Mahasiswa";
-        $masyarakat = Mahasiswa::where('nim', $id)->first();
-        return view('backend.masyarakat.edit', compact('title', 'masyarakat'));
+        $mahasiswa = Mahasiswa::where('nim', $id)->first();
+        return view('backend.mahasiswa.edit', compact('title', 'mahasiswa'));
     }
 
     public function store(Request $request)
@@ -69,10 +69,10 @@ class MahasiswaController extends Controller
             'nim.unique' => 'NIM sudah terdaftar.',
             'email.unique' => 'Email sudah terdaftar.',
         ]);
-        $masyarakat = Mahasiswa::where('nim', $id);
+        $mahasiswa = Mahasiswa::where('nim', $id);
         try {
-            $masyarakat->update($data);
-            return redirect('/masyarakat')->with('success', 'Berhasil update data');
+            $mahasiswa->update($data);
+            return redirect('/mahasiswa')->with('success', 'Berhasil update data');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal update data');
         }
@@ -80,9 +80,9 @@ class MahasiswaController extends Controller
 
     public function delete($id)
     {
-        $masyarakat = Mahasiswa::where('nim', $id);
+        $mahasiswa = Mahasiswa::where('nim', $id);
         try {
-            $masyarakat->delete();
+            $mahasiswa->delete();
             return back()->with('success', 'Berhasil menghapus data');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal menghapus data');
