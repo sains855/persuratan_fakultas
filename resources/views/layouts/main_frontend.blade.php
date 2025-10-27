@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Resmi Kelurahan Tipulu</title>
+    <title>Layanan Administrasi Terpadu FMIPA</title>
 
     <meta name="google-site-verification" content="nQDPltT3lbevHFhYmcdR1_9crePvIG-lDKTJuNJElS8" />
 
