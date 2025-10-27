@@ -3,33 +3,33 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Aparatur;
+use App\Models\Ttd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class AparaturController extends Controller
+class TtdController extends Controller
 {
     public function index()
     {
-        $title = "Aparatur";
+        $title = "Ttd";
 
-        $aparatur = Aparatur::orderBy('posisi', 'asc')->get();
+        $Ttd = Ttd::orderBy('posisi', 'asc')->get();
 
-        return view('backend.aparatur.index', compact('title', 'aparatur'));
+        return view('backend.Ttd.index', compact('title', 'Ttd'));
     }
 
     public function edit($id)
     {
-        $title = "Edit Aparatur";
-        $aparatur = Aparatur::find($id);
+        $title = "Edit Ttd";
+        $Ttd = Ttd::find($id);
 
-        return view('backend.aparatur.edit', compact('title', 'aparatur'));
+        return view('backend.Ttd.edit', compact('title', 'Ttd'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nip' => 'required|unique:aparaturs,nip',
+            'nip' => 'required|unique:Ttds,nip',
             'nama' => 'required',
             'jabatan' => 'required',
             'pangkat/gol' => 'required',
@@ -40,16 +40,16 @@ class AparaturController extends Controller
             if ($request->hasFile('foto')) {
                 $file = $request->file('foto');
 
-                $filename = time() . '-foto-aparatur.' . $file->getClientOriginalExtension();
+                $filename = time() . '-foto-Ttd.' . $file->getClientOriginalExtension();
 
-                // simpan di storage/app/public/aparatur
-                $file->storeAs('public/aparatur', $filename);
+                // simpan di storage/app/public/Ttd
+                $file->storeAs('public/Ttd', $filename);
 
                 // simpan path untuk ditampilkan
-                $data['foto'] = 'storage/aparatur/' . $filename;
+                $data['foto'] = 'storage/Ttd/' . $filename;
             }
 
-            Aparatur::create($data);
+            Ttd::create($data);
 
             return back()->with('success', 'Berhasil menambah data');
         } catch (\Exception $e) {
@@ -59,10 +59,10 @@ class AparaturController extends Controller
 
     public function update(Request $request, $id)
     {
-        $aparatur = Aparatur::findOrFail($id);
+        $Ttd = Ttd::findOrFail($id);
 
         $data = $request->validate([
-            'nip' => 'required|unique:aparaturs,nip,' . $id . ',id',
+            'nip' => 'required|unique:Ttds,nip,' . $id . ',id',
             'nama' => 'required',
             'jabatan' => 'required',
             'posisi' => 'required',
@@ -72,22 +72,22 @@ class AparaturController extends Controller
         try {
             if ($request->hasFile('foto')) {
                 // hapus file lama (langsung, tanpa cek exists)
-                Storage::delete(str_replace('storage/', 'public/', $aparatur->foto));
+                Storage::delete(str_replace('storage/', 'public/', $Ttd->foto));
 
                 // upload file baru
                 $file = $request->file('foto');
-                $filename = time() . '-foto-aparatur.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/aparatur', $filename);
+                $filename = time() . '-foto-Ttd.' . $file->getClientOriginalExtension();
+                $file->storeAs('public/Ttd', $filename);
 
-                $data['foto'] = 'storage/aparatur/' . $filename;
+                $data['foto'] = 'storage/Ttd/' . $filename;
             } else {
                 // tetap gunakan thumbnail lama
-                $data['foto'] = $aparatur->foto;
+                $data['foto'] = $Ttd->foto;
             }
 
-            $aparatur->update($data);
+            $Ttd->update($data);
 
-            return redirect('/aparatur')->with('success', 'Berhasil memperbaruhi data.');
+            return redirect('/Ttd')->with('success', 'Berhasil memperbaruhi data.');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal memperbarui data. ' . $e->getMessage());
         }
@@ -95,12 +95,12 @@ class AparaturController extends Controller
 
     public function delete($id)
     {
-        $aparatur = Aparatur::find($id);
+        $Ttd = Ttd::find($id);
 
-        Storage::delete(str_replace('storage/', 'public/', $aparatur->foto));
+        Storage::delete(str_replace('storage/', 'public/', $Ttd->foto));
 
         try {
-            $aparatur->delete();
+            $Ttd->delete();
 
             return back()->with('success', 'Berhasil menghapus data');
         } catch (\Exception $e) {
