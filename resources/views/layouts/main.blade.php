@@ -15,11 +15,11 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet">
         <!-- 🧿 Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/APP%20LOGO.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/APP%20LOGO.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/APP%20LOGO.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/untitled.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/untitled.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/untitled.png') }}">
     <meta name="theme-color" content="#1e3a8a">
-    
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -78,7 +78,7 @@
         .animate-slide-in-top {
             animation: slideInFromTop 0.6s ease-out forwards;
         }
-        
+
     </style>
     @stack('styles')
 </head>

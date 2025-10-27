@@ -15,9 +15,9 @@
     <meta name="robots" content="index, follow">
 
     <!-- 🧿 Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/APP%20LOGO.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/APP%20LOGO.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/APP%20LOGO.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/untitled.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/untitled.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/untitled.png') }}">
     <meta name="theme-color" content="#1e3a8a">
 
     <!-- 🧩 Open Graph -->
@@ -25,13 +25,13 @@
     <meta property="og:description" content="Pelayanan publik online Kelurahan Tipulu melalui program Meambo — cepat, mudah, dan transparan.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://meambo.id/">
-    <meta property="og:image" content="{{ asset('assets/img/APP%20LOGO.png') }}">
+    <meta property="og:image" content="{{ asset('assets/img/untitled.png') }}">
 
     <!-- 🐦 Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Portal Resmi Kelurahan Tipulu | Meambo">
     <meta name="twitter:description" content="Akses layanan administrasi kelurahan secara online dengan cepat dan mudah.">
-    <meta name="twitter:image" content="{{ asset('assets/img/APP%20LOGO.png') }}">
+    <meta name="twitter:image" content="{{ asset('assets/img/untitled.png') }}">
 
     <script src="/assets/js/tail.js"></script>
     <script src="/assets/js/chart.js"></script>
@@ -85,7 +85,7 @@
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0">
                     <a href="#" class="flex items-center space-x-3">
-                        <img class="h-[100px] w-auto" src="/assets/img/HEADER%20LOGO.png"
+                        <img class="h-[65px] w-auto" src="/assets/img/untitled.png"
                             alt="Logo Kelurahan Tipulu">
                     </a>
                 </div>
