@@ -17,7 +17,6 @@ class DashboardController extends Controller
 
         $jumlahPelayanan = Pelayanan::count();
         $jumlahPengajuan = Pengajuan::count();
-        $jumlahMasyarakat = Mahasiswa::count();
 
         return view('backend.dashboard.index', compact('title', 'jumlahPelayanan', 'jumlahPengajuan'));
     }

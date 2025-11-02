@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\ttd;
+use App\Models\Ttd;
 use App\Models\DokumenPersyaratan;
 use App\Models\Pengajuan;
 use App\Models\Persyaratan;
 use App\Models\Verifikasi;
-use App\Models\LandingPage;
+use App\Models\Mahasiswa;
+use App\Models\OrangTua;
+use App\Models\Alumni;
+use App\Models\KeteranganBeasiswa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,8 +26,18 @@ class ListPengajuanController extends Controller
     public function index()
     {
         $title = "List Pengajuan";
-        $pengajuan = Pengajuan::with(['pelayanan', 'masyarakat', 'dokumenPersyaratan.persyaratan'])->orderByDesc('id')->get();
-        $ttds = ttd::get(['id', 'nama']);
+
+        // ✅ PERBAIKAN: Sesuaikan dengan relasi yang ada di PengajuanController
+        $pengajuan = Pengajuan::with([
+            'pelayanan',
+            'mahasiswa',
+            'mahasiswa.orangTua',
+            'mahasiswa.alumni',
+            'dokumenPersyaratan.persyaratan'
+        ])->orderByDesc('id')->get();
+
+        $ttds = Ttd::get(['id', 'nama']);
+
         return view('backend.list-pengajuan.index', compact('title', 'pengajuan', 'ttds'));
     }
 
@@ -36,7 +49,7 @@ class ListPengajuanController extends Controller
 
             // Cari data verifikasi lama (dari ttd yang sama)
             $verifikasi = Verifikasi::where('pengajuan_id', $id)
-                ->where('ttd_id', 4) // ubah ke Auth::user()->ttd_id jika sudah dinamis
+                ->where('ttd_id', Auth::user()->ttd_id ?? 4)
                 ->first();
 
             if ($verifikasi) {
@@ -51,7 +64,7 @@ class ListPengajuanController extends Controller
                     'pengajuan_id' => $id,
                     'status' => $status . ' oleh ' . Auth::user()->username,
                     'alasan' => $alasan,
-                    'ttd_id' => 4, // atau Auth::user()->ttd_id
+                    'ttd_id' => Auth::user()->ttd_id ?? 4,
                 ]);
             }
 
@@ -62,7 +75,6 @@ class ListPengajuanController extends Controller
         }
     }
 
-    // ✅ TAMBAHAN: Helper untuk deteksi request dari mobile
     private function isMobileAppRequest(Request $request)
     {
         return $request->hasHeader('X-Requested-With') &&
@@ -71,64 +83,19 @@ class ListPengajuanController extends Controller
                 str_contains($request->header('User-Agent') ?? '', 'MEAMBO-Mobile-App'));
     }
 
-    // Method publik untuk STREAM (tampilkan PDF di viewer)
-    // public function handleCetakStream(Request $request, $id)
-    // {
-    //     // ✅ TAMBAHAN: Validasi auth untuk mobile app
-    //     if ($this->isMobileAppRequest($request)) {
-    //         if (!Auth::check()) {
-    //             Log::warning('Mobile app - Unauthorized cetak stream', [
-    //                 'id' => $id,
-    //                 'ip' => $request->ip(),
-    //             ]);
-
-    //             return response()->json([
-    //                 'error' => 'Unauthorized',
-    //                 'message' => 'Sesi tidak valid. Silakan login ulang di aplikasi.'
-    //             ], 401);
-    //         }
-    //     }
-
-    //     return $this->generatePdf($request, $id, 'stream');
-    // }
-
     public function handleCetakStream(Request $request, $id)
-{
-    return $this->generatePdf($request, $id, 'stream');
-}
+    {
+        return $this->generatePdf($request, $id, 'stream');
+    }
 
-public function handleCetakDownload(Request $request, $id)
-{
-    return $this->generatePdf($request, $id, 'download');
-}
-
-
-
-
-    // Method publik untuk DOWNLOAD (unduh PDF)
-    // public function handleCetakDownload(Request $request, $id)
-    // {
-    //     // ✅ TAMBAHAN: Validasi auth untuk mobile app
-    //     if ($this->isMobileAppRequest($request)) {
-    //         if (!Auth::check()) {
-    //             Log::warning('Mobile app - Unauthorized cetak download', [
-    //                 'id' => $id,
-    //                 'ip' => $request->ip(),
-    //             ]);
-
-    //             return response()->json([
-    //                 'error' => 'Unauthorized',
-    //                 'message' => 'Sesi tidak valid. Silakan login ulang di aplikasi.'
-    //             ], 401);
-    //         }
-    //     }
-
-    //     return $this->generatePdf($request, $id, 'download');
-    // }
+    public function handleCetakDownload(Request $request, $id)
+    {
+        return $this->generatePdf($request, $id, 'download');
+    }
 
     /**
      * Method private terpusat untuk men-generate PDF.
-     * Menggabungkan semua logika persiapan data dan pembuatan PDF.
+     * ✅ DISESUAIKAN dengan jenis surat di PengajuanController
      */
     private function generatePdf(Request $request, $id, $action)
     {
@@ -146,100 +113,71 @@ public function handleCetakDownload(Request $request, $id)
                 'ttd_id' => 'required|exists:ttds,id',
             ]);
 
-            // Ambil semua data yang mungkin dibutuhkan dengan Eager Loading
+            // ✅ PERBAIKAN: Ambil data pengajuan dengan relasi mahasiswa
             $pengajuan = Pengajuan::with([
                 'pelayanan',
-                'masyarakat',
-                'kematian',
-                'pindahPenduduk',
-                'domisiliUsahaYayasan',
-                'usaha',
-                'tempatTinggalSementara'
+                'mahasiswa',
+                'mahasiswa.orangTua',
+                'mahasiswa.alumni',
             ])->findOrFail($id);
 
-            $ttd = ttd::findOrFail($request->ttd_id);
-            $landingpage = LandingPage::first();
+            $ttd = Ttd::findOrFail($request->ttd_id);
+            $mahasiswa = $pengajuan->mahasiswa;
 
-            // Siapkan semua data yang akan dikirim ke view PDF
+            // ✅ PERBAIKAN: Siapkan data berdasarkan jenis surat
+            $pelayananNama = $pengajuan->pelayanan->nama;
+
             $dataForView = [
-                'judul' => $pengajuan->pelayanan->nama,
+                'judul' => $pelayananNama,
                 'tahun' => Carbon::parse($request->tgl_cetak)->format('Y'),
                 'tanggal' => Carbon::parse($request->tgl_cetak)->isoFormat('D MMMM Y'),
-                'nama_pengaju' => ucwords(strtolower(optional($pengajuan->masyarakat)->nama ?? optional($pengajuan->tempatTinggalSementara)->nama)),
-                'tempat_lahir' => ucwords(strtolower(optional($pengajuan->masyarakat)->tempat_lahir ?? optional($pengajuan->tempatTinggalSementara)->tempat_lahir)),
-                'tanggal_lahir' => optional($pengajuan->masyarakat)->tgl_lahir
-                    ? Carbon::parse($pengajuan->masyarakat->tgl_lahir)->isoFormat('D MMMM Y')
-                    : (optional($pengajuan->tempatTinggalSementara)->tgl_lahir
-                        ? Carbon::parse($pengajuan->tempatTinggalSementara->tgl_lahir)->isoFormat('D MMMM Y')
-                        : null),
-                'jenis_kelamin' => ucwords(strtolower(optional($pengajuan->masyarakat)->jk ?? optional($pengajuan->tempatTinggalSementara)->jenis_kelamin)),
-                'agama' => ucwords(strtolower(optional($pengajuan->masyarakat)->agama ?? optional($pengajuan->tempatTinggalSementara)->agama)),
-                'pekerjaan' => ucwords(strtolower(optional($pengajuan->masyarakat)->pekerjaan ?? optional($pengajuan->tempatTinggalSementara)->pekerjaan)),
-                'alamat' => optional($pengajuan->masyarakat)->alamat ?? ucwords(strtolower(optional($pengajuan->tempatTinggalSementara)->alamat)),
-                'nik' => optional($pengajuan->masyarakat)->nik ?? optional($pengajuan->tempatTinggalSementara)->nik,
-                'status' => ucwords(strtolower($pengajuan->masyarakat->status ?? $pengajuan->tempatTinggalSementara->status ?? '....')),
-                'keterangan_surat' => str_replace(
-                    [
-                        '{{ $tahun_berdiri }}',
-                        '{{ $keperluan }}',
-                        '{{ $alamat_sementara }}',
-                        '{{ $rt }}',
-                        '{{ $rw }}',
-                        '{{ $deskripsi_acara }}',
-                        '{{ $nama_acara }}',
-                    ],
-                    [
-                        optional($pengajuan->usaha)->tahun_berdiri ?? '....',
-                        '<b>' . ucwords(strtolower($pengajuan->keperluan ?? '....')) . '</b>',
-                        ucwords(strtolower(optional($pengajuan->tempatTinggalSementara)->alamat_sementara ?? '....')),
-                        str_pad($pengajuan->tempatTinggalSementara->RT ?? $pengajuan->masyarakat->RT ?? 0, 3, '0', STR_PAD_LEFT),
-                        str_pad($pengajuan->tempatTinggalSementara->RW ?? $pengajuan->masyarakat->RW ??0, 3, '0', STR_PAD_LEFT),
-                        '<b>' . ucwords(strtolower(optional($pengajuan->keramaian)->deskripsi_acara ?? '....')) . '</b>',
-                        '<b>' . ucwords(strtolower(optional($pengajuan->keramaian)->nama_acara ?? '....')) . '</b>',
-                    ],
-                    $pengajuan->pelayanan->keterangan_surat
-                ),
-                'rt' => str_pad($pengajuan->masyarakat->RT ?? 0, 3, '0', STR_PAD_LEFT),
-                'rw' => str_pad($pengajuan->masyarakat->RW ?? 0, 3, '0', STR_PAD_LEFT),
                 'jabatan' => ucwords(strtolower($ttd->jabatan)),
                 'ttd' => ucwords(strtolower($ttd->nama)),
                 'ttd_nip' => $ttd->nip,
-                'nama_md' => ucwords(strtolower(optional($pengajuan->kematian)->nama)),
-                'jenis_kelamin_md' => ucwords(strtolower(optional($pengajuan->kematian)->jenis_kelamin)),
-                'umur' => optional($pengajuan->kematian)->umur,
-                'alamat_md' => ucwords(strtolower(optional($pengajuan->kematian)->alamat)),
-                'tanggal_meninggal' => optional($pengajuan->kematian)->tanggal_meninggal
-                    ? Carbon::parse($pengajuan->kematian->tanggal_meninggal)->isoFormat('D MMMM Y')
-                    : null,
-                'hari_meninggal' => ucwords(strtolower(optional($pengajuan->kematian)->hari)),
-                'tempat_meninggal' => ucwords(strtolower(optional($pengajuan->kematian)->tempat_meninggal)),
-                'penyebab_md' => ucwords(strtolower(optional($pengajuan->kematian)->penyebab)),
-                'desa_kelurahan' => ucwords(strtolower(optional($pengajuan->pindahPenduduk)->desa_kelurahan)),
-                'kecamatan' => ucwords(strtolower(optional($pengajuan->pindahPenduduk)->kecamatan)),
-                'kab_kota' => ucwords(strtolower(optional($pengajuan->pindahPenduduk)->kab_kota)),
-                'provinsi' => ucwords(strtolower(optional($pengajuan->pindahPenduduk)->provinsi)),
-                'tgl_pindah' => optional($pengajuan->pindahPenduduk)->tanggal_pindah
-                    ? Carbon::parse($pengajuan->pindahPenduduk->tanggal_pindah)->isoFormat('D MMMM Y')
-                    : null,
-                'alasan_pindah' => ucwords(strtolower(optional($pengajuan->pindahPenduduk)->alasan_pindah)),
-                'pengikut' => optional($pengajuan->pindahPenduduk)->pengikut,
-                'nama_usaha' => ucwords(strtolower(optional($pengajuan->domisiliUsahaYayasan)->nama_usaha)),
-                'jenis_kegiatan_usaha' => ucwords(strtolower(optional($pengajuan->domisiliUsahaYayasan)->jenis_kegiatan_usaha)),
-                'alamat_usaha' => ucwords(strtolower(optional($pengajuan->domisiliUsahaYayasan)->alamat_usaha)),
-                'penanggung_jawab' => ucwords(strtolower(optional($pengajuan->domisiliUsahaYayasan)->penanggung_jawab)),
-                'tahun_berdiri' => optional($pengajuan->usaha)->tahun_berdiri,
-                'nama_usaha_pengaju' => ucwords(strtolower(optional($pengajuan->usaha)->nama_usaha)),
-                'nama_acara' => strtoupper(optional($pengajuan->keramaian)->nama_acara),
-                'waktu_acara' => optional($pengajuan->keramaian)->pukul,
-                'tempat_acara' => ucwords(strtolower(optional($pengajuan->keramaian)->tempat)),
-                'tanggal_acara' => optional($pengajuan->keramaian)->tanggal
-                    ? Carbon::parse($pengajuan->keramaian->tanggal)->isoFormat('D MMMM Y')
-                    : null,
-                'penyelenggara_acara' => ucwords(strtolower(optional($pengajuan->keramaian)->penyelenggara)),
-                'telepon' => $landingpage->telpon ?? null,
-                'acara' => ucwords(strtolower(optional($pengajuan->keramaian)->nama_acara)),
             ];
 
+            // ✅ TAMBAHKAN DATA SESUAI JENIS SURAT
+            if ($mahasiswa) {
+                $dataForView['nim'] = $mahasiswa->nim;
+                $dataForView['nama'] = ucwords(strtolower($mahasiswa->nama));
+                $dataForView['tempat_lahir'] = ucwords(strtolower($mahasiswa->tempat_lahir));
+                $dataForView['tanggal_lahir'] = Carbon::parse($mahasiswa->tgl_lahir)->isoFormat('D MMMM Y');
+                $dataForView['jenis_kelamin'] = ucwords(strtolower($mahasiswa->jenis_kelamin));
+                $dataForView['agama'] = ucwords(strtolower($mahasiswa->agama));
+                $dataForView['prodi'] = ucwords(strtolower($mahasiswa->prodi));
+                $dataForView['semester'] = $mahasiswa->semester;
+                $dataForView['alamat'] = $mahasiswa->alamat;
+            }
+
+            // Data khusus untuk Surat Keterangan Aktif Kuliah
+            if ($pelayananNama === "Surat Keterangan Aktif Kuliah" && $mahasiswa->orangTua) {
+                $dataForView['nama_ayah'] = ucwords(strtolower($mahasiswa->orangTua->nama_ayah));
+                $dataForView['pekerjaan_ayah'] = ucwords(strtolower($mahasiswa->orangTua->pekerjaan_ayah));
+                $dataForView['nama_ibu'] = ucwords(strtolower($mahasiswa->orangTua->nama_ibu));
+                $dataForView['pekerjaan_ibu'] = ucwords(strtolower($mahasiswa->orangTua->pekerjaan_ibu));
+            }
+
+            // Data khusus untuk Surat Keterangan Alumni
+            if ($pelayananNama === "Surat Keterangan Alumni" && $mahasiswa->alumni) {
+                $dataForView['no_ijazah'] = $mahasiswa->alumni->no_ijazah;
+                $dataForView['tahun_studi_mulai'] = $mahasiswa->alumni->tahun_studi_mulai;
+                $dataForView['tahun_studi_selesai'] = $mahasiswa->alumni->tahun_studi_selesai;
+                $dataForView['tgl_yudisium'] = Carbon::parse($mahasiswa->alumni->tgl_yudisium)->isoFormat('D MMMM Y');
+            }
+
+            // ✅ REPLACE placeholder di keterangan surat
+            if (isset($pengajuan->pelayanan->keterangan_surat)) {
+                $keterangan = $pengajuan->pelayanan->keterangan_surat;
+
+                // Replace placeholder umum
+                $keterangan = str_replace(
+                    ['{{ $keperluan }}'],
+                    ['<b>' . ucwords(strtolower($pengajuan->keperluan ?? '....')) . '</b>'],
+                    $keterangan
+                );
+
+                $dataForView['keterangan_surat'] = $keterangan;
+            }
 
             // Generate PDF dengan satu panggilan
             $pdf = PDF::loadView('backend.surat.template-surat', $dataForView);
@@ -258,7 +196,6 @@ public function handleCetakDownload(Request $request, $id)
                 'trace' => $e->getTraceAsString()
             ]);
 
-            // ✅ TAMBAHAN: Return JSON untuk mobile app
             if ($this->isMobileAppRequest($request)) {
                 return response()->json([
                     'error' => 'Gagal generate PDF',
@@ -273,7 +210,6 @@ public function handleCetakDownload(Request $request, $id)
     public function stream(Request $request, $persyaratan_id, $pengajuan_id)
     {
         try {
-            // ✅ TAMBAHAN: Validasi auth untuk mobile app
             if ($this->isMobileAppRequest($request)) {
                 Log::info('Akses dari mobile app diizinkan untuk stream dokumen', [
                     'persyaratan_id' => $persyaratan_id,
@@ -282,13 +218,11 @@ public function handleCetakDownload(Request $request, $id)
                 ]);
             }
 
-
             $path = DokumenPersyaratan::where('persyaratan_id', $persyaratan_id)
                 ->where('pengajuan_id', $pengajuan_id)
                 ->value('dokumen');
 
             if (!$path) {
-                // ✅ TAMBAHAN: Return JSON untuk mobile
                 if ($this->isMobileAppRequest($request)) {
                     return response()->json([
                         'error' => 'Not Found',
@@ -302,7 +236,6 @@ public function handleCetakDownload(Request $request, $id)
             $fullPath = public_path($path);
 
             if (!file_exists($fullPath)) {
-                // ✅ TAMBAHAN: Return JSON untuk mobile
                 if ($this->isMobileAppRequest($request)) {
                     return response()->json([
                         'error' => 'Not Found',
@@ -317,7 +250,6 @@ public function handleCetakDownload(Request $request, $id)
             return response()->file($fullPath, [
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'inline; filename="' . $filename . '"',
-                // ✅ TAMBAHAN: Header untuk mobile compatibility
                 'Cache-Control' => 'no-cache, must-revalidate',
                 'X-Content-Type-Options' => 'nosniff',
             ]);
@@ -330,7 +262,6 @@ public function handleCetakDownload(Request $request, $id)
                 'trace' => $e->getTraceAsString()
             ]);
 
-            // ✅ TAMBAHAN: Return JSON untuk mobile
             if ($this->isMobileAppRequest($request)) {
                 return response()->json([
                     'error' => 'Server Error',
@@ -344,9 +275,6 @@ public function handleCetakDownload(Request $request, $id)
 
     /**
      * Method untuk menghapus data pengajuan
-     *
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
