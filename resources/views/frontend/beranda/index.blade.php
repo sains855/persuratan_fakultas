@@ -2,7 +2,29 @@
 
 @section('content')
     <main>
-
+        <section id="hero" class="relative min-h-[90vh] flex items-center overflow-hidden">
+            <div class="absolute inset-0 bg-black/50 z-10"></div>
+            <div class="absolute inset-0">
+                <img src="https://img.lovepik.com/photo/50108/6061.jpg_wh860.jpg" alt="Kantor Kelurahan Tipulu"
+                    class="w-full h-full object-cover ken-burns">
+            </div>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
+                <div class="max-w-3xl text-center mx-auto">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight animate-fade-in">
+                        Selamat Datang di Portal Resmi Persuratan FMIPA UHO</h1>
+                    <p class="mt-6 text-lg md:text-xl text-gray-200 animate-fade-in-delay">
+                        {{ $landingPage->slogan ?? '-' }}</p>
+                    <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4 animate-fade-in-up-delay">
+                        <a href="#layanan"
+                            class="bg-yellow-500 text-gray-900 font-bold py-3 px-8 rounded-lg text-lg hover:bg-yellow-400 transition-transform hover:scale-105 w-full sm:w-auto">Lihat
+                            Layanan Kami</a>
+                        <a href="#"
+                            class="bg-white/20 backdrop-blur-sm text-white font-medium py-3 px-8 rounded-lg text-lg hover:bg-white/30 transition-transform hover:scale-105 w-full sm:w-auto">Cara
+                            Penggunaan Sistem</a>
+                    </div>
+                </div>
+            </div>
+        </section>
             <section id="layanan" class="py-20 bg-white">
                 <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-12 fade-in-up">

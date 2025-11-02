@@ -24,6 +24,7 @@ class PelayananController extends Controller
                 });
         }
 
+        $pelayanan = $query->get();
         $pelayanan = $query->orderBy('nama', 'asc')->paginate(10);
         $persyaratan = Persyaratan::get(['id', 'nama']);
 
@@ -32,7 +33,6 @@ class PelayananController extends Controller
 
         return view('backend.pelayanan.index', compact('title', 'pelayanan','persyaratan'))
                ->with('q', $request->q);
-        $pelayanan = $query->get();
 
     }
 
