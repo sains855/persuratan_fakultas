@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ttd', function (Blueprint $table) {
+        Schema::create('ttds', function (Blueprint $table) {
             $table->id();
             $table->string('nip')->unique();
             $table->string('nama');
             $table->string('jabatan');
             $table->string('pangkat_golruang');
             $table->string('fakultas');
-            $table->text('foto');
+            $table->text('foto')->nullable();
             $table->string('posisi')->unique();
             $table->timestamps();
         });

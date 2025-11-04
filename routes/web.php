@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Backend\AparaturController;
+use App\Http\Controllers\Backend\TtdController;
 use App\Http\Controllers\Backend\BeritaController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\LandingPageController;
@@ -21,6 +21,7 @@ use App\Http\Controllers\Backend\PermohonanController;
 use App\Http\Controllers\Api\FcmController;
 use App\Http\Controllers\Frontend\DetailAparaturController;
 use App\Models\Pengajuan;
+use App\Models\ttd;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -114,11 +115,11 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    Route::get('/aparatur', [AparaturController::class, 'index'])->name('aparatur');
-    Route::get('/aparatur/edit/{id}', [AparaturController::class, 'edit'])->name('aparatur.edit');
-    Route::post('/aparatur/store', [AparaturController::class, 'store'])->name('aparatur.store');
-    Route::put('/aparatur/update/{id}', [AparaturController::class, 'update'])->name('aparatur.update');
-    Route::get('/aparatur/delete/{id}', [AparaturController::class, 'delete'])->name('aparatur.delete');
+    Route::get('/aparatur', [TtdController::class, 'index'])->name('aparatur');
+    Route::get('/aparatur/edit/{id}', [TtdController::class, 'edit'])->name('ttd.edit');
+    Route::post('/aparatur/store', [ttdController::class, 'store'])->name('ttd.store');
+    Route::put('/aparatur/update/{id}', [TtdController::class, 'update'])->name('ttd.update');
+    Route::get('/aparatur/delete/{id}', [TtdController::class, 'delete'])->name('ttd.delete');
 
 
     // Route ini khusus untuk menerima laporan FCM token dari aplikasi Flutter
