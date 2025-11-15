@@ -446,15 +446,15 @@
         Kendari, 8 Oktober 2025<br>
         <span style="text-transform: uppercase;">
         <b>LURAH TIPULU</span><br>
-        @if($jabatan != "Lurah")
+        @if($ttd != "Lurah")
             <span style="text-transform: uppercase;">
-            <b>AN. {{ $jabatan }}
+            <b>AN. {{ $ttd_jabatan }}
             </span>
         @endif
         <br><br><br><br><br>
         <div class="ttd-wrapper">
-            <span class="ttd-nama">{{ $aparatur }}</span>
-            <span class="ttd-nip">NIP: {{ $aparatur_nip }}</span>
+            <span class="ttd-nama">{{ $ttd }}</span>
+            <span class="ttd-nip">NIP: {{ $ttd_nip }}</span>
         </div>
         </td>
     </tr>

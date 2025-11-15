@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('tempat_lahir');
             $table->date('tgl_lahir');
             $table->string('Fakultas');
-            $table->string('Prodi/jurusan');
+            $table->string('Prodi_jurusan');
             $table->text('alamat');
             $table->string('No_Hp');
             $table->string('email')->unique();

@@ -6,8 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mahasiswa extends Model
 {
-    protected $guarded = ['id'];
+    protected $table = 'mahasiswas'; // opsional, tapi bagus untuk eksplisit
+
     protected $primaryKey = 'nim';
+    public $incrementing = false; // <- penting!
+    protected $keyType = 'string'; // <- penting!
+
+    protected $guarded = []; // nim bisa ikut diisi, atau pakai $fillable kalau mau lebih spesifik
 
     public function dokumenPersyaratan()
     {
@@ -18,7 +23,8 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(KeteranganBeasiswa::class, 'mahasiswa_nim', 'id');
     }
-    public function Alumni()
+
+    public function alumni()
     {
         return $this->belongsTo(Alumni::class, 'mahasiswa_nim', 'id');
     }

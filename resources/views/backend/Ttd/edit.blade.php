@@ -5,13 +5,13 @@
         <!-- Card -->
         <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-6 border border-blue-200">
             <!-- Form -->
-            <form method="POST" action="{{ route('aparatur.update', $aparatur->id) }}" enctype="multipart/form-data" id="formEditAparatur">
+            <form method="POST" action="{{ route('ttd.update', $ttd->id) }}" enctype="multipart/form-data" id="formEditTtd">
                 @csrf
                 @method('PUT')
 
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">NIP <span class="text-red-500">*</span></label>
-                    <input type="text" name="nip" value="{{ old('NIP', $aparatur->nip) }}"
+                    <input type="text" name="nip" value="{{ old('nip', $ttd->nip) }}"
                         class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
                     @error('nip')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -20,7 +20,7 @@
 
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Nama <span class="text-red-500">*</span></label>
-                    <input type="text" name="nama" value="{{ old('nama', $aparatur->nama) }}"
+                    <input type="text" name="nama" value="{{ old('nama', $ttd->nama) }}"
                         class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
                     @error('nama')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -29,7 +29,7 @@
 
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Jabatan <span class="text-red-500">*</span></label>
-                    <input type="text" name="jabatan" value="{{ old('jabatan', $aparatur->jabatan) }}"
+                    <input type="text" name="jabatan" value="{{ old('jabatan', $ttd->jabatan) }}"
                         class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
                     @error('jabatan')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -37,23 +37,22 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-semibold text-gray-600 mb-1">Posisi <span class="text-red-500">*</span></label>
-                    <input type="number" name="posisi" value="{{ old('posisi', $aparatur->posisi) }}" step="1"
-                        min="1"  onkeydown="return false"
+                    <label class="block text-sm font-semibold text-gray-600 mb-1">Pangkat/Gol <span class="text-red-500">*</span></label>
+                    <input type="text" name="pangkat/gol" value="{{ old('pangkat/gol', $ttd->{'pangkat/gol'}) }}"
                         class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
-                    @error('posisi')
+                    @error('pangkat/gol')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Thumbnail -->
+                <!-- Foto -->
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Foto</label>
 
-                    <!-- Preview Thumbnail Lama -->
-                    @if ($aparatur->foto)
+                    <!-- Preview Foto Lama -->
+                    @if ($ttd->foto)
                         <div class="mb-2">
-                            <img src="{{ asset($aparatur->foto) }}" alt="Foto lama"
+                            <img src="{{ asset($ttd->foto) }}" alt="Foto lama"
                                 class="w-32 h-32 object-cover rounded-lg shadow-md">
                         </div>
                     @endif
@@ -61,7 +60,7 @@
                     <input type="file" name="foto" accept="image/*"
                         class="w-full border border-blue-300 rounded-lg px-3 py-2
                                focus:ring-2 focus:ring-blue-400 focus:border-blue-400 file:mr-4 file:py-1 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, GIF (Max: 2MB)</p>
+                    <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, WEBP, JPEG (Max: 2MB)</p>
                     @error('foto')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
                     @enderror
@@ -69,7 +68,7 @@
 
                 <!-- Tombol -->
                 <div class="flex justify-end gap-2 mt-6">
-                    <a href="{{ route('aparatur') }}"
+                    <a href="{{ route('ttd') }}"
                         class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition">
                         Back
                     </a>
@@ -114,15 +113,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('formEditAparatur');
+            const form = document.getElementById('formEditTtd');
 
             // ============ VALIDASI FORM DENGAN PESAN BAHASA INDONESIA ============
             const pesanError = {
                 nip: 'NIP harus diisi',
-                nama: 'Nama aparatur harus diisi',
+                nama: 'Nama harus diisi',
                 jabatan: 'Jabatan harus diisi',
-                posisi: 'Posisi harus diisi dengan angka yang valid',
-                foto: 'Foto harus diupload (format: JPG, PNG, JPEG, GIF, max: 2MB)'
+                pangkat: 'Pangkat/Gol harus diisi',
+                foto: 'Format foto harus JPG, PNG, WEBP, atau JPEG (max: 2MB)'
             };
 
             // Validasi form sebelum submit
@@ -158,27 +157,23 @@
                     if (!firstErrorField) firstErrorField = jabatanField;
                 }
 
-                // Validasi Posisi
-                const posisiField = this.querySelector('[name="posisi"]');
-                if (!posisiField.value.trim()) {
-                    tampilkanError(posisiField, pesanError.posisi);
+                // Validasi Pangkat/Gol
+                const pangkatField = this.querySelector('[name="pangkat/gol"]');
+                if (!pangkatField.value.trim()) {
+                    tampilkanError(pangkatField, pesanError.pangkat);
                     hasError = true;
-                    if (!firstErrorField) firstErrorField = posisiField;
-                } else if (isNaN(posisiField.value) || parseInt(posisiField.value) < 0) {
-                    tampilkanError(posisiField, 'Posisi harus berupa angka positif');
-                    hasError = true;
-                    if (!firstErrorField) firstErrorField = posisiField;
+                    if (!firstErrorField) firstErrorField = pangkatField;
                 }
 
                 // Validasi Foto (opsional, hanya jika ada file yang dipilih)
                 const fotoField = this.querySelector('[name="foto"]');
                 if (fotoField.files.length > 0) {
                     const file = fotoField.files[0];
-                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
                     const maxSize = 2 * 1024 * 1024; // 2MB
 
                     if (!allowedTypes.includes(file.type)) {
-                        tampilkanError(fotoField, 'Format file harus JPG, PNG, JPEG, atau GIF');
+                        tampilkanError(fotoField, 'Format file harus JPG, PNG, WEBP, atau JPEG');
                         hasError = true;
                         if (!firstErrorField) firstErrorField = fotoField;
                     } else if (file.size > maxSize) {
@@ -226,7 +221,7 @@
             const nipInput = form.querySelector('[name="nip"]');
             const namaInput = form.querySelector('[name="nama"]');
             const jabatanInput = form.querySelector('[name="jabatan"]');
-            const posisiInput = form.querySelector('[name="posisi"]');
+            const pangkatInput = form.querySelector('[name="pangkat/gol"]');
             const fotoInput = form.querySelector('[name="foto"]');
 
             if (nipInput) {
@@ -256,8 +251,8 @@
                 });
             }
 
-            if (posisiInput) {
-                posisiInput.addEventListener('input', function() {
+            if (pangkatInput) {
+                pangkatInput.addEventListener('input', function() {
                     this.classList.remove('border-red-500', '!border-red-500');
                     this.classList.add('border-blue-300');
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
@@ -277,11 +272,11 @@
                     if (this.files.length > 0) {
                         const file = this.files[0];
                         const maxSize = 2 * 1024 * 1024; // 2MB
-                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
                         // Cek tipe file
                         if (!allowedTypes.includes(file.type)) {
-                            tampilkanError(this, 'Format file harus JPG, PNG, JPEG, atau GIF');
+                            tampilkanError(this, 'Format file harus JPG, PNG, WEBP, atau JPEG');
                             this.value = ''; // Reset input
                             return;
                         }

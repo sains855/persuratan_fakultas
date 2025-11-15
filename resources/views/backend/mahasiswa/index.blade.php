@@ -141,7 +141,7 @@
                                 </td>
                                 <td class="px-2 sm:px-4 py-3 text-sm align-top">{{ $data->tempat_lahir . ', ' . $data->tgl_lahir }}</td>
                                 <td class="px-2 sm:px-4 py-3 text-sm align-top">{{ $data->Fakultas }}</td>
-                                <td class="px-2 sm:px-4 py-3 text-sm align-top">{{ $data->{'Prodi/jurusan'} }}</td>
+                                <td class="px-2 sm:px-4 py-3 text-sm align-top">{{ $data->Prodi_jurusan }}</td>
                                 <td class="px-2 sm:px-4 py-3 align-top">
                                     <div class="text-xs">
                                         <p><i class="fa fa-phone text-blue-600"></i> {{ $data->No_Hp ?? '-' }}</p>
@@ -245,7 +245,7 @@
                                 </div>
 
                                 <div class="text-xs text-gray-600 mb-2">
-                                    <strong>Prodi/Jurusan:</strong> {{ $data->{'Prodi/jurusan'} }}
+                                    <strong>Prodi_jurusan:</strong> {{ $data->{'Prodi_jurusan'} }}
                                 </div>
 
                                 <div class="text-xs text-gray-600 mb-2">
@@ -359,12 +359,12 @@
                         @enderror
                     </div>
 
-                    <!-- Prodi/Jurusan -->
+                    <!-- Prodi_jurusan -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-600 mb-1">Prodi/Jurusan <span class="text-red-500">*</span></label>
-                        <input type="text" name="Prodi/jurusan" value="{{ old('Prodi/jurusan') }}"
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Prodi_jurusan <span class="text-red-500">*</span></label>
+                        <input type="text" name="Prodi_jurusan" value="{{ old('Prodi_jurusan') }}"
                             class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
-                        @error('Prodi/jurusan')
+                        @error('Prodi_jurusan')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -586,7 +586,7 @@
                 tempat_lahir: 'Tempat lahir harus diisi',
                 tgl_lahir: 'Tanggal lahir harus diisi',
                 Fakultas: 'Fakultas harus diisi',
-                'Prodi/jurusan': 'Prodi/Jurusan harus diisi',
+                'Prodi_jurusan': 'Prodi_jurusan harus diisi',
                 alamat: 'Alamat harus diisi',
                 email: 'Email harus diisi dengan format yang benar'
             };

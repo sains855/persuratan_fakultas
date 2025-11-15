@@ -13,7 +13,7 @@ class MahasiswaController extends Controller
         if ($request->filled('q')) {
             $query->where('nama', 'like', '%' . $request->q . '%')
                   ->orWhere('nim', 'like', '%' . $request->q . '%')
-                  ->orWhere('Prodi/jurusan', 'like', '%' . $request->q . '%');
+                  ->orWhere('Prodi_jurusan', 'like', '%' . $request->q . '%');
         }
         $mahasiswa = $query->orderBy('nama', 'asc')->paginate(10);
         // Simpan parameter pencarian agar tetap ada saat berpindah halaman
@@ -37,7 +37,7 @@ class MahasiswaController extends Controller
             'tempat_lahir' => 'required',
             'tgl_lahir' => 'required|date',
             'Fakultas' => 'required',
-            'Prodi/jurusan' => 'required',
+            'Prodi_jurusan' => 'required',
             'alamat' => 'required',
             'No_Hp' => 'nullable',
             'email' => 'required|email|unique:mahasiswas,email'
@@ -61,7 +61,7 @@ class MahasiswaController extends Controller
             'tempat_lahir' => 'required',
             'tgl_lahir' => 'required|date',
             'Fakultas' => 'required',
-            'Prodi/jurusan' => 'required',
+            'Prodi_jurusan' => 'required',
             'alamat' => 'required',
             'No_Hp' => 'nullable',
             'email' => 'required|email|unique:mahasiswas,email,' . $id . ',nim'

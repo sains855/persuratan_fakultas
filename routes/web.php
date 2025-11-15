@@ -29,23 +29,15 @@ use App\Models\ttd;
 
 // Route tanpa middleware (public)
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
-Route::get('/detail-berita/{id}', [DetailBeritaController::class, 'index'])->name('detail-berita');
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'authLogin'])->name('auth.login');
 
-Route::get('/detail-aparatur', [ListAparaturController::class, 'index'])->name('detail-aparatur');
 
-Route::get('/landing-page', [LandingPageController::class, 'index'])->name('landing-page');
-Route::post('/landing-page/store', [LandingPageController::class, 'store'])->name('landing-page.store');
-Route::get('/sejarah', [LandingPageController::class, 'detailSejarah'])->name('sejarah');
-Route::get('/visimisi', [LandingPageController::class, 'detailVisiMisi'])->name('visimisi');
-
-Route::get('/list-aparatur', [ListaparaturController::class, 'index'])->name('frontend.aparatur.index');
-Route::get('/list-pelayanan', [FrontendListpelayananController::class, 'index'])->name('list-pelayanan');
+Route::get('/', [FrontendListpelayananController::class, 'index'])->name('list-pelayanan');
 Route::get('/pengajuan/{id}', [PengajuanController::class, 'index'])->name('pengajuan');
 Route::post('/pengajuan/cek/{id}', [PengajuanController::class, 'cek'])->name('pengajuan.cek');
-Route::post('/pengajuan/store/{id}', [PengajuanController::class, 'store'])->name('pengajuan.store');
-Route::get('/pengajuan/detail/{id}/{nik?}', [PengajuanController::class, 'detail'])->name('pengajuan.detail');
+Route::post('/pengajuan/store', [PengajuanController::class, 'store'])->name('pengajuan.store');
+Route::get('/pengajuan/detail/{id}/{nim?}', [PengajuanController::class, 'detail'])->name('pengajuan.detail');
 
 // ✅ PINDAHKAN 3 ROUTE INI KELUAR DARI MIDDLEWARE AUTH (untuk mobile app)
 // Validasi auth sudah dilakukan di dalam controller
@@ -105,15 +97,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pelayanan/store', [PelayananController::class, 'store'])->name('pelayanan.store');
     Route::put('/pelayanan/update/{id}', [PelayananController::class, 'update'])->name('pelayanan.update');
     Route::get('/pelayanan/delete/{id}', [PelayananController::class, 'delete'])->name('pelayanan.delete');
-
-    Route::get('/berita', [BeritaController::class, 'index'])->name('berita');
-    Route::get('/berita/edit/{id}', [BeritaController::class, 'edit'])->name('berita.edit');
-    Route::post('/berita/store', [BeritaController::class, 'store'])->name('berita.store');
-    Route::put('/berita/update/{id}', [BeritaController::class, 'update'])->name('berita.update');
-    Route::get('/berita/delete/{id}', [BeritaController::class, 'delete'])->name('berita.delete');
-
-
-
 
     Route::get('/aparatur', [TtdController::class, 'index'])->name('aparatur');
     Route::get('/aparatur/edit/{id}', [TtdController::class, 'edit'])->name('ttd.edit');

@@ -61,6 +61,18 @@
                     </div>
                 @endif
 
+                {{-- Validation Errors --}}
+                @if ($errors->any())
+                    <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p class="font-medium text-red-600 mb-2">Terdapat kesalahan:</p>
+                        <ul class="list-disc list-inside text-sm text-red-600">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 {{-- ✅ JIKA NIM TIDAK DITEMUKAN - TAMPILKAN FORM MANUAL --}}
                 @if (!$nimDitemukan)
                     <div class="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -104,7 +116,10 @@
                                 </label>
                                 <input type="file" name="dokumen[{{ $item->persyaratan_id }}]" required
                                     accept=".pdf,.jpg,.jpeg,.png"
-                                    class="block w-full border border-gray-300 rounded-lg shadow-sm text-sm p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    class="block w-full border border-gray-300 rounded-lg shadow-sm text-sm p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('dokumen.' . $item->persyaratan_id) border-red-500 @enderror">
+                                @error('dokumen.' . $item->persyaratan_id)
+                                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                @enderror
                             </div>
                         @endforeach
 
@@ -220,7 +235,7 @@
                         @if ($pelayanan->nama == "Surat Keterangan Aktif Kuliah" && $orangTua)
                             <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                                 <p class="text-sm font-medium text-blue-700">Data Orang Tua:</p>
-                                <p class="text-sm text-gray-600">Nama: {{ $orangTua->nama_ayah ?? $orangTua->nama_ibu }}</p>
+                                <p class="text-sm text-gray-600">Nama: {{ $orangTua->nama_ayah ?? $orangTua->nama_ibu ?? '-' }}</p>
                             </div>
                         @endif
 
@@ -251,7 +266,10 @@
                                 </label>
                                 <input type="file" name="dokumen[{{ $item->persyaratan_id }}]" required
                                     accept=".pdf,.jpg,.jpeg,.png"
-                                    class="block w-full border border-gray-300 rounded-lg shadow-sm text-sm p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    class="block w-full border border-gray-300 rounded-lg shadow-sm text-sm p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('dokumen.' . $item->persyaratan_id) border-red-500 @enderror">
+                                @error('dokumen.' . $item->persyaratan_id)
+                                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                @enderror
                             </div>
                         @endforeach
 
