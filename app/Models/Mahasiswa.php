@@ -28,4 +28,9 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Alumni::class, 'mahasiswa_nim', 'id');
     }
+
+    public function orangTua()
+    {
+        return $this->belongsTo(OrangTua::class, 'orang_tua_id', 'id');
+    }
 }

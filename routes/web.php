@@ -33,11 +33,45 @@ Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'authLogin'])->name('auth.login');
 
 
-Route::get('/', [FrontendListpelayananController::class, 'index'])->name('list-pelayanan');
-Route::get('/pengajuan/{id}', [PengajuanController::class, 'index'])->name('pengajuan');
-Route::post('/pengajuan/cek/{id}', [PengajuanController::class, 'cek'])->name('pengajuan.cek');
-Route::post('/pengajuan/store', [PengajuanController::class, 'store'])->name('pengajuan.store');
-Route::get('/pengajuan/detail/{id}/{nim?}', [PengajuanController::class, 'detail'])->name('pengajuan.detail');
+
+
+// Halaman form cek NIM berdasarkan jenis layanan
+Route::get('/pengajuan/{id}', [PengajuanController::class, 'index'])
+    ->name('pengajuan');
+
+// Proses cek NIM + validasi (beasiswa & lainnya)
+Route::post('/pengajuan/{id}/cek', [PengajuanController::class, 'cek'])
+    ->name('pengajuan.cek');
+
+// Halaman detail form pengajuan
+Route::get('/pengajuan/{id}/detail/{nim?}', [PengajuanController::class, 'detail'])
+    ->name('pengajuan.detail');
+
+// Simpan data orang tua (khusus SK Aktif Kuliah)
+Route::post('/pengajuan/store-orangtua', [PengajuanController::class, 'storeOrangTua'])
+    ->name('pengajuan.storeOrangTua');
+
+// Simpan data alumni (khusus SK Alumni)
+Route::post('/pengajuan/store-alumni', [PengajuanController::class, 'storeAlumni'])
+    ->name('pengajuan.storeAlumni');
+
+// Simpan data mahasiswa baru (jika NIM belum ada)
+Route::post('/pengajuan/store-mahasiswa', [PengajuanController::class, 'storeMahasiswa'])
+    ->name('pengajuan.storeMahasiswa');
+
+// Simpan pengajuan surat
+Route::post('/pengajuan/store', [PengajuanController::class, 'store'])
+    ->name('pengajuan.store');
+
+Route::get('/', [FrontendListpelayananController::class, 'index'])->name('beranda');
+// Route::get('/pengajuan/{id}', [PengajuanController::class, 'index'])->name('pengajuan');
+// Route::post('/pengajuan/cek/{id}', [PengajuanController::class, 'cek'])->name('pengajuan.cek');
+// Route::post('/pengajuan/store', [PengajuanController::class, 'store'])->name('pengajuan.store');
+// Route::get('/pengajuan/detail/{id}/{nim?}', [PengajuanController::class, 'detail'])->name('pengajuan.detail');
+// Route::post('/pengajuandetail/{id}/{nim?}', [PengajuanController::class, 'storeOrangTua'])->name('pengajuan.store');
+// Route::post('/pengajuandetail/{id}/{nim?}', [PengajuanController::class, 'storeAlumni'])->name('pengajuan.store');
+// Route::post('/pengajuan/store', [PengajuanController::class, 'store'])->name('pengajuan.store');
+
 
 // ✅ PINDAHKAN 3 ROUTE INI KELUAR DARI MIDDLEWARE AUTH (untuk mobile app)
 // Validasi auth sudah dilakukan di dalam controller

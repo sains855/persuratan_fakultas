@@ -51,8 +51,6 @@
                     class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Persyaratan' ? 'bg-blue-500' : '' }}">Persyaratan</a>
                 <a href="{{ route('pelayanan') }}"
                     class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Pelayanan' ? 'bg-blue-500' : '' }}">Pelayanan</a>
-                <a href="{{ route('landing-page') }}"
-                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Manajemen Landing Page' ? 'bg-blue-500' : '' }}">Landing Page</a>
                 <a href="#"
                     class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Berita' ? 'bg-blue-500' : '' }}">Berita</a>
                 <a href="{{ route('aparatur') }}"

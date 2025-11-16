@@ -39,7 +39,7 @@
                         @forelse ($pengajuan as $data)
                             <tr class="hover:bg-blue-50 transition">
                                 <td class="px-4 py-3 text-center font-semibold text-blue-600">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-3">{{ optional($data->masyarakat)->nama ?? optional($data->tempatTinggalSementara)->nama }}</td>
+                                <td class="px-4 py-3">{{ optional($data->mahasiswa)->nama ?? optional($data->tempatTinggalSementara)->nama }}</td>
                                 <td class="px-4 py-3">{{ $data->no_hp }}</td>
                                 <td class="px-4 py-3">{{ $data->pelayanan->nama }}</td>
                                 <td class="px-4 py-3 text-center">
@@ -76,7 +76,7 @@
                                     @if (!$verifikasi || $isDitolak)
                                         {{-- Tombol Verifikasi / Verifikasi Ulang --}}
                                         <button data-id="{{ $data->id }}"
-                                            data-nama="{{ optional($data->masyarakat)->nama ?? optional($data->tempatTinggalSementara)->nama }}"
+                                            data-nama="{{ optional($data->mahasiswa)->nama ?? optional($data->tempatTinggalSementara)->nama }}"
                                             data-nohp="{{ $data->no_hp }}"
                                             data-pelayanan="{{ $data->pelayanan->nama }}"
                                             onclick="openVerifikasiModal(this)"
@@ -94,7 +94,7 @@
                                             . '?text='
                                             . urlencode(
                                                 'Assalamualaikum Bapak/Ibu '
-                                                . ($data->masyarakat?->nama ?: $data->tempatTinggalSementara?->nama)
+                                                . ($data->mahasiswa?->nama ?: $data->tempatTinggalSementara?->nama)
                                                 . ',' . "\n\n" .
                                                 'Dengan hormat, kami informasikan bahwa pengajuan layanan '
                                                 . $data->pelayanan->nama
@@ -143,7 +143,7 @@
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-2">
                                     <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">{{ $loop->iteration }}</span>
-                                    <h3 class="font-bold text-gray-800 text-sm">{{ optional($data->masyarakat)->nama ?? optional($data->tempatTinggalSementara)->nama }}</h3>
+                                    <h3 class="font-bold text-gray-800 text-sm">{{ optional($data->mahasiswa)->nama ?? optional($data->tempatTinggalSementara)->nama }}</h3>
                                 </div>
                                 <div class="space-y-1 text-xs text-gray-600">
                                     <div class="flex items-center gap-2">
@@ -193,7 +193,7 @@
                             @if (!$verifikasi || $isDitolak)
                                 {{-- Tombol Verifikasi / Verifikasi Ulang --}}
                                 <button data-id="{{ $data->id }}"
-                                    data-nama="{{ optional($data->masyarakat)->nama ?? optional($data->tempatTinggalSementara)->nama }}"
+                                    data-nama="{{ optional($data->mahasiswa)->nama ?? optional($data->tempatTinggalSementara)->nama }}"
                                     data-nohp="{{ $data->no_hp }}"
                                     data-pelayanan="{{ $data->pelayanan->nama }}"
                                     onclick="openVerifikasiModal(this)"
@@ -212,7 +212,7 @@
                                     . '?text='
                                     . urlencode(
                                         'Assalamualaikum Bapak/Ibu '
-                                        . ($data->masyarakat?->nama ?: $data->tempatTinggalSementara?->nama)
+                                        . ($data->mahasiswa?->nama ?: $data->tempatTinggalSementara?->nama)
                                         . ',' . "\n\n" .
                                         'Dengan hormat, kami informasikan bahwa pengajuan layanan '
                                         . $data->pelayanan->nama
@@ -312,8 +312,8 @@
                                 <label class="block text-xs sm:text-sm font-semibold text-gray-600 mb-1">Penanda Tangan</label>
                                 <select id="aparatur_id-{{ $data->id }}" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-yellow-400">
                                     <option value="">-- Pilih --</option>
-                                    @foreach ($aparaturs as $aparatur)
-                                        <option value="{{ $aparatur->id }}">{{ $aparatur->nama }}</option>
+                                    @foreach ($ttds as $ttd)
+                                        <option value="{{ $ttd->id }}">{{ $ttd->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -342,14 +342,14 @@
                         </div>
                         <div class="flex-1">
                             <h2 class="text-base sm:text-lg font-bold text-gray-800">Verifikasi Pengajuan</h2>
-                            <p class="text-xs sm:text-sm text-gray-500">Konfirmasi pengajuan masyarakat</p>
+                            <p class="text-xs sm:text-sm text-gray-500">Konfirmasi pengajuan mahasiswa</p>
                         </div>
                     </div>
                     <div class="border-t border-gray-200 pt-4">
                         <p class="text-xs sm:text-sm text-gray-600">
                             Apakah Anda ingin <span class="font-semibold text-green-600">memverifikasi</span> atau
                             <span class="font-semibold text-red-600">menolak</span> pengajuan atas nama
-                            <span id="namaMasyarakat" class="font-semibold text-blue-600"></span>?
+                            <span id="namamahasiswa" class="font-semibold text-blue-600"></span>?
                         </p>
                     </div>
                     <form id="formVerifikasi" method="POST" class="mt-6">
@@ -406,7 +406,7 @@
     <style>
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
-    
+
     <script>
         let currentPengajuanId = null;
         let currentNamaWa = null;
@@ -438,7 +438,7 @@
             // Deteksi apakah ini verifikasi ulang berdasarkan title button
             isVerifikasiUlang = button.getAttribute('title') === 'Verifikasi Ulang';
 
-            document.getElementById("namaMasyarakat").innerText = nama;
+            document.getElementById("namamahasiswa").innerText = nama;
             document.getElementById("formVerifikasi").action = "{{ url('/list-pengajuan/verifikasi') }}/" + id;
             document.getElementById("verifikasiModal").classList.remove("hidden");
         }

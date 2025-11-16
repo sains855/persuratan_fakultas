@@ -77,6 +77,7 @@ class PengajuanController extends Controller
         $ttd = null;
         $nimDitemukan = false;
         $showAlumniForm = false;
+        $showOrangTuaForm = false;
 
         if ($nim) {
             $mahasiswa = Mahasiswa::where('nim', $nim)->first();
@@ -89,6 +90,11 @@ class PengajuanController extends Controller
                     case "Surat Keterangan Aktif Kuliah":
                         $orangTua = OrangTua::where('mahasiswa_nim', $nim)->first();
                         $ttd = Ttd::first();
+
+                        // ✅ JIKA DATA ORANG TUA BELUM ADA, TAMPILKAN FORM INPUT ORANG TUA
+                        if (!$orangTua) {
+                            $showOrangTuaForm = true;
+                        }
                         break;
 
                     case "Surat Keterangan Alumni":
@@ -121,8 +127,73 @@ class PengajuanController extends Controller
             'alumni',
             'ttd',
             'nimDitemukan',
-            'showAlumniForm'
+            'showAlumniForm',
+            'showOrangTuaForm'
         ));
+    }
+
+    /**
+     * Simpan data orang tua (untuk Surat Keterangan Aktif Kuliah)
+     * Disesuaikan dengan struktur migration orang_tuas
+     */
+    public function storeOrangTua(Request $request)
+    {
+        $request->validate([
+            'nim' => 'required|exists:mahasiswas,nim',
+            'nama' => 'required|string|max:255',
+            'pekerjaaan' => 'required|string|max:255',
+            'NIP_NOPensiun_NRP' => 'nullable|string|max:255|unique:orang_tuas,NIP_NOPensiun_NRP',
+            'pangkat' => 'nullable|string|max:255',
+            'instansi' => 'nullable|string|max:255',
+            'alamat' => 'required|string',
+            'no_hp' => 'nullable|string|digits_between:10,15',
+        ], [
+            'nim.required' => 'NIM mahasiswa harus diisi.',
+            'nim.exists' => 'NIM tidak ditemukan dalam database.',
+            'nama.required' => 'Nama orang tua harus diisi.',
+            'pekerjaan.required' => 'Pekerjaan orang tua harus diisi.',
+            'NIP_NOPensiun_NRP.unique' => 'NIP/No. Pensiun/NRP sudah terdaftar.',
+            'alamat.required' => 'Alamat harus diisi.',
+            'no_hp.digits_between' => 'Nomor HP harus antara 10-15 digit.',
+        ]);
+
+        try {
+            // Cek apakah data orang tua sudah ada
+            $existingOrangTua = OrangTua::where('mahasiswa_nim', $request->nim)->first();
+
+            if ($existingOrangTua) {
+                return back()->with('error', 'Data orang tua sudah tersimpan sebelumnya.');
+            }
+
+            // Simpan data orang tua
+            OrangTua::create([
+                'mahasiswa_nim' => $request->nim,
+                'nama' => $request->nama,
+                'pekerjaaan' => $request->pekerjaaan,
+                'NIP_NOPensiun_NRP' => $request->NIP_NOPensiun_NRP,
+                'pangkat' => $request->pangkat,
+                'instansi' => $request->instansi,
+                'alamat' => $request->alamat,
+                'no_hp' => $request->no_hp,
+            ]);
+
+            Log::info('Data orang tua berhasil disimpan', [
+                'nim' => $request->nim,
+                'nama' => $request->nama,
+                'pekerjaan' => $request->pekerjaan
+            ]);
+
+            return back()->with('success', 'Data orang tua berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
+
+        } catch (\Exception $e) {
+            Log::error('Error saat menyimpan data orang tua', [
+                'error' => $e->getMessage(),
+                'nim' => $request->nim
+            ]);
+
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                         ->withInput();
+        }
     }
 
     /**
@@ -180,6 +251,70 @@ class PengajuanController extends Controller
     }
 
     /**
+     * Simpan data mahasiswa baru (jika NIM belum terdaftar)
+     */
+    public function storeMahasiswa(Request $request)
+    {
+        $request->validate([
+            'nim' => 'required|string|max:20|unique:mahasiswas,nim',
+            'nama' => 'required|string|max:255',
+            'tempat_lahir' => 'required|string|max:255',
+            'tgl_lahir' => 'required|date|before:today',
+            'Fakultas' => 'required|string|max:255',
+            'Prodi_jurusan' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'No_Hp' => 'required|string|digits_between:10,15',
+            'email' => 'required|email|unique:mahasiswas,email',
+        ], [
+            'nim.required' => 'NIM harus diisi.',
+            'nim.unique' => 'NIM sudah terdaftar dalam sistem.',
+            'nama.required' => 'Nama mahasiswa harus diisi.',
+            'tempat_lahir.required' => 'Tempat lahir harus diisi.',
+            'tgl_lahir.required' => 'Tanggal lahir harus diisi.',
+            'tgl_lahir.before' => 'Tanggal lahir harus sebelum hari ini.',
+            'Fakultas.required' => 'Fakultas harus dipilih.',
+            'Prodi_jurusan.required' => 'Program Studi/Jurusan harus dipilih.',
+            'alamat.required' => 'Alamat harus diisi.',
+            'No_Hp.required' => 'Nomor HP harus diisi.',
+            'No_Hp.digits_between' => 'Nomor HP harus antara 10-15 digit.',
+            'email.required' => 'Email harus diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar dalam sistem.',
+        ]);
+
+        try {
+            // Simpan data mahasiswa baru
+            $mahasiswa = Mahasiswa::create([
+                'nim' => $request->nim,
+                'nama' => $request->nama,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tgl_lahir' => $request->tgl_lahir,
+                'Fakultas' => $request->Fakultas,
+                'Prodi_jurusan' => $request->Prodi_jurusan,
+                'alamat' => $request->alamat,
+                'No_Hp' => $request->No_Hp,
+                'email' => $request->email,
+            ]);
+
+            Log::info('Data mahasiswa baru berhasil disimpan', [
+                'nim' => $mahasiswa->nim,
+                'nama' => $mahasiswa->nama,
+                'email' => $mahasiswa->email
+            ]);
+
+            return back()->with('success', 'Data mahasiswa berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
+
+        } catch (\Exception $e) {
+            Log::error('Error saat menyimpan data mahasiswa', [
+                'error' => $e->getMessage(),
+                'nim' => $request->nim
+            ]);
+
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                         ->withInput();
+        }
+    }
+    /**
      * Simpan pengajuan surat
      */
     public function store(Request $request)
@@ -199,10 +334,10 @@ class PengajuanController extends Controller
         switch ($pelayanan->nama) {
             case "Surat Keterangan Aktif Kuliah":
                 $rules['nim'] = 'required|exists:mahasiswas,nim';
-                // Pastikan ada data orang tua
+                // ✅ PASTIKAN DATA ORANG TUA SUDAH TERISI
                 $orangTua = OrangTua::where('mahasiswa_nim', $request->nim)->first();
                 if (!$orangTua) {
-                    return back()->with('error', 'Data orang tua tidak ditemukan. Silakan hubungi admin.');
+                    return back()->with('error', 'Data orang tua belum lengkap. Silakan isi data orang tua terlebih dahulu sebelum mengajukan surat.');
                 }
                 break;
 
