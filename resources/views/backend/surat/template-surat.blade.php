@@ -1,464 +1,355 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Surat</title>
+    <title>{{ $judul }}</title>
 
     <style>
         @page {
-            font-family: 'Times New Roman', Times, serif, Helvetica, sans-serif;
-            margin-left: 2.86cm;
-            margin-right: 1.59cm;
-            margin-top: 0.75cm;
+            font-family: 'Times New Roman', Times, serif;
+            margin-left: 2.54cm;
+            margin-right: 2.54cm;
+            margin-top: 1cm;
             margin-bottom: 2.54cm;
-            line-height: 1.5    ;
-            width: 21.59cm;
-            height: 35.56cm;
+            size: 21.59cm 33.02cm; /* Ukuran F4 */
+        }
+
+        body {
+            font-size: 12pt;
+            line-height: 1.15; /* Sedikit lebih rapat sesuai gambar */
         }
 
         p {
             margin: 0;
-            font-size: 14px
-        }
-
-        th,
-        td {
-            font-size: 14px
+            text-align: justify;
         }
 
         table {
-            width: 100%
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .blok-ttd {
-            text-align: left;
-            padding-left: 120px;
-            font-family: "Times New Roman", serif;
-
+        td {
+            vertical-align: top;
+            padding: 2px 0;
         }
-        .ttd-wrapper {
-            display: inline-block;
-            text-align: left;
-            line-height: 1.0;
+
+        .header-text {
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .header-univ {
+            font-size: 14pt;
+            font-weight: normal;
             text-transform: uppercase;
         }
-        .ttd-nama {
-            display: block;
-            border-bottom: 1px solid black;
-            padding-bottom: 2px;
-            margin-bottom: 4px;
-            width: max-content; /* mengikuti panjang isi */
+
+        .header-fakultas {
+            font-size: 14pt;
             font-weight: bold;
+            text-transform: uppercase;
         }
-        .ttd-nip {
-            display: block;
+
+        .header-alamat {
+            font-size: 10pt;
+            font-style: normal;
+        }
+
+        .judul-surat {
+            text-align: center;
+            font-weight: bold;
+            text-decoration: underline;
+            text-transform: uppercase;
+            font-size: 12pt;
+            margin-top: 20px;
+        }
+
+        .nomor-surat {
+            text-align: center;
+            font-size: 12pt;
+            margin-bottom: 20px;
+        }
+
+        .data-table {
+            margin-left: 30px;
+            width: 95%;
+        }
+
+        .data-table td:first-child {
+            width: 180px;
+        }
+
+        .data-table td:nth-child(2) {
+            width: 10px;
+            text-align: center;
+        }
+
+        .ttd-block {
+            float: right;
+            width: 45%;
+            margin-top: 30px;
+        }
+
+        .ttd-nama {
+            font-weight: bold;
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-    <table style="border-bottom:2px solid black">
+    <table style="border-bottom: 3px solid black; padding-bottom: 5px;">
         <tr>
-            {{-- Kolom kiri: logo --}}
-            <td style="width: 25%; text-align: center; vertical-align: middle;">
-                <img src="data:image/webp;base64,{{ base64_encode(file_get_contents(public_path('assets/img/kendari.webp'))) }}"
-                    alt="Logo" width="80" height="80">
+            <td style="width: 15%; text-align: center; vertical-align: middle;">
+                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/img/logo_uho.webp'))) }}"
+                     alt="Logo UHO" width="90">
             </td>
-
-            {{-- Kolom tengah: teks --}}
-            <td style="width: 70%; text-align: center; vertical-align: middle;">
-                <p style="font-size: 20px; margin: 2px 0; font-weight: bold;">PEMERINTAH KOTA KENDARI</p>
-                <p style="font-size: 16px; margin: 2px 0;"><b>KECAMATAN KENDARI BARAT</b></p>
-                <p style="font-size: 16px; margin: 2px 0;"><b>KELURAHAN TIPULU</b></p>
-                <p style="font-size: 13px; margin: 2px 0;">JL. SERIGALA NO.2 TLP. {{ $telepon }} KODE POS 93122</p>
+            <td style="width: 85%; text-align: center;" class="header-text">
+                <span class="header-univ">KEMENTERIAN PENDIDIKAN TINGGI, SAINS<br>DAN TEKNOLOGI</span><br>
+                <span class="header-univ" style="font-weight: bold;">UNIVERSITAS HALU OLEO</span><br>
+                <span class="header-fakultas">FAKULTAS MATEMATIKA DAN ILMU PENGETAHUAN ALAM</span><br>
+                <span class="header-alamat">
+                    Kampus Hijau Bumi Tridharma Anduonohu, Jalan H.E.A Mokodompit Kendari 93232<br>
+                    Telp. (0401) 3191929 Fax (0401) 3190496
+                </span>
             </td>
-
-            {{-- Kolom kanan: kosong --}}
-            <td style="width: 25%;"></td>
         </tr>
     </table>
 
-    <div style="text-align:center;margin:20px 0">
-        @if($judul == "Surat Keterangan Kelakuan Baik (Pengantar SKCK)")
+    <div class="judul-surat">{{ $judul }}</div>
+    <div class="nomor-surat">Nomor: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/UN29.9.3/KM/{{ $tahun }}</div>
 
-            <p><span style="text-transform: uppercase;"><b style="border-bottom:2px solid black; ">SURAT PENGANTAR</b></span></p>
-        @else
-            <p><span style="text-transform: uppercase;"><b style="border-bottom:2px solid black">{{ $judul }}</b></span></p>
+    @if($judul == 'Surat Keterangan Mahasiswa Prestasi')
+        <p>Dekan Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Halu Oleo, dengan ini menerangkan bahwa:</p>
+        <br>
+    @else
+        <p>Yang bertanda tangan di bawah ini:</p>
+        <table class="data-table">
+            <tr>
+                <td>Nama</td>
+                <td>:</td>
+                <td>{{ $ttd }}</td>
+            </tr>
+            <tr>
+                <td>NIP</td>
+                <td>:</td>
+                <td>{{ $ttd_nip }}</td>
+            </tr>
+            <tr>
+                <td>Pangkat/Gol. Ruang</td>
+                <td>:</td>
+                <td>{{ $ttd_pangkat ?? 'Pembina / IV/a' }}</td> </tr>
+            <tr>
+                <td>Jabatan</td>
+                <td>:</td>
+                <td>{{ $jabatan }}</td>
+            </tr>
+            @if($judul == 'Surat Keterangan Alumni')
+                <tr>
+                    <td>Fakultas</td>
+                    <td>:</td>
+                    <td>Matematika dan Ilmu Pengetahuan Alam</td>
+                </tr>
+            @endif
+        </table>
+
+        <br>
+        @if($judul == 'Surat Keterangan Aktif Kuliah')
+            <p>Menerangkan dengan sesungguhnya bahwa:</p>
+        @elseif($judul == 'Surat Keterangan Alumni')
+            <p>Dengan ini menyatakan dengan sesungguhnya bahwa:</p>
+        @elseif($judul == 'Surat Keterangan Tidak Sedang Menerima Beasiswa')
+             <p>Menyatakan bahwa sepanjang pengetahuan/penelitian kami mahasiswa tersebut di atas tidak sedang menerima beasiswa dari sponsor atau pihak lain.</p>
+             @else
+            <p>Menerangkan bahwa mahasiswa tersebut di bawah ini:</p>
         @endif
-        <p>Nomor : <span style="padding-left:25px">/</span>
-            <span style="padding-left:25px">/</span>
-            <span style="padding-left:25px">/ {{ $tahun }}</span>
+        <br>
+    @endif
+
+    <table class="data-table">
+        <tr>
+            <td>Nama</td>
+            <td>:</td>
+            <td style="font-weight: bold;">{{ $nama }}</td>
+        </tr>
+        <tr>
+            <td>{{ $judul == 'Surat Keterangan Alumni' ? 'NIM' : 'NIM' }}</td>
+            <td>:</td>
+            <td>{{ $nim }}</td>
+        </tr>
+
+        @if($judul != 'Surat Keterangan Mahasiswa Prestasi')
+            <tr>
+                <td>Tempat/Tanggal Lahir</td>
+                <td>:</td>
+                <td>{{ $tempat_lahir }}, {{ $tanggal_lahir }}</td>
+            </tr>
+        @endif
+
+        <tr>
+            <td>Fakultas</td>
+            <td>:</td>
+            <td>Matematika dan Ilmu Pengetahuan Alam</td>
+        </tr>
+        <tr>
+            <td>Jurusan/Prodi</td>
+            <td>:</td>
+            <td>{{ $prodi }}</td>
+        </tr>
+
+        @if($judul == 'Surat Keterangan Mahasiswa Prestasi')
+             <tr>
+                <td>Jenjang Pendidikan</td>
+                <td>:</td>
+                <td>S1</td>
+             </tr>
+             <tr>
+                <td>Tahun Masuk</td>
+                <td>:</td>
+                <td>{{ $tahun_masuk ?? '20..' }}</td>
+             </tr>
+             <tr>
+                <td>Semester</td>
+                <td>:</td>
+                <td>{{ $semester ?? '...' }}</td>
+             </tr>
+        @endif
+
+        @if(in_array($judul, ['Surat Keterangan Tidak Sedang Bekerja', 'Surat Keterangan Tidak Sedang Menerima Beasiswa', 'Surat Keterangan Berkelakuan Baik']))
+            <tr>
+                <td>IPK</td>
+                <td>:</td>
+                <td>{{ $ipk ?? '...' }}</td>
+            </tr>
+        @endif
+
+        @if($judul != 'Surat Keterangan Mahasiswa Prestasi' && $judul != 'Surat Keterangan Alumni')
+            <tr>
+                <td>Alamat</td>
+                <td>:</td>
+                <td>{{ $alamat }}</td>
+            </tr>
+            <tr>
+                <td>No. HP</td>
+                <td>:</td>
+                <td>{{ $no_hp ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>:</td>
+                <td>{{ $email ?? '-' }}</td>
+            </tr>
+        @endif
+    </table>
+
+    <br>
+
+    @if($judul == 'Surat Keterangan Aktif Kuliah')
+        <p style="text-align: justify;">
+            Yang bersangkutan masih tetap mengikuti kegiatan Akademik dan terdaftar sebagai mahasiswa pada Fakultas Matematika dan Ilmu Pengetahuan Alam pada Semester {{ $semester_romawi ?? 'Ganjil/Genap' }} Tahun Akademik {{ $tahun_akademik ?? date('Y').'/'.(date('Y')+1) }}.
         </p>
+        <br>
+        <table class="data-table">
+            <tr>
+                <td>Nama Orang Tua</td>
+                <td>:</td>
+                <td>{{ $nama_ayah ?? '...' }}</td>
+            </tr>
+            <tr>
+                <td>Pekerjaan</td>
+                <td>:</td>
+                <td>{{ $pekerjaan_ayah ?? '...' }}</td>
+            </tr>
+            <tr>
+                <td>NIP/No. Pensiun</td>
+                <td>:</td>
+                <td>{{ $nip_ayah ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Pangkat/Gol. Ruang</td>
+                <td>:</td>
+                <td>{{ $pangkat_ayah ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Instansi</td>
+                <td>:</td>
+                <td>{{ $instansi_ayah ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Alamat</td>
+                <td>:</td>
+                <td>{{ $alamat_orangtua ?? $alamat }}</td>
+            </tr>
+            <tr>
+                <td>No. HP</td>
+                <td>:</td>
+                <td>{{ $nohp_ayah ?? '-' }}</td>
+            </tr>
+        </table>
+        <br>
+        <p>Demikian surat keterangan ini di buat dengan sesungguhnya, apabila di kemudian hari ternyata tidak benar sehingga mengakibatkan kerugian Negara Republik Indonesia, maka saya bersedia menanggung segala kerugian tersebut.</p>
+
+    @elseif($judul == 'Surat Keterangan Alumni')
+        <p style="text-align: justify; text-indent: 30px;">
+            Adalah benar alumni Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Halu Oleo Kendari, yang bersangkutan terdaftar sebagai mahasiswa Reguler pada tahun akademik {{ $tahun_masuk ?? '....' }} dan menyelesaikan studi pada tahun {{ $tahun_lulus ?? date('Y') }}. Telah diyudisium pada tanggal {{ $tgl_yudisium ?? '...' }} serta memperoleh ijazah dengan Nomor {{ $no_ijazah ?? '...' }}.
+        </p>
+        <br>
+        <p>Demikian surat keterangan ini diberikan kepada yang bersangkutan untuk dipergunakan sebagaimana mestinya.</p>
+
+    @elseif($judul == 'Surat Keterangan Mahasiswa Prestasi')
+        <p style="text-align: justify; text-indent: 30px;">
+            Benar yang bersangkutan adalah mahasiswa Universitas Halu Oleo yang selama mengikuti aktivitas perkuliahan telah menunjukan prestasi yang baik dengan Indeks Prestasi Kumulatif {{ $ipk ?? '...' }} ({{ $ipk_terbilang ?? '...' }}).
+        </p>
+        <br>
+        <p>Demikian surat keterangan ini kami buat, untuk digunakan sebagaimana mestinya.</p>
+
+    @elseif($judul == 'Surat Keterangan Berkelakuan Baik')
+        <p style="text-align: justify; text-indent: 30px;">
+            Bahwa mahasiswa tersebut di atas selama mengikuti kegiatan intra kurikuler, kokurikuler, dan ekstra kurikuler dalam lingkungan Fakultas Matematika dan Ilmu Pengetahuan Alam Universitas Halu Oleo, selama pemantauan, pengamatan, dan pengetahuan kami yang bersangkutan adalah berkelakuan baik.
+        </p>
+        <br>
+        <p>Demikian surat keterangan ini diberikan pada yang bersangkutan untuk dipergunakan seperlunya.</p>
+
+    @elseif($judul == 'Surat Keterangan Tidak Sedang Bekerja')
+        <p style="text-align: justify; text-indent: 30px;">
+            Menyatakan bahwa, mahasiswa yang tercantum namanya di atas tidak sedang bekerja pada suatu instansi atau yayasan tertentu.
+        </p>
+        <br>
+        <p>Demikian surat keterangan ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
+
+    @elseif($judul == 'Surat Keterangan Tidak Sedang Menerima Beasiswa')
+        <p style="text-align: justify;">
+            Menyatakan bahwa sepanjang pengetahuan/penelitian kami mahasiswa tersebut diatas tidak sedang menerima beasiswa dari sponsor atau pihak lain.
+        </p>
+        <br>
+        <p>Demikian surat keterangan ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
+    @endif
+
+    <div class="ttd-block">
+        <p>Kendari, {{ $tanggal }}</p>
+        @if($judul == 'Surat Keterangan Mahasiswa Prestasi')
+            <p>Dekan,</p>
+            <br><br><br><br>
+            <span class="ttd-nama">{{ $ttd }}</span><br>
+            <span>NIP. {{ $ttd_nip }}</span>
+        @elseif($judul == 'Surat Keterangan Berkelakuan Baik')
+             <p>a.n. Dekan<br>Wakil Dekan Bid. Kemahasiswaan dan Alumni,<br>Sub. Koordinator Kemahasiswaan dan Alumni,</p>
+             <br><br><br><br>
+             <span class="ttd-nama">{{ $ttd }}</span><br>
+             <span>NIP. {{ $ttd_nip }}</span>
+        @else
+            <p>a.n. Dekan<br>Wakil Dekan Bidang Kemahasiswaan dan Alumni</p>
+            <br><br><br><br>
+            <span class="ttd-nama">{{ $ttd }}</span><br>
+            <span>NIP. {{ $ttd_nip }}</span>
+        @endif
     </div>
 
-    <p style="text-align: justify; text-indent: 27px;">
-        Yang bertanda tangan di bawah ini, Lurah Tipulu Kecamatan Kendari Barat Kota Kendari, dengan ini menerangkan
-        bahwa :
-    </p>
-    <br>
-
-
-    @if ($judul == 'Surat Keterangan Kematian')
-
-        <table style="margin-left:27px">
-            <tr>
-                <td style="width: 30%">Nama</td>
-                <td style="width: 2%">:</td>
-                <td>{{ $nama_md }}</td>
-            </tr>
-            <tr>
-                <td>Jenis Kelamin</td>
-                <td>:</td>
-                <td>{{ $jenis_kelamin_md }}</td>
-            </tr>
-            <tr>
-                <td>Umur</td>
-                <td>:</td>
-                <td>{{ $umur }} Tahun</td>
-            </tr>
-            <tr>
-                <td>Alamat</td>
-                <td>:</td>
-                <td>{{ $alamat_md }}</td>
-            </tr>
-            <div style='padding-bottom: 3px;'></div>
-            <tr>
-                <td>Telah Meninggal Dunia Pada</td>
-                <td>:</td>
-                <td></td>
-            </tr>
-
-            {{-- FIXED: Changed <tdr> to a valid <tr> tag --}}
-            <tr>
-                <td style="padding-left: 15px;">Hari</td>
-                <td>:</td>
-                <td>{{ $hari_meninggal }}</td>
-            </tr>
-
-            <tr>
-                <td style="padding-left: 15px;">Tanggal</td>
-                <td>:</td>
-                <td>{{ $tanggal_meninggal }}</td>
-            </tr>
-
-            <tr>
-                <td style="padding-left: 15px;">Di</td>
-                <td>:</td>
-                <td>{{ $tempat_meninggal }}</td>
-            </tr>
-
-            <tr>
-                <td>Disebabkan Karena</td>
-                <td>:</td>
-                <td>{{ $penyebab_md }}</td>
-            </tr>
-
-            <tr>
-                <td>Yang Melaporkan</td>
-                <td>:</td>
-                <td>{{ $nama_pengaju }}</td>
-            </tr>
-        </table>
-
-
-    @elseif ($judul == 'Surat Keterangan Pindah Penduduk')
-        {{-- FIXED: Restructured this entire table to be valid HTML --}}
-        <table style="margin-left:27px">
-            <tr>
-                <td style="width: 27%">NIK</td>
-                <td style="width: 2%">:</td>
-                <td>{{ $nik }}</td>
-            </tr>
-            <tr>
-                <td>Nama</td>
-                <td>:</td>
-                <td>{{ $nama_pengaju }}</td>
-            </tr>
-            <tr>
-                <td>Tempat / Tanggal Lahir</td>
-                <td>:</td>
-                <td>{{ $tempat_lahir }}, {{ $tanggal_lahir }}</td>
-            </tr>
-            <tr>
-                <td>Jenis Kelamin</td>
-                <td>:</td>
-                <td>{{ $jenis_kelamin }}</td>
-            </tr>
-            <tr>
-                <td>Agama</td>
-                <td>:</td>
-                <td>{{ $agama }}</td>
-            </tr>
-            <tr>
-                <td>Pekerjaan</td>
-                <td>:</td>
-                <td>{{ $pekerjaan }}</td>
-            </tr>
-            <tr>
-                <td>Status Perkawinan</td>
-                <td>:</td>
-                <td>{{ $status }}</td>
-            </tr>
-            <tr>
-                <td>Alamat Asal</td>
-                <td>:</td>
-                <td>{{ $alamat }}</td>
-            </tr>
-        </table>
-
-
-        <p style="text-align: justify; text-indent: 27px; margin-top:13px">
-            Nama yang tersebut diatas adalah benar - benar penduduk di RT {{ $rt }} / RW {{ $rw }} Kelurahan Tipulu Kecamatan
-            Kendari
-            Barat {!!$keterangan_surat !!}
-        </p>
-
-
-
-        <table style="margin-left:27px; margin-top:13px">
-
-            <tr>
-                <td style="width: 27%">Desa/Kelurahan</td>
-                <td style="width: 2%">:</td>
-                <td>{{ $desa_kelurahan }}</td>
-            </tr>
-            <tr>
-                <td style=>Kecamatan</td>
-                <td>:</td>
-                <td>{{ $kecamatan }}</td>
-            </tr>
-            <tr>
-                <td >Kab/Kota</td>
-                <td>:</td>
-                <td>{{ $kab_kota }}</td>
-            </tr>
-            <tr>
-                <td>Provinsi</td>
-                <td>:</td>
-                <td>{{ $provinsi }}</td>
-            </tr>
-            <tr>
-                <td>Tanggal Pindah</td>
-                <td>:</td>
-                <td>{{ $tgl_pindah }}</td>
-            </tr>
-            <tr>
-                <td>Alasan Pindah</td>
-                <td>:</td>
-                <td>{{ $alasan_pindah }}</td>
-            </tr>
-            <tr>
-                <td>Pengikut</td>
-                <td>:</td>
-                <td>{{ $pengikut }} Orang</td>
-            </tr>
-        </table>
-    @else
-        <table style="margin-left:27px">
-
-            @if ($judul == 'Pengurusan Kartu Keluarga (KK)')
-                <tr>
-                    <td style="width: 27%">Nama Kepala Keluarga</td>
-                    <td style="width: 2%">:</td>
-                    {{-- <td>{{ $nama_kepala_keluarga }}</td> --}}
-                </tr>
-            @endif
-
-            <tr>
-                <td style="width: 27%">NIK</td>
-                <td style="width: 2%">:</td>
-                <td>{{ $nik }}</td>
-            </tr>
-
-            <tr>
-                <td>Nama</td>
-                <td>:</td>
-                <td>{{ $nama_pengaju }}</td>
-            </tr>
-            <tr>
-                <td>Tempat / Tanggal Lahir</td>
-                <td>:</td>
-                <td>{{ $tempat_lahir }}, {{ $tanggal_lahir }}</td>
-            </tr>
-            <tr>
-                <td>Jenis Kelamin</td>
-                <td>:</td>
-                <td>{{ $jenis_kelamin }}</td>
-            </tr>
-            <tr>
-                <td>Agama</td>
-                <td>:</td>
-                <td>{{ $agama }}</td>
-            </tr>
-
-            <tr>
-                <td>Status Perkawinan</td>
-                <td>:</td>
-                <td>{{ $status }}</td>
-            </tr>
-            <tr>
-                <td>Pekerjaan</td>
-                <td>:</td>
-                <td>{{ $pekerjaan }}</td>
-            </tr>
-
-
-
-            @if($judul != 'Surat Keterangan Tempat Tinggal Sementara')
-
-            <tr>
-                <td>Alamat</td>
-                <td>:</td>
-                <td>{{ $alamat }}</td>
-            </tr>
-            @endif
-
-            @if ($judul == 'Surat Keterangan Memiliki Usaha (SKU)')
-                <tr>
-                    <td>Nama Usaha / Yayasan</td>
-                    <td>:</td>
-                    <td>{{ $nama_usaha_pengaju }}</td>
-                </tr>
-            @elseif ($judul == 'Surat Izin Keramaian')
-                <tr>
-                    <td>Nama Kegiatan</td>
-                    <td>:</td>
-                    <td>{{ $acara }}</td>
-                </tr>
-            @elseif ($judul == 'Pengurusan Kartu Keluarga (KK)')
-                <tr>
-                    <td>Kode Pos</td>
-                    <td>:</td>
-                    <td>93122</td>
-                </tr>
-
-                <tr>
-                    <td>Golongan Darah</td>
-                    <td>:</td>
-                    {{-- <td>{{ $golongan_darah }}</td> --}}
-                </tr>
-            @endif
-        </table>
-
+    @if(in_array($judul, ['Surat Keterangan Tidak Sedang Bekerja', 'Surat Keterangan Berkelakuan Baik']))
     @endif
 
-    <br>
-
-    @if ($judul == 'Surat Izin Keramaian')
-        <p style="text-align: justify; text-indent: 27px;">
-                {!! $keterangan_surat !!}
-            </p>
-            <table style="margin-left:27px">
-                <tr>
-                    <td style="width: 27%">Tanggal</td>
-                    <td style="width: 2%">:</td>
-                    <td>{{ $tanggal_acara }}</td>
-                </tr>
-                    <tr>
-                    <td>Tempat</td>
-                    <td>:</td>
-                    <td>{{ $tempat_acara }}</td>
-                </tr>
-                <tr>
-                    <td>Pukul</td>
-                    <td>:</td>
-                    <td>{{ $waktu_acara }}</td>
-                </tr>
-
-                <tr>
-                    <td>Penyelenggara</td>
-                    <td>:</td>
-                    <td>{{ $penyelenggara_acara }}</td>
-            </table>
-    @elseif($judul == "Surat Keterangan Tempat Tinggal Sementara")
-        <p style="text-align: justify; text-indent: 27px;">
-             {!!$keterangan_surat !!}
-        </p>
-    @elseif($judul == "Surat Keterangan Pindah Penduduk" || $judul == "Surat Keterangan Kematian")
-
-    @else
-        <p style="text-align: justify; text-indent: 27px;">
-            Nama yang tersebut diatas adalah benar - benar penduduk di RT {{ $rt }} / RW {{ $rw }} Kelurahan Tipulu Kecamatan
-            Kendari
-            Barat {!!$keterangan_surat !!}
-
-            {{-- @if ($judul == 'Surat Keterangan Domisili Usaha dan Yayasan' ||
-    $judul ==
-        'Surat Keterangan Domisili
-                Usaha')
-                {{ $tahun_berdiri }} sampai dengan sekarang.
-                @endif --}}
-
-        </p>
-    @endif
-        @if ($judul == "Surat Keterangan Domisili Usaha dan Yayasan")
-            <table style="margin-left:27px; margin-top:10px">
-                <tr>
-                    <td style="width: 27%">Nama Usaha / Yayasan</td>
-                    <td style="width: 2%">:</td>
-                    <td>{{ $nama_usaha }}</td>
-                </tr>
-
-                <tr>
-                    <td>Penanggung Jawab</td>
-                    <td>:</td>
-                    <td>{{ $penanggung_jawab }}</td>
-                </tr>
-
-                <tr>
-                    <td>Jenis Kegiatan</td>
-                    <td>:</td>
-                    <td>{{ $jenis_kegiatan_usaha }}</td>
-                </tr>
-
-                <tr>
-                    <td>Alamat Usaha / Yayasan</td>
-                    <td>:</td>
-                    <td>{{ $alamat_usaha }}</td>
-                </tr>
-            </table>
-            <br>
-        @endif
-
-
-        @if ($judul == 'Surat Keterangan Tempat Tinggal Sementara')
-            <p style="text-align: justify; text-indent: 27px;margin-top: 10px;">
-                Demikian Surat Keterangan ini dibuat untuk dapat dipergunakan sebagaimana mestinya dan berlaku selama 3
-                (tiga) bulan sejak tanggal dikeluarkan.
-            </p>
-        @elseif($judul == 'Surat Keterangan Kematian')
-            <p style="text-align: justify; text-indent: 27px;">
-                Demikian Surat Keterangan ini diberikan kepada keluarga Almarhum untuk dipergunakan seperlunya.
-            </p>
-        @else
-            <p style="text-align: justify; text-indent: 27px; padding : 5px">
-                Demikian Surat Keterangan ini dibuat dengan sebenar-benarnya untuk dipergunakan seperlunya.
-            </p>
-        @endif
-
-    <table style="margin-top:30px; width:100%;">
-    <tr>
-        <td style="width:50%;"></td>
-        <td class="blok-ttd">
-        Kendari, 8 Oktober 2025<br>
-        <span style="text-transform: uppercase;">
-        <b>LURAH TIPULU</span><br>
-        @if($ttd != "Lurah")
-            <span style="text-transform: uppercase;">
-            <b>AN. {{ $ttd_jabatan }}
-            </span>
-        @endif
-        <br><br><br><br><br>
-        <div class="ttd-wrapper">
-            <span class="ttd-nama">{{ $ttd }}</span>
-            <span class="ttd-nip">NIP: {{ $ttd_nip }}</span>
-        </div>
-        </td>
-    </tr>
-    </table>
 </body>
-
 </html>

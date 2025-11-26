@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Verifikasi extends Model
 {
-    protected $guarded = ['id'];
+   protected $fillable = ['pengajuan_id', 'aparatur_id', 'status', 'alasan'];
 }

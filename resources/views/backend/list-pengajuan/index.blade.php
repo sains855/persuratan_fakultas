@@ -512,9 +512,9 @@
         function closeCetakModal(id) {
             document.getElementById("cetakModal-" + id).classList.add("hidden");
         }
-
-        function handleCetak(id, action) {
+function handleCetak(id, action) {
             const tglCetak = document.getElementById('tgl_cetak-' + id).value;
+            // Ambil value dari select box (meskipun ID element html-nya aparatur_id, isinya adalah ID TTD)
             const aparaturId = document.getElementById('aparatur_id-' + id).value;
 
             if (!tglCetak || !aparaturId) {
@@ -527,10 +527,11 @@
 
             const formData = {
                 tgl_cetak: tglCetak,
-                aparatur_id: aparaturId,
+                ttd_id: aparaturId, // <--- PERUBAHAN DISINI (Ganti 'aparatur_id' jadi 'ttd_id')
                 _token: "{{ csrf_token() }}"
             };
 
+            // ... sisa kode ke bawah tetap sama ...
             // Cek apakah channel Flutter 'flutterCetak' tersedia
             if (window.flutterCetak) {
                 // --- JALUR UNTUK APLIKASI MOBILE ---

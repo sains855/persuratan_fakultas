@@ -48,8 +48,9 @@ class ListPengajuanController extends Controller
             $alasan = $request->input('alasan');
 
             // Cari data verifikasi lama (dari ttd yang sama)
+            $ttdId = $user->ttd_id ?? 4;
             $verifikasi = Verifikasi::where('pengajuan_id', $id)
-                ->where('ttd_id', Auth::user()->ttd_id ?? 4)
+                ->where('aparatur_id', Auth::user()->ttd_id ?? 4)
                 ->first();
 
             if ($verifikasi) {
@@ -64,14 +65,14 @@ class ListPengajuanController extends Controller
                     'pengajuan_id' => $id,
                     'status' => $status . ' oleh ' . Auth::user()->username,
                     'alasan' => $alasan,
-                    'ttd_id' => Auth::user()->ttd_id ?? 4,
+                    'aparatur_id' => $ttdId,
                 ]);
             }
 
             return back()->with('success', 'Berhasil ' . strtolower($status) . ' data');
         } catch (\Throwable $th) {
             Log::error('Gagal verifikasi data: ' . $th->getMessage());
-            return back()->with('error', 'Gagal verifikasi data');
+            return back()->with('error', 'SYSTEM ERROR: ' . $th->getMessage() . ' (Line: ' . $th->getLine() . ')');
         }
     }
 
@@ -93,27 +94,26 @@ class ListPengajuanController extends Controller
         return $this->generatePdf($request, $id, 'download');
     }
 
-    /**
+   /**
      * Method private terpusat untuk men-generate PDF.
-     * ✅ DISESUAIKAN dengan jenis surat di PengajuanController
+     * ✅ SUDAH DISESUAIKAN DENGAN TEMPLATE BARU (FMIPA UHO)
      */
     private function generatePdf(Request $request, $id, $action)
     {
         try {
             Log::info("Memulai proses generate PDF", [
                 'id' => $id,
-                'action' => $action,
-                'request_data' => $request->all(),
-                'is_mobile' => $this->isMobileAppRequest($request)
+                'action' => $action
             ]);
 
-            // Validasi input dari form
+            // Validasi input
             $request->validate([
                 'tgl_cetak' => 'required|date',
+                // Pastikan nama input di view/js adalah 'ttd_id', bukan 'aparatur_id'
                 'ttd_id' => 'required|exists:ttds,id',
             ]);
 
-            // ✅ PERBAIKAN: Ambil data pengajuan dengan relasi mahasiswa
+            // Ambil data pengajuan full relasi
             $pengajuan = Pengajuan::with([
                 'pelayanan',
                 'mahasiswa',
@@ -123,23 +123,26 @@ class ListPengajuanController extends Controller
 
             $ttd = Ttd::findOrFail($request->ttd_id);
             $mahasiswa = $pengajuan->mahasiswa;
-
-            // ✅ PERBAIKAN: Siapkan data berdasarkan jenis surat
             $pelayananNama = $pengajuan->pelayanan->nama;
 
+            // 1. Data Dasar (Wajib Ada)
             $dataForView = [
                 'judul' => $pelayananNama,
                 'tahun' => Carbon::parse($request->tgl_cetak)->format('Y'),
                 'tanggal' => Carbon::parse($request->tgl_cetak)->isoFormat('D MMMM Y'),
                 'jabatan' => ucwords(strtolower($ttd->jabatan)),
-                'ttd' => ucwords(strtolower($ttd->nama)),
+                'ttd' => ucwords(strtolower($ttd->nama)), // Nama Penanda Tangan
                 'ttd_nip' => $ttd->nip,
+                'ttd_pangkat' => $ttd->pangkat ?? null, // Tambahkan kolom pangkat di tabel ttds jika ada
+
+                // Data Kop Surat (Sesuai gambar FMIPA)
+                'telepon' => '(0401) 3191929',
             ];
 
-            // ✅ TAMBAHKAN DATA SESUAI JENIS SURAT
+            // 2. Data Mahasiswa
             if ($mahasiswa) {
-                $dataForView['nim'] = $mahasiswa->nim;
                 $dataForView['nama'] = ucwords(strtolower($mahasiswa->nama));
+                $dataForView['nim'] = $mahasiswa->nim;
                 $dataForView['tempat_lahir'] = ucwords(strtolower($mahasiswa->tempat_lahir));
                 $dataForView['tanggal_lahir'] = Carbon::parse($mahasiswa->tgl_lahir)->isoFormat('D MMMM Y');
                 $dataForView['jenis_kelamin'] = ucwords(strtolower($mahasiswa->jenis_kelamin));
@@ -147,65 +150,118 @@ class ListPengajuanController extends Controller
                 $dataForView['prodi'] = ucwords(strtolower($mahasiswa->prodi));
                 $dataForView['semester'] = $mahasiswa->semester;
                 $dataForView['alamat'] = $mahasiswa->alamat;
+
+                // Tambahan Data Baru yang dibutuhkan Template
+                $dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->no_hp ?? '-';
+                $dataForView['email'] = $mahasiswa->email ?? '-';
+                $dataForView['ipk'] = $mahasiswa->ipk ?? '-'; // Pastikan ada kolom ipk di tabel mahasiswas
+
+                // Opsional: IPK Terbilang (Bisa dibuat helper function)
+                $dataForView['ipk_terbilang'] = $this->terbilangKoma($mahasiswa->ipk ?? 0);
             }
 
-            // Data khusus untuk Surat Keterangan Aktif Kuliah
+            // 3. Data Khusus: Surat Keterangan Aktif Kuliah
+            // Template baru butuh NIP Ayah, Pangkat, Instansi
             if ($pelayananNama === "Surat Keterangan Aktif Kuliah" && $mahasiswa->orangTua) {
-                $dataForView['nama_ayah'] = ucwords(strtolower($mahasiswa->orangTua->nama_ayah));
-                $dataForView['pekerjaan_ayah'] = ucwords(strtolower($mahasiswa->orangTua->pekerjaan_ayah));
-                $dataForView['nama_ibu'] = ucwords(strtolower($mahasiswa->orangTua->nama_ibu));
-                $dataForView['pekerjaan_ibu'] = ucwords(strtolower($mahasiswa->orangTua->pekerjaan_ibu));
+                $ortu = $mahasiswa->orangTua;
+                $dataForView['nama_ayah'] = ucwords(strtolower($ortu->nama_ayah));
+                $dataForView['pekerjaan_ayah'] = ucwords(strtolower($ortu->pekerjaan_ayah));
+                $dataForView['alamat_orangtua'] = $ortu->alamat_ayah ?? $mahasiswa->alamat; // Fallback ke alamat mhs
+
+                // Field tambahan (Pastikan kolom ini ada di database, atau kosongkan jika tidak ada)
+                $dataForView['nip_ayah'] = $ortu->nip_ayah ?? '-';
+                $dataForView['pangkat_ayah'] = $ortu->pangkat_ayah ?? '-';
+                $dataForView['instansi_ayah'] = $ortu->instansi_ayah ?? '-';
+                $dataForView['nohp_ayah'] = $ortu->no_hp_ayah ?? '-';
+
+                // Semester Romawi & Tahun Akademik (Manual atau dari Database)
+                $dataForView['semester_romawi'] = $this->toRoman($mahasiswa->semester);
+                $tahunIni = date('Y');
+                $dataForView['tahun_akademik'] = $tahunIni . '/' . ($tahunIni + 1);
             }
 
-            // Data khusus untuk Surat Keterangan Alumni
+            // 4. Data Khusus: Surat Keterangan Alumni
+            // Mapping nama variabel agar sesuai dengan Template Blade
             if ($pelayananNama === "Surat Keterangan Alumni" && $mahasiswa->alumni) {
-                $dataForView['no_ijazah'] = $mahasiswa->alumni->no_ijazah;
-                $dataForView['tahun_studi_mulai'] = $mahasiswa->alumni->tahun_studi_mulai;
-                $dataForView['tahun_studi_selesai'] = $mahasiswa->alumni->tahun_studi_selesai;
-                $dataForView['tgl_yudisium'] = Carbon::parse($mahasiswa->alumni->tgl_yudisium)->isoFormat('D MMMM Y');
+                $alumni = $mahasiswa->alumni;
+                $dataForView['no_ijazah'] = $alumni->no_ijazah;
+                $dataForView['tahun_masuk'] = $alumni->tahun_studi_mulai; // Ubah key jadi tahun_masuk
+                $dataForView['tahun_lulus'] = $alumni->tahun_studi_selesai; // Ubah key jadi tahun_lulus
+                $dataForView['tgl_yudisium'] = Carbon::parse($alumni->tgl_yudisium)->isoFormat('D MMMM Y');
             }
 
-            // ✅ REPLACE placeholder di keterangan surat
+            // 5. Data Khusus: Mahasiswa Prestasi
+            if ($pelayananNama === "Surat Keterangan Mahasiswa Prestasi") {
+                 // Ambil tahun masuk dari NIM (misal F1G120... berarti 2020) atau dari database
+                 $angkatan = '20' . substr($mahasiswa->nim, 4, 2);
+                 $dataForView['tahun_masuk'] = $angkatan;
+            }
+
+            // Replace Placeholder Keterangan
             if (isset($pengajuan->pelayanan->keterangan_surat)) {
                 $keterangan = $pengajuan->pelayanan->keterangan_surat;
-
-                // Replace placeholder umum
                 $keterangan = str_replace(
                     ['{{ $keperluan }}'],
                     ['<b>' . ucwords(strtolower($pengajuan->keperluan ?? '....')) . '</b>'],
                     $keterangan
                 );
-
                 $dataForView['keterangan_surat'] = $keterangan;
             }
 
-            // Generate PDF dengan satu panggilan
+            // Load View PDF
             $pdf = PDF::loadView('backend.surat.template-surat', $dataForView);
 
-            Log::info("PDF berhasil di-generate untuk action: {$action}");
+            // Set Paper Size F4 (Sesuai CSS template)
+            // 21.59cm x 33.02cm
+            $pdf->setPaper([0, 0, 612.00, 936.00], 'portrait');
 
-            // Kembalikan respons berdasarkan action yang diminta
             if ($action === 'download') {
                 return $pdf->download('surat_' . $pengajuan->id . '.pdf');
-            } else { // 'stream'
+            } else {
                 return $pdf->stream('surat_' . $pengajuan->id . '.pdf');
             }
+
         } catch (\Exception $e) {
-            Log::error('Gagal saat generate PDF', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            if ($this->isMobileAppRequest($request)) {
-                return response()->json([
-                    'error' => 'Gagal generate PDF',
-                    'message' => $e->getMessage()
-                ], 500);
-            }
-
-            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+            Log::error('Gagal generate PDF: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal: ' . $e->getMessage());
         }
     }
+
+    // Helper: Mengubah Angka ke Romawi (Untuk Semester)
+    private function toRoman($number) {
+        $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+        $returnValue = '';
+        while ($number > 0) {
+            foreach ($map as $roman => $int) {
+                if ($number >= $int) {
+                    $number -= $int;
+                    $returnValue .= $roman;
+                    break;
+                }
+            }
+        }
+        return $returnValue;
+    }
+
+    // Helper: Terbilang IPK (Contoh: 3.50 -> Tiga Koma Lima Nol)
+    private function terbilangKoma($nilai) {
+        $nilai = number_format((float)$nilai, 2, '.', ''); // Pastikan 2 desimal
+        $angka = [
+            '0' => 'Nol', '1' => 'Satu', '2' => 'Dua', '3' => 'Tiga', '4' => 'Empat',
+            '5' => 'Lima', '6' => 'Enam', '7' => 'Tujuh', '8' => 'Delapan', '9' => 'Sembilan'
+        ];
+
+        $text = "";
+        $chars = str_split($nilai);
+        foreach($chars as $char) {
+            if($char == '.') {
+                $text .= " Koma";
+            } else {
+                $text .= " " . $angka[$char];
+            }
+        }
+        return trim($text);
+    } 
 
     public function stream(Request $request, $persyaratan_id, $pengajuan_id)
     {
