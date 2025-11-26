@@ -147,12 +147,12 @@ class ListPengajuanController extends Controller
                 $dataForView['tanggal_lahir'] = Carbon::parse($mahasiswa->tgl_lahir)->isoFormat('D MMMM Y');
                 $dataForView['jenis_kelamin'] = ucwords(strtolower($mahasiswa->jenis_kelamin));
                 $dataForView['agama'] = ucwords(strtolower($mahasiswa->agama));
-                $dataForView['prodi'] = ucwords(strtolower($mahasiswa->prodi));
+$dataForView['prodi'] = ucwords(strtolower($mahasiswa->Prodi_jurusan ?? '-'));
                 $dataForView['semester'] = $mahasiswa->semester;
                 $dataForView['alamat'] = $mahasiswa->alamat;
 
                 // Tambahan Data Baru yang dibutuhkan Template
-                $dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->no_hp ?? '-';
+$dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->No_Hp ?? '-';
                 $dataForView['email'] = $mahasiswa->email ?? '-';
                 $dataForView['ipk'] = $mahasiswa->ipk ?? '-'; // Pastikan ada kolom ipk di tabel mahasiswas
 
@@ -261,7 +261,7 @@ class ListPengajuanController extends Controller
             }
         }
         return trim($text);
-    } 
+    }
 
     public function stream(Request $request, $persyaratan_id, $pengajuan_id)
     {
