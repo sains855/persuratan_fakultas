@@ -401,6 +401,7 @@ class PengajuanController extends Controller
             'Fakultas.required' => 'Fakultas harus dipilih.',
             'Prodi_jurusan.required' => 'Program Studi/Jurusan harus dipilih.',
             'alamat.required' => 'Alamat harus diisi.',
+            'ipk' => 'nullable|numeric|between:0,4',
             'No_Hp.required' => 'Nomor HP harus diisi.',
             'No_Hp.digits_between' => 'Nomor HP harus antara 10-15 digit.',
             'email.required' => 'Email harus diisi.',

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('tempat_lahir');
             $table->date('tgl_lahir');
+            $table->double('ipk')->nullable();
             $table->string('Fakultas');
             $table->string('Prodi_jurusan');
             $table->text('alamat');
