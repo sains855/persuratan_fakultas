@@ -374,7 +374,6 @@
                                 <label for="tgl_yudisium" class="block text-sm font-medium text-gray-600">Tanggal Yudisium <span class="text-red-500">*</span></label>
                                 <input type="date" name="tgl_yudisium" id="tgl_yudisium"
                                     value="{{ old('tgl_yudisium') }}" required
-                                    max="{{ date('Y-m-d') }}"
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('tgl_yudisium') border-red-500 @enderror">
                                 @error('tgl_yudisium')
                                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>

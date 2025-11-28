@@ -272,7 +272,7 @@ class PengajuanController extends Controller
             'no_ijazah' => 'required|string|max:100',
             'tahun_studi_mulai' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
             'tahun_studi_selesai' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
-            'tgl_yudisium' => 'required|date|before_or_equal:today',
+            'tgl_yudisium' => 'required|date',
         ]);
 
         // Validasi tambahan: tahun selesai harus >= tahun mulai
@@ -331,7 +331,7 @@ class PengajuanController extends Controller
             'no_ijazah' => 'required|string|max:100',
             'tahun_studi_mulai' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
             'tahun_studi_selesai' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
-            'tgl_yudisium' => 'required|date|before_or_equal:today',
+            'tgl_yudisium' => 'required|date',
         ]);
 
         // Validasi tambahan: tahun selesai harus >= tahun mulai
