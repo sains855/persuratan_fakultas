@@ -142,7 +142,7 @@ class PengajuanController extends Controller
             'nim' => 'required|exists:mahasiswas,nim',
             'nama' => 'required|string|max:255',
             'pekerjaaan' => 'required|string|max:255',
-            'NIP_NOPensiun_NRP' => 'nullable|string|max:255|unique:orang_tuas,NIP_NOPensiun_NRP',
+            'NIP_NOPensiun_NRP' => 'nullable|string|max:255',
             'pangkat' => 'nullable|string|max:255',
             'instansi' => 'nullable|string|max:255',
             'alamat' => 'required|string',
@@ -151,8 +151,7 @@ class PengajuanController extends Controller
             'nim.required' => 'NIM mahasiswa harus diisi.',
             'nim.exists' => 'NIM tidak ditemukan dalam database.',
             'nama.required' => 'Nama orang tua harus diisi.',
-            'pekerjaan.required' => 'Pekerjaan orang tua harus diisi.',
-            'NIP_NOPensiun_NRP.unique' => 'NIP/No. Pensiun/NRP sudah terdaftar.',
+            'pekerjaaan.required' => 'Pekerjaan orang tua harus diisi.',
             'alamat.required' => 'Alamat harus diisi.',
             'no_hp.digits_between' => 'Nomor HP harus antara 10-15 digit.',
         ]);
@@ -162,7 +161,15 @@ class PengajuanController extends Controller
             $existingOrangTua = OrangTua::where('mahasiswa_nim', $request->nim)->first();
 
             if ($existingOrangTua) {
-                return back()->with('error', 'Data orang tua sudah tersimpan sebelumnya.');
+                return back()->with('error', 'Data orang tua sudah tersimpan sebelumnya. Gunakan tombol edit untuk mengubah data.');
+            }
+
+            // Validasi NIP/No Pensiun/NRP jika diisi, harus unik
+            if ($request->NIP_NOPensiun_NRP) {
+                $existingNIP = OrangTua::where('NIP_NOPensiun_NRP', $request->NIP_NOPensiun_NRP)->first();
+                if ($existingNIP) {
+                    return back()->with('error', 'NIP/No. Pensiun/NRP sudah terdaftar.')->withInput();
+                }
             }
 
             // Simpan data orang tua
@@ -180,15 +187,74 @@ class PengajuanController extends Controller
             Log::info('Data orang tua berhasil disimpan', [
                 'nim' => $request->nim,
                 'nama' => $request->nama,
-                'pekerjaan' => $request->pekerjaan
+                'pekerjaaan' => $request->pekerjaaan
             ]);
 
-            return back()->with('success', 'Data orang tua berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
+            return back()->with('success_orangtua', 'Data orang tua berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
 
         } catch (\Exception $e) {
             Log::error('Error saat menyimpan data orang tua', [
                 'error' => $e->getMessage(),
                 'nim' => $request->nim
+            ]);
+
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                         ->withInput();
+        }
+    }
+
+    /**
+     * Update data orang tua
+     */
+    public function updateOrangTua(Request $request, $nim)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'pekerjaaan' => 'required|string|max:255',
+            'NIP_NOPensiun_NRP' => 'nullable|string|max:255',
+            'pangkat' => 'nullable|string|max:255',
+            'instansi' => 'nullable|string|max:255',
+            'alamat' => 'required|string',
+            'no_hp' => 'nullable|string|digits_between:10,15',
+        ], [
+            'nama.required' => 'Nama orang tua harus diisi.',
+            'pekerjaaan.required' => 'Pekerjaan orang tua harus diisi.',
+            'alamat.required' => 'Alamat harus diisi.',
+            'no_hp.digits_between' => 'Nomor HP harus antara 10-15 digit.',
+        ]);
+
+        try {
+            $orangTua = OrangTua::where('mahasiswa_nim', $nim)->firstOrFail();
+
+            // Validasi NIP/No Pensiun/NRP jika diisi dan diubah, harus tetap unik
+            if ($request->NIP_NOPensiun_NRP && $request->NIP_NOPensiun_NRP !== $orangTua->NIP_NOPensiun_NRP) {
+                $existingNIP = OrangTua::where('NIP_NOPensiun_NRP', $request->NIP_NOPensiun_NRP)->first();
+                if ($existingNIP) {
+                    return back()->with('error', 'NIP/No. Pensiun/NRP sudah terdaftar oleh orang tua lain.')->withInput();
+                }
+            }
+
+            $orangTua->update([
+                'nama' => $request->nama,
+                'pekerjaaan' => $request->pekerjaaan,
+                'NIP_NOPensiun_NRP' => $request->NIP_NOPensiun_NRP,
+                'pangkat' => $request->pangkat,
+                'instansi' => $request->instansi,
+                'alamat' => $request->alamat,
+                'no_hp' => $request->no_hp,
+            ]);
+
+            Log::info('Data orang tua berhasil diupdate', [
+                'nim' => $nim,
+                'nama' => $request->nama
+            ]);
+
+            return back()->with('success_orangtua', 'Data orang tua berhasil diperbarui.');
+
+        } catch (\Exception $e) {
+            Log::error('Error saat update data orang tua', [
+                'error' => $e->getMessage(),
+                'nim' => $nim
             ]);
 
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
@@ -220,7 +286,13 @@ class PengajuanController extends Controller
             $existingAlumni = Alumni::where('mahasiswa_nim', $request->nim)->first();
 
             if ($existingAlumni) {
-                return back()->with('error', 'Data alumni sudah tersimpan sebelumnya.');
+                return back()->with('error', 'Data alumni sudah tersimpan sebelumnya. Gunakan tombol edit untuk mengubah data.');
+            }
+
+            // Validasi nomor ijazah harus unik
+            $existingIjazah = Alumni::where('no_ijazah', $request->no_ijazah)->first();
+            if ($existingIjazah) {
+                return back()->with('error', 'Nomor ijazah sudah terdaftar.')->withInput();
             }
 
             // Simpan data alumni
@@ -237,12 +309,66 @@ class PengajuanController extends Controller
                 'no_ijazah' => $request->no_ijazah
             ]);
 
-            return back()->with('success', 'Data alumni berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
+            return back()->with('success_alumni', 'Data alumni berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
 
         } catch (\Exception $e) {
             Log::error('Error saat menyimpan data alumni', [
                 'error' => $e->getMessage(),
                 'nim' => $request->nim
+            ]);
+
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                         ->withInput();
+        }
+    }
+
+    /**
+     * Update data alumni
+     */
+    public function updateAlumni(Request $request, $nim)
+    {
+        $request->validate([
+            'no_ijazah' => 'required|string|max:100',
+            'tahun_studi_mulai' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
+            'tahun_studi_selesai' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
+            'tgl_yudisium' => 'required|date|before_or_equal:today',
+        ]);
+
+        // Validasi tambahan: tahun selesai harus >= tahun mulai
+        if ($request->tahun_studi_selesai < $request->tahun_studi_mulai) {
+            return back()->with('error', 'Tahun studi selesai tidak boleh lebih awal dari tahun studi mulai.')
+                         ->withInput();
+        }
+
+        try {
+            $alumni = Alumni::where('mahasiswa_nim', $nim)->firstOrFail();
+
+            // Validasi nomor ijazah jika diubah, harus tetap unik
+            if ($request->no_ijazah !== $alumni->no_ijazah) {
+                $existingIjazah = Alumni::where('no_ijazah', $request->no_ijazah)->first();
+                if ($existingIjazah) {
+                    return back()->with('error', 'Nomor ijazah sudah terdaftar oleh alumni lain.')->withInput();
+                }
+            }
+
+            $alumni->update([
+                'no_ijazah' => $request->no_ijazah,
+                'tahun_studi_mulai' => $request->tahun_studi_mulai,
+                'tahun_studi_selesai' => $request->tahun_studi_selesai,
+                'tgl_yudisium' => $request->tgl_yudisium,
+            ]);
+
+            Log::info('Data alumni berhasil diupdate', [
+                'nim' => $nim,
+                'no_ijazah' => $request->no_ijazah
+            ]);
+
+            return back()->with('success_alumni', 'Data alumni berhasil diperbarui.');
+
+        } catch (\Exception $e) {
+            Log::error('Error saat update data alumni', [
+                'error' => $e->getMessage(),
+                'nim' => $nim
             ]);
 
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
@@ -302,7 +428,7 @@ class PengajuanController extends Controller
                 'email' => $mahasiswa->email
             ]);
 
-            return back()->with('success', 'Data mahasiswa berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
+            return back()->with('success_mahasiswa', 'Data mahasiswa berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
 
         } catch (\Exception $e) {
             Log::error('Error saat menyimpan data mahasiswa', [
@@ -314,6 +440,7 @@ class PengajuanController extends Controller
                          ->withInput();
         }
     }
+
     /**
      * Simpan pengajuan surat
      */
