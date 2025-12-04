@@ -83,47 +83,6 @@
                                 </a>
                             </div>
                         </div>
-
-                        {{-- Placeholder untuk layanan akademik lainnya --}}
-                        <div
-                            class="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col text-center opacity-60 cursor-not-allowed">
-                            <div
-                                class="bg-purple-100 text-purple-600 rounded-full h-16 w-16 flex items-center justify-center mb-6 text-3xl mx-auto">
-                                <i class="fas fa-file-certificate"></i>
-                            </div>
-                            <div class="flex-grow">
-                                <h3 class="text-xl font-bold mb-3 text-gray-800">Transkrip Nilai</h3>
-                                <p class="text-gray-600 mb-6 text-base">
-                                    Layanan pengajuan transkrip nilai (Segera Hadir)
-                                </p>
-                            </div>
-                            <div class="mt-auto">
-                                <span class="font-semibold text-purple-400 inline-flex items-center justify-center">
-                                    Segera Hadir
-                                    <i class="fas fa-lock ml-1"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div
-                            class="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col text-center opacity-60 cursor-not-allowed">
-                            <div
-                                class="bg-orange-100 text-orange-600 rounded-full h-16 w-16 flex items-center justify-center mb-6 text-3xl mx-auto">
-                                <i class="fas fa-book-open"></i>
-                            </div>
-                            <div class="flex-grow">
-                                <h3 class="text-xl font-bold mb-3 text-gray-800">Surat Penelitian</h3>
-                                <p class="text-gray-600 mb-6 text-base">
-                                    Layanan pengajuan surat penelitian (Segera Hadir)
-                                </p>
-                            </div>
-                            <div class="mt-auto">
-                                <span class="font-semibold text-orange-400 inline-flex items-center justify-center">
-                                    Segera Hadir
-                                    <i class="fas fa-lock ml-1"></i>
-                                </span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

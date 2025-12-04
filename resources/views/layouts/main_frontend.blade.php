@@ -77,7 +77,7 @@
                 <div class="flex-shrink-0">
                     <a href="#" class="flex items-center space-x-3">
                         <img class="h-[65px] w-auto" src="/assets/img/untitled.png"
-                            alt="Logo Kelurahan Tipulu">
+                            alt="Logo UHO">
                     </a>
                 </div>
                 <div class="hidden md:block">
@@ -86,16 +86,8 @@
                             class="text-gray-600 hover:text-maroon-600 font-medium">Beranda</a>
                         <a href="{{ $prefix }}#layanan"
                             class="text-gray-600 hover:text-maroon-600 font-medium">Layanan</a>
-                        <a href="{{ $prefix }}#berita"
-                            class="text-gray-600 hover:text-maroon-600 font-medium">Berita</a>
-                        <a href="{{ $prefix }}#aparatur"
-                            class="text-gray-600 hover:text-maroon-600 font-medium">Aparatur</a>
-                        <a href="{{ $prefix }}#data-penduduk"
-                            class="text-gray-600 hover:text-maroon-600 font-medium">Statistik</a  >
-                        <a href="{{ $prefix }}#profil"
-                            class="text-gray-600 hover:text-maroon-600 font-medium">Profil</a>
-                        <a href="{{ $prefix }}#kontak"
-                            class="text-gray-600 hover:text-maroon-600 font-medium">Kontak</a>
+                        <a href="{{ $prefix }}#Layanan Akademik"
+                            class="text-gray-600 hover:text-maroon-600 font-medium">Layanan Akademik</a>
                     </nav>
                 </div>
                 <div class="flex items-center">
@@ -113,17 +105,11 @@
         <div id="mobile-menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="{{ $prefix }}#hero"
-                    class="text-gray-600 hover:bg-maroon-50 block px-3 py-2 rounded-md text-base font-medium">Beranda</a>
-                <a href="{{ $prefix }}#layanan"
-                    class="text-gray-600 hover:bg-maroon-50 block px-3 py-2 rounded-md text-base font-medium">Layanan</a>
-                <a href="{{ $prefix }}#berita"
-                    class="text-gray-600 hover:bg-maroon-50 block px-3 py-2 rounded-md text-base font-medium">Berita</a>
-                <a href="{{ $prefix }}#profil"
-                    class="text-gray-600 hover:bg-maroon-50 block px-3 py-2 rounded-md text-base font-medium">Profil</a>
-                <a href="{{ $prefix }}#data-penduduk"
-                    class="text-gray-600 hover:bg-maroon-50 block px-3 py-2 rounded-md text-base font-medium">Statistik</a>
-                <a href="{{ $prefix }}#kontak"
-                    class="text-gray-600 hover:bg-maroon-50 block px-3 py-2 rounded-md text-base font-medium">Kontak</a>
+                            class="text-gray-600 hover:text-maroon-600 font-medium">Beranda</a>
+                        <a href="{{ $prefix }}#layanan"
+                            class="text-gray-600 hover:text-maroon-600 font-medium">Layanan</a>
+                        <a href="{{ $prefix }}#Layanan Akademik"
+                            class="text-gray-600 hover:text-maroon-600 font-medium">Layanan Akademik</a>
             </div>
         </div>
     </header>
