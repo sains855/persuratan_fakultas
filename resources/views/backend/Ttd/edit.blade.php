@@ -5,13 +5,13 @@
         <!-- Card -->
         <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-6 border border-blue-200">
             <!-- Form -->
-            <form method="POST" action="{{ route('ttd.update', $ttd->id) }}" enctype="multipart/form-data" id="formEditTtd">
+            <form method="POST" action="{{ route('ttd.update', $Ttd->id) }}" enctype="multipart/form-data" id="formEditTtd">
                 @csrf
                 @method('PUT')
 
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">NIP <span class="text-red-500">*</span></label>
-                    <input type="text" name="nip" value="{{ old('nip', $ttd->nip) }}"
+                    <input type="text" name="nip" value="{{ old('nip', $Ttd->nip) }}"
                         class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
                     @error('nip')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -20,7 +20,7 @@
 
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Nama <span class="text-red-500">*</span></label>
-                    <input type="text" name="nama" value="{{ old('nama', $ttd->nama) }}"
+                    <input type="text" name="nama" value="{{ old('nama', $Ttd->nama) }}"
                         class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
                     @error('nama')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -29,7 +29,7 @@
 
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Jabatan <span class="text-red-500">*</span></label>
-                    <input type="text" name="jabatan" value="{{ old('jabatan', $ttd->jabatan) }}"
+                    <input type="text" name="jabatan" value="{{ old('jabatan', $Ttd->jabatan) }}"
                         class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
                     @error('jabatan')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -38,7 +38,7 @@
 
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Pangkat/Gol <span class="text-red-500">*</span></label>
-                    <input type="text" name="pangkat/gol" value="{{ old('pangkat/gol', $ttd->{'pangkat/gol'}) }}"
+                    <input type="text" name="pangkat/gol" value="{{ old('pangkat/gol', $Ttd->{'pangkat/gol'}) }}"
                         class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
                     @error('pangkat/gol')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -50,9 +50,9 @@
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Foto</label>
 
                     <!-- Preview Foto Lama -->
-                    @if ($ttd->foto)
+                    @if ($Ttd->foto)
                         <div class="mb-2">
-                            <img src="{{ asset($ttd->foto) }}" alt="Foto lama"
+                            <img src="{{ asset($Ttd->foto) }}" alt="Foto lama"
                                 class="w-32 h-32 object-cover rounded-lg shadow-md">
                         </div>
                     @endif

@@ -142,7 +142,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/pelayanan/update/{id}', [PelayananController::class, 'update'])->name('pelayanan.update');
     Route::get('/pelayanan/delete/{id}', [PelayananController::class, 'delete'])->name('pelayanan.delete');
 
-    Route::get('/aparatur', [TtdController::class, 'index'])->name('aparatur');
+    Route::get('/aparatur', [TtdController::class, 'index'])->name('ttd');
     Route::get('/aparatur/edit/{id}', [TtdController::class, 'edit'])->name('ttd.edit');
     Route::post('/aparatur/store', [ttdController::class, 'store'])->name('ttd.store');
     Route::put('/aparatur/update/{id}', [TtdController::class, 'update'])->name('ttd.update');

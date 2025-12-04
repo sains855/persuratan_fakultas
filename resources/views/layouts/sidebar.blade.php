@@ -53,8 +53,8 @@
                     class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Pelayanan' ? 'bg-blue-500' : '' }}">Pelayanan</a>
                 <a href="#"
                     class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Berita' ? 'bg-blue-500' : '' }}">Berita</a>
-                <a href="{{ route('aparatur') }}"
-                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Aparatur' ? 'bg-blue-500' : '' }}">Aparatur</a>
+                <a href="{{ route('ttd') }}"
+                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Ttd' ? 'bg-blue-500' : '' }}">Tanda Tangan</a>
             </div>
         </div>
 
