@@ -20,10 +20,10 @@
         @endif
 
         <!-- Card -->
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-3 sm:p-6 border border-blue-200">
+        <div class="bg-gradient-to-br from-red-50 to-red-100 shadow-xl rounded-2xl p-3 sm:p-6 border border-red-200">
            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
-                <h2 class="text-lg sm:text-xl lg:text-2xl font-extrabold text-blue-800 tracking-wide flex items-center gap-2">
-                    <i class="fa fa-list-alt text-blue-600"></i> Daftar {{ $title }}
+                <h2 class="text-lg sm:text-xl lg:text-2xl font-extrabold text-red-800 tracking-wide flex items-center gap-2">
+                    <i class="fa fa-list-alt text-red-600"></i> Daftar {{ $title }}
                 </h2>
 
                 <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
@@ -31,22 +31,22 @@
                     <form method="GET" action="{{ url('/persyaratan') }}" class="flex items-center border rounded-lg overflow-hidden w-full sm:w-auto">
                         <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama / keterangan..."
                             class="px-3 py-2 text-sm focus:outline-none w-full sm:w-48">
-                        <button type="submit" class="bg-blue-600 text-white px-3 py-2">
+                        <button type="submit" class="bg-red-600 text-white px-3 py-2">
                             <i class="fa fa-search"></i>
                         </button>
                     </form>
 
                     <!-- Tombol Tambah -->
                     <button id="openModalBtn"
-                        class="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-3 py-2 rounded-lg flex items-center gap-2 hover:from-blue-700 hover:to-blue-600 shadow-md transition text-xs sm:text-sm w-full sm:w-auto justify-center">
+                        class="bg-gradient-to-r from-red-600 to-red-500 text-white px-3 py-2 rounded-lg flex items-center gap-2 hover:from-red-700 hover:to-red-600 shadow-md transition text-xs sm:text-sm w-full sm:w-auto justify-center">
                         <i class="fa fa-plus"></i> <span>Tambah Persyaratan</span>
                     </button>
                 </div>
             </div>
             {{-- Table Dekstop --}}
-            <div class="hidden md:block overflow-x-auto rounded-xl border border-blue-200">
+            <div class="hidden md:block overflow-x-auto rounded-xl border border-red-200">
                 <table class="min-w-full rounded-xl overflow-hidden">
-                    <thead class="bg-blue-600 text-white uppercase text-xs font-semibold tracking-wider">
+                    <thead class="bg-red-600 text-white uppercase text-xs font-semibold tracking-wider">
                         <tr>
                             <th class="px-4 py-3 text-center">No</th>
                             <th class="px-4 py-3 text-left">Nama</th>
@@ -56,8 +56,8 @@
                     </thead>
                     <tbody class="text-gray-700 text-sm bg-white">
                         @forelse ($persyaratan as $data)
-                            <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                                <td class="px-2 sm:px-4 py-3 text-center font-semibold text-blue-600 align-top">
+                            <tr class="border-b border-gray-200 hover:bg-red-50 transition">
+                                <td class="px-2 sm:px-4 py-3 text-center font-semibold text-red-600 align-top">
                                     {{ $persyaratan->firstItem() + $loop->index }}
                                 </td>
                                 <td class="px-4 py-3 align-top">{{ $data->nama }}</td>
@@ -93,11 +93,11 @@
                     <div class="mt-6 flex flex-col sm:flex-row justify-center sm:justify-between items-center text-sm text-gray-700 gap-4">
                         <div class="text-gray-600">
                             Menampilkan
-                            <span class="font-semibold text-blue-600">
+                            <span class="font-semibold text-red-600">
                                 {{ $persyaratan->firstItem() }}–{{ $persyaratan->lastItem() }}
                             </span>
                             dari
-                            <span class="font-semibold text-blue-600">{{ $persyaratan->total() }}</span> data
+                            <span class="font-semibold text-red-600">{{ $persyaratan->total() }}</span> data
                         </div>
 
                         <!-- Tombol Navigasi -->
@@ -106,21 +106,21 @@
                             @if ($persyaratan->onFirstPage())
                                 <span class="px-3 py-2 bg-gray-200 text-gray-400 rounded-lg cursor-not-allowed">&laquo;</span>
                             @else
-                                <a href="{{ $persyaratan->previousPageUrl() }}" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">&laquo;</a>
+                                <a href="{{ $persyaratan->previousPageUrl() }}" class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">&laquo;</a>
                             @endif
 
                             {{-- Tombol Halaman --}}
                             @foreach ($persyaratan->getUrlRange(1, $persyaratan->lastPage()) as $page => $url)
                                 @if ($page == $persyaratan->currentPage())
-                                    <span class="px-3 py-2 bg-blue-600 text-white rounded-lg font-bold">{{ $page }}</span>
+                                    <span class="px-3 py-2 bg-red-600 text-white rounded-lg font-bold">{{ $page }}</span>
                                 @else
-                                    <a href="{{ $url }}" class="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">{{ $page }}</a>
+                                    <a href="{{ $url }}" class="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition">{{ $page }}</a>
                                 @endif
                             @endforeach
 
                             {{-- Tombol Next --}}
                             @if ($persyaratan->hasMorePages())
-                                <a href="{{ $persyaratan->nextPageUrl() }}" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">&raquo;</a>
+                                <a href="{{ $persyaratan->nextPageUrl() }}" class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">&raquo;</a>
                             @else
                                 <span class="px-3 py-2 bg-gray-200 text-gray-400 rounded-lg cursor-not-allowed">&raquo;</span>
                             @endif
@@ -132,12 +132,12 @@
            <!-- Tabel Mobile (Card Layout) -->
             <div class="block md:hidden space-y-3">
                 @forelse ($persyaratan as $data)
-                    <div class="bg-white rounded-lg border border-blue-200 shadow-sm p-4">
+                    <div class="bg-white rounded-lg border border-red-200 shadow-sm p-4">
                         <div class="flex justify-between items-start mb-3">
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-2">
                                     <!-- Nomor urut tetap berlanjut di setiap halaman -->
-                                    <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                    <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                                         {{ $loop->iteration + ($persyaratan->currentPage() - 1) * $persyaratan->perPage() }}
                                     </span>
                                     <h3 class="font-semibold text-gray-800 text-sm">{{ $data->nama }}</h3>
@@ -160,7 +160,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="bg-white rounded-lg border border-blue-200 p-6 text-center text-gray-500">
+                    <div class="bg-white rounded-lg border border-red-200 p-6 text-center text-gray-500">
                         <i class="fa fa-inbox text-3xl mb-2 text-gray-300"></i>
                         <p>Tidak Ada data</p>
                     </div>
@@ -176,7 +176,7 @@
 
     <!-- Modal Tambah Data -->
     <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-2xl w-full max-w-md p-4 sm:p-6 relative transform scale-95 opacity-0 transition-all duration-300"
+        <div class="bg-gradient-to-br from-white to-red-50 rounded-2xl shadow-2xl w-full max-w-md p-4 sm:p-6 relative transform scale-95 opacity-0 transition-all duration-300"
             id="modalContent">
             <!-- Tombol Close -->
             <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition">
@@ -184,8 +184,8 @@
             </button>
 
             <!-- Header Modal -->
-            <h3 class="text-lg sm:text-xl font-bold mb-5 text-blue-700 flex items-center gap-2 pr-8">
-                <i class="fa fa-plus-circle text-blue-500"></i> Tambah Persyaratan
+            <h3 class="text-lg sm:text-xl font-bold mb-5 text-red-700 flex items-center gap-2 pr-8">
+                <i class="fa fa-plus-circle text-red-500"></i> Tambah Persyaratan
             </h3>
 
             <!-- Form -->
@@ -194,7 +194,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Nama Persyaratan<span class="text-red-500">*</span></label>
                     <input type="text" name="nama" value="{{ old('nama') }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400">
                     @error('nama')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -202,7 +202,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Keterangan<span class="text-red-500">*</span></label>
                     <textarea name="keterangan" rows="3"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 resize-vertical">{{ old('keterangan') }}</textarea>
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400 resize-vertical">{{ old('keterangan') }}</textarea>
                     @error('keterangan')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -214,7 +214,7 @@
                         Batal
                     </button>
                     <button type="submit"
-                        class="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-600 shadow-md transition text-sm order-1 sm:order-2">
+                        class="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 rounded-lg hover:from-red-700 hover:to-red-600 shadow-md transition text-sm order-1 sm:order-2">
                         <i class="fa fa-save"></i> Simpan
                     </button>
                 </div>
@@ -376,7 +376,7 @@
             const old = field.parentElement.querySelector('.error-message-custom');
             if (old) old.remove();
             field.classList.add('border-red-500', '!border-red-500');
-            field.classList.remove('border-blue-300');
+            field.classList.remove('border-red-300');
 
             const err = document.createElement('p');
             err.className = 'error-message-custom text-red-500 text-sm mt-1';
@@ -388,7 +388,7 @@
         form.querySelectorAll('input, textarea').forEach(el => {
             el.addEventListener('input', () => {
                 el.classList.remove('border-red-500', '!border-red-500');
-                el.classList.add('border-blue-300');
+                el.classList.add('border-red-300');
                 const msg = el.parentElement.querySelector('.error-message-custom');
                 if (msg) msg.remove();
             });

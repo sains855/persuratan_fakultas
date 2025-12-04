@@ -13,19 +13,19 @@
     @endif
 
     <div class="mx-auto">
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-3 sm:p-6 border border-blue-200">
+        <div class="bg-gradient-to-br from-red-50 to-red-100 shadow-xl rounded-2xl p-3 sm:p-6 border border-red-200">
             <div class="flex justify-between items-center mb-4 sm:mb-6">
-                <h2 class="text-sm sm:text-xl lg:text-2xl font-extrabold text-blue-800 tracking-wide flex items-center gap-2">
-                    <i class="fa fa-list-alt text-blue-600 text-xs sm:text-base"></i>
+                <h2 class="text-sm sm:text-xl lg:text-2xl font-extrabold text-red-800 tracking-wide flex items-center gap-2">
+                    <i class="fa fa-list-alt text-red-600 text-xs sm:text-base"></i>
                     <span class="hidden sm:inline">Daftar {{ $title }}</span>
                     <span class="sm:hidden">{{ $title }}</span>
                 </h2>
             </div>
 
             <!-- Desktop Table View -->
-            <div class="hidden md:block overflow-x-auto rounded-xl border border-blue-200">
+            <div class="hidden md:block overflow-x-auto rounded-xl border border-red-200">
                 <table class="min-w-full rounded-xl overflow-hidden">
-                    <thead class="bg-blue-600 text-white uppercase text-xs font-semibold tracking-wider">
+                    <thead class="bg-red-600 text-white uppercase text-xs font-semibold tracking-wider">
                         <tr>
                             <th class="px-4 py-3 text-center">No</th>
                             <th class="px-4 py-3 text-left">Nama</th>
@@ -37,8 +37,8 @@
                     </thead>
                     <tbody class="text-gray-700 text-sm bg-white">
                         @forelse ($pengajuan as $data)
-                            <tr class="hover:bg-blue-50 transition">
-                                <td class="px-4 py-3 text-center font-semibold text-blue-600">{{ $loop->iteration }}</td>
+                            <tr class="hover:bg-red-50 transition">
+                                <td class="px-4 py-3 text-center font-semibold text-red-600">{{ $loop->iteration }}</td>
                                 <td class="px-4 py-3">{{ optional($data->mahasiswa)->nama ?? optional($data->tempatTinggalSementara)->nama }}</td>
                                 <td class="px-4 py-3">{{ $data->no_hp }}</td>
                                 <td class="px-4 py-3">{{ $data->pelayanan->nama }}</td>
@@ -80,7 +80,7 @@
                                             data-nohp="{{ $data->no_hp }}"
                                             data-pelayanan="{{ $data->pelayanan->nama }}"
                                             onclick="openVerifikasiModal(this)"
-                                            class="text-blue-500 hover:text-blue-600 transition transform hover:scale-110"
+                                            class="text-red-500 hover:text-red-600 transition transform hover:scale-110"
                                             title="{{ $isDitolak ? 'Verifikasi Ulang' : 'Verifikasi' }}">
                                             <i class="fa-solid fa-hand-pointer text-lg"></i>
                                         </button>
@@ -138,11 +138,11 @@
             <!-- Mobile Card View -->
             <div class="md:hidden space-y-3">
                 @forelse ($pengajuan as $data)
-                    <div class="bg-white rounded-lg shadow-md border border-blue-200 p-4">
+                    <div class="bg-white rounded-lg shadow-md border border-red-200 p-4">
                         <div class="flex justify-between items-start mb-3">
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-2">
-                                    <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">{{ $loop->iteration }}</span>
+                                    <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">{{ $loop->iteration }}</span>
                                     <h3 class="font-bold text-gray-800 text-sm">{{ optional($data->mahasiswa)->nama ?? optional($data->tempatTinggalSementara)->nama }}</h3>
                                 </div>
                                 <div class="space-y-1 text-xs text-gray-600">
@@ -151,7 +151,7 @@
                                         <span>{{ $data->no_hp }}</span>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <i class="fa fa-briefcase text-blue-500"></i>
+                                        <i class="fa fa-briefcase text-red-500"></i>
                                         <span>{{ $data->pelayanan->nama }}</span>
                                     </div>
                                     <div class="flex items-center gap-2">
@@ -197,7 +197,7 @@
                                     data-nohp="{{ $data->no_hp }}"
                                     data-pelayanan="{{ $data->pelayanan->nama }}"
                                     onclick="openVerifikasiModal(this)"
-                                    class="flex items-center gap-1 px-3 py-2 bg-blue-500 text-white text-xs rounded-lg hover:bg-blue-600 transition"
+                                    class="flex items-center gap-1 px-3 py-2 bg-red-500 text-white text-xs rounded-lg hover:bg-red-600 transition"
                                     title="{{ $isDitolak ? 'Verifikasi Ulang' : 'Verifikasi' }}">
                                     <i class="fa-solid fa-hand-pointer"></i>
                                     <span>{{ $isDitolak ? 'Verifikasi Ulang' : 'Verifikasi' }}</span>
@@ -248,7 +248,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="bg-white rounded-lg shadow-md border border-blue-200 p-6 text-center text-gray-500 text-sm">
+                    <div class="bg-white rounded-lg shadow-md border border-red-200 p-6 text-center text-gray-500 text-sm">
                         Tidak Ada data pengajuan.
                     </div>
                 @endforelse
@@ -260,7 +260,7 @@
                 <div id="dokumenModal-{{ $data->id }}" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
                     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-4 sm:p-6 relative max-h-[90vh] overflow-y-auto">
                         <div class="flex items-center mb-4">
-                            <div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-600 mr-3">
+                            <div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-100 text-red-600 mr-3">
                                 <i class="fa-solid fa-file-pdf text-xl sm:text-2xl"></i>
                             </div>
                             <div class="flex-1">
@@ -276,7 +276,7 @@
                                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 border rounded-lg mb-2 bg-gray-50 gap-2">
                                     <span class="text-gray-700 text-xs sm:text-sm flex-1">{{ $i + 1 }}. {{ $doc->persyaratan->nama }}</span>
                                     <a href="{{ route('list-pengajuan.stream', ['persyaratan_id' => $doc->persyaratan_id, 'pengajuan_id' => $doc->pengajuan_id]) }}"
-                                        class="w-full sm:w-auto text-center px-3 py-1 bg-blue-500 text-white text-xs font-semibold rounded-md hover:bg-blue-600 transition">
+                                        class="w-full sm:w-auto text-center px-3 py-1 bg-red-500 text-white text-xs font-semibold rounded-md hover:bg-red-600 transition">
                                         <i class="fa fa-eye mr-1"></i> Lihat
                                     </a>
                                 </div>
@@ -337,7 +337,7 @@
             <div id="verifikasiModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
                 <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-4 sm:p-6">
                     <div class="flex items-center mb-4">
-                        <div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-600 mr-3">
+                        <div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-red-100 text-red-600 mr-3">
                             <i class="fa-solid fa-circle-check text-xl sm:text-2xl"></i>
                         </div>
                         <div class="flex-1">
@@ -349,7 +349,7 @@
                         <p class="text-xs sm:text-sm text-gray-600">
                             Apakah Anda ingin <span class="font-semibold text-green-600">memverifikasi</span> atau
                             <span class="font-semibold text-red-600">menolak</span> pengajuan atas nama
-                            <span id="namamahasiswa" class="font-semibold text-blue-600"></span>?
+                            <span id="namamahasiswa" class="font-semibold text-red-600"></span>?
                         </p>
                     </div>
                     <form id="formVerifikasi" method="POST" class="mt-6">

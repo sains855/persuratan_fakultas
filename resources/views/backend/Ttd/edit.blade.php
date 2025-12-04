@@ -3,7 +3,7 @@
 @section('content')
     <div class="mx-auto">
         <!-- Card -->
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-6 border border-blue-200">
+        <div class="bg-gradient-to-br from-red-50 to-red-100 shadow-xl rounded-2xl p-6 border border-red-200">
             <!-- Form -->
             <form method="POST" action="{{ route('ttd.update', $Ttd->id) }}" enctype="multipart/form-data" id="formEditTtd">
                 @csrf
@@ -12,7 +12,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">NIP <span class="text-red-500">*</span></label>
                     <input type="text" name="nip" value="{{ old('nip', $Ttd->nip) }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400">
                     @error('nip')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
                     @enderror
@@ -21,7 +21,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Nama <span class="text-red-500">*</span></label>
                     <input type="text" name="nama" value="{{ old('nama', $Ttd->nama) }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400">
                     @error('nama')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
                     @enderror
@@ -30,7 +30,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Jabatan <span class="text-red-500">*</span></label>
                     <input type="text" name="jabatan" value="{{ old('jabatan', $Ttd->jabatan) }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400">
                     @error('jabatan')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
                     @enderror
@@ -39,7 +39,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Pangkat/Gol <span class="text-red-500">*</span></label>
                     <input type="text" name="pangkat/gol" value="{{ old('pangkat/gol', $Ttd->{'pangkat/gol'}) }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400">
                     @error('pangkat/gol')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
                     @enderror
@@ -58,8 +58,8 @@
                     @endif
 
                     <input type="file" name="foto" accept="image/*"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2
-                               focus:ring-2 focus:ring-blue-400 focus:border-blue-400 file:mr-4 file:py-1 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2
+                               focus:ring-2 focus:ring-red-400 focus:border-red-400 file:mr-4 file:py-1 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-red-50 file:text-red-700 hover:file:bg-red-100">
                     <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, WEBP, JPEG (Max: 2MB)</p>
                     @error('foto')
                         <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -73,8 +73,8 @@
                         Back
                     </a>
                     <button type="submit"
-                        class="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-lg
-                               hover:from-blue-700 hover:to-blue-600 shadow-md transition">
+                        class="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 rounded-lg
+                               hover:from-red-700 hover:to-red-600 shadow-md transition">
                         <i class="fa fa-save"></i> Update
                     </button>
                 </div>
@@ -206,7 +206,7 @@
 
                 // Tambahkan border merah
                 field.classList.add('border-red-500', '!border-red-500');
-                field.classList.remove('border-blue-300');
+                field.classList.remove('border-red-300');
 
                 // Buat elemen error baru
                 const errorElement = document.createElement('p');
@@ -227,7 +227,7 @@
             if (nipInput) {
                 nipInput.addEventListener('input', function() {
                     this.classList.remove('border-red-500', '!border-red-500');
-                    this.classList.add('border-blue-300');
+                    this.classList.add('border-red-300');
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
                     if (errorMsg) errorMsg.remove();
                 });
@@ -236,7 +236,7 @@
             if (namaInput) {
                 namaInput.addEventListener('input', function() {
                     this.classList.remove('border-red-500', '!border-red-500');
-                    this.classList.add('border-blue-300');
+                    this.classList.add('border-red-300');
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
                     if (errorMsg) errorMsg.remove();
                 });
@@ -245,7 +245,7 @@
             if (jabatanInput) {
                 jabatanInput.addEventListener('input', function() {
                     this.classList.remove('border-red-500', '!border-red-500');
-                    this.classList.add('border-blue-300');
+                    this.classList.add('border-red-300');
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
                     if (errorMsg) errorMsg.remove();
                 });
@@ -254,7 +254,7 @@
             if (pangkatInput) {
                 pangkatInput.addEventListener('input', function() {
                     this.classList.remove('border-red-500', '!border-red-500');
-                    this.classList.add('border-blue-300');
+                    this.classList.add('border-red-300');
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
                     if (errorMsg) errorMsg.remove();
                 });
@@ -264,7 +264,7 @@
                 fotoInput.addEventListener('change', function() {
                     // Reset error styling
                     this.classList.remove('border-red-500', '!border-red-500');
-                    this.classList.add('border-blue-300');
+                    this.classList.add('border-red-300');
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
                     if (errorMsg) errorMsg.remove();
 

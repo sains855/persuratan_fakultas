@@ -34,10 +34,10 @@
 @section('content')
     <div class="mx-auto">
         <!-- Card -->
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-3 sm:p-6 border border-blue-200">
+        <div class="bg-gradient-to-br from-red-50 to-red-100 shadow-xl rounded-2xl p-3 sm:p-6 border border-red-200">
             <div class="mb-4 sm:mb-6">
-                <h2 class="text-lg sm:text-xl lg:text-2xl font-extrabold text-blue-800 tracking-wide flex items-center gap-2">
-                    <i class="fa fa-edit text-blue-600"></i> Edit Data Mahasiswa
+                <h2 class="text-lg sm:text-xl lg:text-2xl font-extrabold text-red-800 tracking-wide flex items-center gap-2">
+                    <i class="fa fa-edit text-red-600"></i> Edit Data Mahasiswa
                 </h2>
             </div>
 
@@ -51,7 +51,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-600 mb-1">NIM <span class="text-red-500">*</span></label>
                         <input type="text" name="nim" value="{{ old('nim', $mahasiswa->nim) }}"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                            class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400">
                         @error('nim')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -61,7 +61,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-600 mb-1">Nama <span class="text-red-500">*</span></label>
                         <input type="text" name="nama" value="{{ old('nama', $mahasiswa->nama) }}"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                            class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400">
                         @error('nama')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -73,7 +73,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-600 mb-1">Tempat Lahir <span class="text-red-500">*</span></label>
                             <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir', $mahasiswa->tempat_lahir) }}"
-                                class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                                class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400">
                             @error('tempat_lahir')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -83,7 +83,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-gray-600 mb-1">Tanggal Lahir <span class="text-red-500">*</span></label>
                             <input type="date" name="tgl_lahir" value="{{ old('tgl_lahir', $mahasiswa->tgl_lahir) }}"
-                                class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                                class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400">
                             @error('tgl_lahir')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -94,7 +94,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-600 mb-1">Fakultas <span class="text-red-500">*</span></label>
                         <input type="text" name="Fakultas" value="{{ old('Fakultas', $mahasiswa->Fakultas) }}"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                            class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400">
                         @error('Fakultas')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -104,7 +104,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-600 mb-1">Prodi Jurusan <span class="text-red-500">*</span></label>
                         <input type="text" name="Prodi_jurusan" value="{{ old('Prodi_jurusan', $mahasiswa->Prodi_jurusan) }}"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                            class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400">
                         @error('Prodi_jurusan')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -114,7 +114,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-600 mb-1">Alamat <span class="text-red-500">*</span></label>
                         <textarea name="alamat"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400" rows="3">{{ old('alamat', $mahasiswa->alamat) }}</textarea>
+                            class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400" rows="3">{{ old('alamat', $mahasiswa->alamat) }}</textarea>
                         @error('alamat')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -124,7 +124,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-600 mb-1">No HP</label>
                         <input type="text" name="No_Hp" value="{{ old('No_Hp', $mahasiswa->No_Hp) }}"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                            class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400">
                         @error('No_Hp')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -134,7 +134,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-600 mb-1">Email <span class="text-red-500">*</span></label>
                         <input type="email" name="email" value="{{ old('email', $mahasiswa->email) }}"
-                            class="w-full border border-blue-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                            class="w-full border border-red-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400 focus:border-red-400">
                         @error('email')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -148,7 +148,7 @@
                         Kembali
                     </a>
                     <button type="submit"
-                        class="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-600 shadow-md transition text-sm">
+                        class="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 rounded-lg hover:from-red-700 hover:to-red-600 shadow-md transition text-sm">
                         <i class="fa fa-save"></i> Update
                     </button>
                 </div>
@@ -231,7 +231,7 @@
 
                 // Tambahkan border merah
                 field.classList.add('border-red-500', '!border-red-500');
-                field.classList.remove('border-blue-300');
+                field.classList.remove('border-red-300');
 
                 // Buat elemen error baru
                 const errorElement = document.createElement('p');
@@ -247,7 +247,7 @@
             allFields.forEach(field => {
                 field.addEventListener('input', function() {
                     this.classList.remove('border-red-500', '!border-red-500');
-                    this.classList.add('border-blue-300');
+                    this.classList.add('border-red-300');
 
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
                     if (errorMsg) errorMsg.remove();
@@ -257,7 +257,7 @@
                 if (field.tagName === 'SELECT') {
                     field.addEventListener('change', function() {
                         this.classList.remove('border-red-500', '!border-red-500');
-                        this.classList.add('border-blue-300');
+                        this.classList.add('border-red-300');
 
                         const errorMsg = this.parentElement.querySelector('.error-message-custom');
                         if (errorMsg) errorMsg.remove();

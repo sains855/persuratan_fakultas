@@ -4,7 +4,7 @@
 
    <div class="p-5 border-b border-gray-700 flex items-center gap-4">
         <div class="bg-gray-800 p-2 rounded-xl flex items-center justify-center">
-            <img src="/assets/img/APP%20LOGO.png"
+            <img src="/assets/img/Untitled.png"
                 alt="Logo"
                 class="w-14 h-14 sm:w-16 sm:h-16 object-contain rounded-lg shadow-md">
         </div>
@@ -17,7 +17,7 @@
     <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
         {{-- Dashboard --}}
         <a href="{{ route('dashboard') }}"
-            class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-blue-600 {{ $title == 'Dashboard' ? 'bg-blue-600' : '' }}">
+            class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-red-900 {{ $title == 'Dashboard' ? 'bg-red-900' : '' }}">
             <i class="fa fa-home"></i> Dashboard
         </a>
 
@@ -29,7 +29,7 @@
 
         <div class="space-y-1">
             <button type="button"
-                class="w-full flex items-center justify-between px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none transition {{ $masterActive ? 'bg-blue-600' : '' }}"
+                class="w-full flex items-center justify-between px-3 py-2 rounded-md hover:bg-red-900 focus:outline-none transition {{ $masterActive ? 'bg-red-900' : '' }}"
                 onclick="toggleDropdown('masterDataDropdown')">
                 <span class="flex items-center gap-3">
                     <i class="fa fa-gears"></i>
@@ -46,28 +46,28 @@
             <div id="masterDataDropdown"
                 class="ml-8 space-y-1 {{ $masterActive ? '' : 'hidden' }}">
                 <a href="{{ route('mahasiswa') }}"
-                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Mahasiswa' ? 'bg-blue-500' : '' }}">Mahasiswa</a>
+                    class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Mahasiswa' ? 'bg-red-800' : '' }}">Mahasiswa</a>
                 <a href="{{ route('persyaratan') }}"
-                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Persyaratan' ? 'bg-blue-500' : '' }}">Persyaratan</a>
+                    class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Persyaratan' ? 'bg-red-800' : '' }}">Persyaratan</a>
                 <a href="{{ route('pelayanan') }}"
-                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Pelayanan' ? 'bg-blue-500' : '' }}">Pelayanan</a>
+                    class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Pelayanan' ? 'bg-red-800' : '' }}">Pelayanan</a>
                 <a href="#"
-                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Berita' ? 'bg-blue-500' : '' }}">Berita</a>
+                    class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Berita' ? 'bg-red-800' : '' }}">Berita</a>
                 <a href="{{ route('ttd') }}"
-                    class="block px-3 py-2 rounded-md hover:bg-blue-500 text-sm {{ $title == 'Ttd' ? 'bg-blue-500' : '' }}">Tanda Tangan</a>
+                    class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Ttd' ? 'bg-red-800' : '' }}">Tanda Tangan</a>
             </div>
         </div>
 
         {{-- Pengajuan --}}
         <a href="{{ route('list-pengajuan') }}"
-            class="flex items-center gap-3 px-3 py-2 hover:bg-blue-600 rounded-md {{ $title == 'List Pengajuan' ? 'bg-blue-600' : '' }}">
+            class="flex items-center gap-3 px-3 py-2 hover:bg-red-900 rounded-md {{ $title == 'List Pengajuan' ? 'bg-red-900' : '' }}">
             <i class="fa fa-file"></i> Pengajuan
         </a>
     </nav>
 
     <div class="mt-auto p-4 border-t border-gray-700">
         <a href="{{ route('auth.logout') }}" onclick="return confirm('Apakah Anda Yakin Ingin Logout?')"
-            class="flex items-center gap-3 px-3 py-2 hover:bg-blue-600 rounded-md">🚪 Logout</a>
+            class="flex items-center gap-3 px-3 py-2 hover:bg-red-900 rounded-md">🚪 Logout</a>
     </div>
 </div>
 

@@ -34,23 +34,23 @@
 
 <div class="container mx-auto px-4 py-4">
     <!-- Card -->
-    <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-4 sm:p-6 border border-blue-200">
+    <div class="bg-gradient-to-br from-red-50 to-red-100 shadow-xl rounded-2xl p-4 sm:p-6 border border-red-200">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-4">
-            <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-blue-800 tracking-wide flex items-center gap-2">
-                <i class="fa fa-pen-fancy text-blue-600 text-lg sm:text-xl"></i>
+            <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-red-800 tracking-wide flex items-center gap-2">
+                <i class="fa fa-pen-fancy text-red-600 text-lg sm:text-xl"></i>
                 <span class="break-words">Daftar {{ $title }}</span>
             </h2>
             <button id="openModalBtn"
-                class="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:from-blue-700 hover:to-blue-600 shadow-md transition text-sm sm:text-base whitespace-nowrap">
+                class="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:from-red-700 hover:to-red-600 shadow-md transition text-sm sm:text-base whitespace-nowrap">
                 <i class="fa fa-plus"></i>
                 <span class="hidden sm:inline">Tambah </span>TTD
             </button>
         </div>
 
         {{-- Table Desktop --}}
-        <div class="hidden lg:block overflow-x-auto rounded-xl border border-blue-200">
+        <div class="hidden lg:block overflow-x-auto rounded-xl border border-red-200">
             <table class="min-w-full rounded-xl overflow-hidden">
-                <thead class="bg-blue-600 text-white uppercase text-xs font-semibold tracking-wider">
+                <thead class="bg-red-600 text-white uppercase text-xs font-semibold tracking-wider">
                     <tr>
                         <th class="px-4 py-3 text-center">Foto</th>
                         <th class="px-4 py-3 text-center">Posisi</th>
@@ -64,7 +64,7 @@
                 </thead>
                 <tbody class="text-gray-700 text-sm bg-white">
                     @forelse ($Ttd as $data)
-                        <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
+                        <tr class="border-b border-gray-200 hover:bg-red-50 transition">
                             <td class="px-4 py-3 text-center align-top">
                                 @if ($data->foto)
                                     <img src="{{ asset($data->foto) }}" alt="foto_ttd"
@@ -73,7 +73,7 @@
                                     <span class="text-gray-400">-</span>
                                 @endif
                             </td>
-                            <td class="px-4 py-3 text-center font-semibold text-blue-600 align-top">{{ $data->posisi }}</td>
+                            <td class="px-4 py-3 text-center font-semibold text-red-600 align-top">{{ $data->posisi }}</td>
                             <td class="px-4 py-3 align-top">{{ $data->nip }}</td>
                             <td class="px-4 py-3 align-top">{{ $data->nama }}</td>
                             <td class="px-4 py-3 align-top">{{ $data->jabatan }}</td>
@@ -109,7 +109,7 @@
         <!-- Mobile & Tablet Card View -->
         <div class="lg:hidden space-y-3">
             @forelse ($Ttd as $data)
-                <div class="bg-white rounded-lg border border-blue-200 shadow-sm p-4">
+                <div class="bg-white rounded-lg border border-red-200 shadow-sm p-4">
                     <!-- Foto di Atas & Tengah -->
                     <div class="flex justify-center mb-4">
                         @if ($data->foto)
@@ -125,7 +125,7 @@
                     <!-- Info TTD -->
                     <div class="space-y-2">
                         <div class="flex justify-center mb-3">
-                            <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded">
+                            <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded">
                                 Posisi {{ $data->posisi }}
                             </span>
                         </div>
@@ -164,7 +164,7 @@
                     </div>
                 </div>
             @empty
-                <div class="bg-white rounded-lg border border-blue-200 p-6 text-center text-gray-500">
+                <div class="bg-white rounded-lg border border-red-200 p-6 text-center text-gray-500">
                     <i class="fa fa-inbox text-3xl mb-2 text-gray-300"></i>
                     <p>Tidak ada data TTD</p>
                 </div>
@@ -175,7 +175,7 @@
 
 <!-- Modal Tambah TTD -->
 <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-4 sm:p-6 relative transform scale-95 opacity-0 transition-all duration-300"
+    <div class="bg-gradient-to-br from-white to-red-50 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-4 sm:p-6 relative transform scale-95 opacity-0 transition-all duration-300"
         id="modalContent">
         <!-- Tombol Close -->
         <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition z-10">
@@ -183,8 +183,8 @@
         </button>
 
         <!-- Header Modal -->
-        <h3 class="text-xl font-bold mb-5 text-blue-700 flex items-center gap-2 pr-8">
-            <i class="fa fa-plus-circle text-blue-500"></i> Tambah TTD
+        <h3 class="text-xl font-bold mb-5 text-red-700 flex items-center gap-2 pr-8">
+            <i class="fa fa-plus-circle text-red-500"></i> Tambah TTD
         </h3>
 
         <!-- Form -->
@@ -194,7 +194,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-600 mb-2">NIP <span class="text-red-500">*</span></label>
                     <input type="text" name="nip" value="{{ old('nip') }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400 text-sm">
                     @error('nip')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -203,7 +203,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-600 mb-2">Nama <span class="text-red-500">*</span></label>
                     <input type="text" name="nama" value="{{ old('nama') }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400 text-sm">
                     @error('nama')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -212,7 +212,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-600 mb-2">Jabatan <span class="text-red-500">*</span></label>
                     <input type="text" name="jabatan" value="{{ old('jabatan') }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400 text-sm">
                     @error('jabatan')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -221,7 +221,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-600 mb-2">Pangkat/Golongan Ruang <span class="text-red-500">*</span></label>
                     <input type="text" name="pangkat_golruang" value="{{ old('pangkat_golruang') }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400 text-sm">
                     @error('pangkat_golruang')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -230,7 +230,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-600 mb-2">Fakultas <span class="text-red-500">*</span></label>
                     <input type="text" name="fakultas" value="{{ old('fakultas') }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400 text-sm">
                     @error('fakultas')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -239,7 +239,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-600 mb-2">Posisi <span class="text-red-500">*</span></label>
                     <input type="number" name="posisi" value="{{ old('posisi') }}" min="1"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400 text-sm">
                     @error('posisi')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
@@ -248,7 +248,7 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-600 mb-2">Foto (Opsional)</label>
                     <input type="file" name="foto"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-sm file:mr-4 file:py-1 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400 text-sm file:mr-4 file:py-1 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
                         accept="image/*">
                     <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, WEBP, JPEG</p>
                     @error('foto')
@@ -263,7 +263,7 @@
                     Batal
                 </button>
                 <button type="submit"
-                    class="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-600 shadow-md transition text-sm">
+                    class="w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 rounded-lg hover:from-red-700 hover:to-red-600 shadow-md transition text-sm">
                     <i class="fa fa-save"></i> Simpan
                 </button>
             </div>
@@ -478,7 +478,7 @@
             if (oldError) oldError.remove();
 
             field.classList.add('border-red-500', '!border-red-500');
-            field.classList.remove('border-blue-300');
+            field.classList.remove('border-red-300');
 
             const errorElement = document.createElement('p');
             errorElement.className = 'error-message-custom text-red-500 text-xs mt-1';
@@ -494,7 +494,7 @@
                 const eventType = inputName === 'foto' ? 'change' : 'input';
                 input.addEventListener(eventType, function() {
                     this.classList.remove('border-red-500', '!border-red-500');
-                    this.classList.add('border-blue-300');
+                    this.classList.add('border-red-300');
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
                     if (errorMsg) errorMsg.remove();
                 });

@@ -8,7 +8,7 @@
             <form action="{{ route('permohonan.index') }}" method="GET">
                 <label for="id_pelayanan" class="block text-sm font-medium text-gray-700">Filter Berdasarkan Layanan:</label>
                 <div class="mt-1 flex items-center gap-2">
-                    <select name="id_pelayanan" id="id_pelayanan" class="flex-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                    <select name="id_pelayanan" id="id_pelayanan" class="flex-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md">
                         <option value="">-- Tampilkan Semua --</option>
                         @foreach($semua_pelayanan as $pelayanan)
                             <option value="{{ $pelayanan->id_pelayanan }}" {{ request('id_pelayanan') == $pelayanan->id_pelayanan ? 'selected' : '' }}>
@@ -16,7 +16,7 @@
                             </option>
                         @endforeach
                     </select>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Filter</button>
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Filter</button>
                 </div>
             </form>
         </div>

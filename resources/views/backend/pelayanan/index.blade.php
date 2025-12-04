@@ -93,28 +93,28 @@
         @endif
     <div class="mx-auto">
         <!-- Card -->
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-3 sm:p-6 border border-blue-200">
+        <div class="bg-gradient-to-br from-red-50 to-red-100 shadow-xl rounded-2xl p-3 sm:p-6 border border-red-200">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
-                <h2 class="text-lg sm:text-xl lg:text-2xl font-extrabold text-blue-800 tracking-wide flex items-center gap-2">
-                    <i class="fa fa-list-alt text-blue-600"></i> Daftar {{ $title }}
+                <h2 class="text-lg sm:text-xl lg:text-2xl font-extrabold text-red-800 tracking-wide flex items-center gap-2">
+                    <i class="fa fa-list-alt text-red-600"></i> Daftar {{ $title }}
                 </h2>
                 <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto relative z-50">
                     <!-- Search form -->
                     <form method="GET" action="{{ route('pelayanan') }}" class="flex w-full sm:w-auto">
                         <input type="text" name="q" value="{{ request('q') }}"
                             placeholder="Cari pelayanan / persyaratan..."
-                            class="border border-blue-300 rounded-l-lg px-3 py-2 text-sm w-full sm:w-64 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                            class="border border-red-300 rounded-l-lg px-3 py-2 text-sm w-full sm:w-64 focus:ring-2 focus:ring-red-400 focus:border-red-400">
                         <button type="submit"
-                            class="bg-blue-600 text-white px-3 py-2 rounded-r-lg hover:bg-blue-700 transition">
+                            class="bg-red-600 text-white px-3 py-2 rounded-r-lg hover:bg-red-700 transition">
                             <i class="fa fa-search"></i>
                         </button>
                     </form>
                 </div>
             </div>
             {{-- Table Dekstop --}}
-            <div class="desktop-table-view overflow-x-auto rounded-xl border border-blue-200">
+            <div class="desktop-table-view overflow-x-auto rounded-xl border border-red-200">
                 <table class="min-w-full rounded-xl overflow-hidden table-responsive">
-                    <thead class="bg-blue-600 text-white uppercase text-xs font-semibold tracking-wider">
+                    <thead class="bg-red-600 text-white uppercase text-xs font-semibold tracking-wider">
                         <tr>
                             <th class="px-2 sm:px-4 py-3 text-center w-12">No</th>
                             <th class="px-2 sm:px-4 py-3 text-left min-w-32">Nama Pelayanan</th>
@@ -126,8 +126,8 @@
                     </thead>
                     <tbody class="text-gray-700 text-sm bg-white">
                         @forelse ($pelayanan as $data)
-                            <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                                <td class="px-2 sm:px-4 py-3 text-center font-semibold text-blue-600 align-top">
+                            <tr class="border-b border-gray-200 hover:bg-red-50 transition">
+                                <td class="px-2 sm:px-4 py-3 text-center font-semibold text-red-600 align-top">
                                     {{ $pelayanan->firstItem() + $loop->index }}
                                 </td>
                                 <td class="px-2 sm:px-4 py-3 font-medium align-top">{{ $data->nama }}</td>
@@ -135,7 +135,7 @@
                                 <td class="px-2 sm:px-4 py-3 description-col align-top" title="{{ $data->deskripsi }}">{{ $data->deskripsi }}</td>
                                 <td class="px-2 sm:px-4 py-3 requirements-col align-top">
                                     @foreach ($data->pelayananPersyaratan as $item)
-                                        <span class="px-1 sm:px-2 py-1 bg-blue-500 text-white rounded text-xs mr-1 mb-1 inline-block">{{ $item->persyaratan->nama }}</span>
+                                        <span class="px-1 sm:px-2 py-1 bg-red-500 text-white rounded text-xs mr-1 mb-1 inline-block">{{ $item->persyaratan->nama }}</span>
                                     @endforeach
                                 </td>
                                 <td class="px-2 sm:px-4 py-3 text-center align-top">
@@ -170,11 +170,11 @@
                         <!-- Info jumlah data -->
                         <div class="text-center sm:text-left text-gray-600 w-full sm:w-auto">
                             Menampilkan
-                            <span class="font-semibold text-blue-600">
+                            <span class="font-semibold text-red-600">
                                 {{ $pelayanan->firstItem() }}–{{ $pelayanan->lastItem() }}
                             </span>
                             dari
-                            <span class="font-semibold text-blue-600">{{ $pelayanan->total() }}</span> data
+                            <span class="font-semibold text-red-600">{{ $pelayanan->total() }}</span> data
                         </div>
 
                         <!-- Tombol Navigasi -->
@@ -184,23 +184,23 @@
                                 <span class="px-3 py-2 bg-gray-200 text-gray-400 rounded-lg cursor-not-allowed">&laquo;</span>
                             @else
                                 <a href="{{ $pelayanan->previousPageUrl() }}"
-                                class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">&laquo;</a>
+                                class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">&laquo;</a>
                             @endif
 
                             {{-- Tombol Halaman --}}
                             @foreach ($pelayanan->getUrlRange(1, $pelayanan->lastPage()) as $page => $url)
                                 @if ($page == $pelayanan->currentPage())
-                                    <span class="px-3 py-2 bg-blue-600 text-white rounded-lg font-bold">{{ $page }}</span>
+                                    <span class="px-3 py-2 bg-red-600 text-white rounded-lg font-bold">{{ $page }}</span>
                                 @else
                                     <a href="{{ $url }}"
-                                    class="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">{{ $page }}</a>
+                                    class="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition">{{ $page }}</a>
                                 @endif
                             @endforeach
 
                             {{-- Tombol Next --}}
                             @if ($pelayanan->hasMorePages())
                                 <a href="{{ $pelayanan->nextPageUrl() }}"
-                                class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">&raquo;</a>
+                                class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">&raquo;</a>
                             @else
                                 <span class="px-3 py-2 bg-gray-200 text-gray-400 rounded-lg cursor-not-allowed">&raquo;</span>
                             @endif
@@ -212,11 +212,11 @@
             <!-- Mobile Card View - Updated to match pelayanan style -->
             <div class="mobile-card-view space-y-3">
                 @forelse ($pelayanan as $data)
-                    <div class="bg-white rounded-lg border border-blue-200 shadow-sm p-4">
+                    <div class="bg-white rounded-lg border border-red-200 shadow-sm p-4">
                         <div class="flex justify-between items-start mb-3">
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-2">
-                                    <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                    <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                                         {{ $loop->iteration }}
                                     </span>
                                     <h3 class="font-semibold text-gray-800 text-sm">{{ $data->nama }}</h3>
@@ -236,7 +236,7 @@
                                     <strong>Persyaratan:</strong>
                                     <div class="mt-1 flex flex-wrap gap-1">
                                         @foreach ($data->pelayananPersyaratan as $item)
-                                            <span class="px-2 py-1 bg-blue-500 text-white rounded text-xs">{{ $item->persyaratan->nama }}</span>
+                                            <span class="px-2 py-1 bg-red-500 text-white rounded text-xs">{{ $item->persyaratan->nama }}</span>
                                         @endforeach
                                     </div>
                                 </div>
@@ -255,7 +255,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="bg-white rounded-lg border border-blue-200 p-6 text-center text-gray-500">
+                    <div class="bg-white rounded-lg border border-red-200 p-6 text-center text-gray-500">
                         <i class="fa fa-inbox text-3xl mb-2 text-gray-300"></i>
                         <p>Tidak Ada Data</p>
                     </div>

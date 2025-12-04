@@ -7,7 +7,7 @@
 @section('content')
     <div class="mx-auto">
         <!-- Card -->
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 shadow-xl rounded-2xl p-6 border border-blue-200">
+        <div class="bg-gradient-to-br from-red-50 to-red-100 shadow-xl rounded-2xl p-6 border border-red-200">
             <!-- Form -->
             <form method="POST" action="{{ route('pelayanan.update', $pelayanan->id) }}" id="formPelayanan">
                 @csrf
@@ -15,7 +15,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Nama Pelayanan</label>
                     <input type="text" name="nama" value="{{ old('nama', $pelayanan->nama) }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" disabled>
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400" disabled>
                     @error('nama')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
@@ -23,7 +23,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Icon</label>
                     <input type="text" name="icon" value="{{ old('icon', $pelayanan->icon) }}"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400">
                     @error('icon')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
@@ -31,7 +31,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-600 mb-1">Deskripsi</label>
                     <textarea name="deskripsi"
-                        class="w-full border border-blue-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400">{{ old('deskripsi', $pelayanan->deskripsi) }}</textarea>
+                        class="w-full border border-red-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-400 focus:border-red-400">{{ old('deskripsi', $pelayanan->deskripsi) }}</textarea>
                     @error('deskripsi')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
@@ -60,7 +60,7 @@
                         Back
                     </a>
                     <button type="submit"
-                        class="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-600 shadow-md transition">
+                        class="bg-gradient-to-r from-red-600 to-red-500 text-white px-4 py-2 rounded-lg hover:from-red-700 hover:to-red-600 shadow-md transition">
                         <i class="fa fa-save"></i> Update
                     </button>
                 </div>
@@ -187,7 +187,7 @@
 
                 // Tambahkan border merah
                 field.classList.add('border-red-500', '!border-red-500');
-                field.classList.remove('border-blue-300');
+                field.classList.remove('border-red-300');
 
                 // Buat elemen error baru
                 const errorElement = document.createElement('p');
@@ -226,7 +226,7 @@
             if (iconInput) {
                 iconInput.addEventListener('input', function() {
                     this.classList.remove('border-red-500', '!border-red-500');
-                    this.classList.add('border-blue-300');
+                    this.classList.add('border-red-300');
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
                     if (errorMsg) errorMsg.remove();
                 });
@@ -235,7 +235,7 @@
             if (deskripsiInput) {
                 deskripsiInput.addEventListener('input', function() {
                     this.classList.remove('border-red-500', '!border-red-500');
-                    this.classList.add('border-blue-300');
+                    this.classList.add('border-red-300');
                     const errorMsg = this.parentElement.querySelector('.error-message-custom');
                     if (errorMsg) errorMsg.remove();
                 });
