@@ -19,10 +19,7 @@ class Mahasiswa extends Model
         return $this->hasMany(DokumenPersyaratan::class, 'nim');
     }
 
-    public function keteranganBeasiswa()
-    {
-        return $this->belongsTo(KeteranganBeasiswa::class, 'mahasiswa_nim', 'id');
-    }
+
 
     public function alumni()
     {

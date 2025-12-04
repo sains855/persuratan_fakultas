@@ -1,27 +1,28 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Backend\TtdController;
-use App\Http\Controllers\Backend\BeritaController;
-use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\LandingPageController;
-use App\Http\Controllers\Backend\ListPengajuanController;
-use App\Http\Controllers\Backend\PersyaratanController;
-use App\Http\Controllers\Backend\PelayananController;
-use App\Http\Controllers\Backend\MahasiswaController;
-use App\Http\Controllers\Frontend\BerandaController;
-use App\Http\Controllers\Frontend\DetailBeritaController;
-use App\Http\Controllers\Frontend\ListpelayananController as FrontendListpelayananController;
-use App\Http\Controllers\Frontend\PengajuanController;
-use App\Http\Controllers\Frontend\ListaparaturController;
-use App\Http\Controllers\ListpelayananController;
+use App\Models\ttd;
+use App\Models\Pengajuan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\PermohonanController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\FcmController;
+use App\Http\Controllers\Backend\TtdController;
+use App\Http\Controllers\ListpelayananController;
+use App\Http\Controllers\Backend\BeritaController;
+use App\Http\Controllers\Frontend\BerandaController;
+use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\MahasiswaController;
+use App\Http\Controllers\Backend\PelayananController;
+use App\Http\Controllers\Backend\PermohonanController;
+use App\Http\Controllers\Frontend\PengajuanController;
+use App\Http\Controllers\Frontend\KeteranganBeasiswaController;
+use App\Http\Controllers\Backend\LandingPageController;
+use App\Http\Controllers\Backend\PersyaratanController;
+use App\Http\Controllers\Backend\ListPengajuanController;
+use App\Http\Controllers\Frontend\DetailBeritaController;
+use App\Http\Controllers\Frontend\ListaparaturController;
 use App\Http\Controllers\Frontend\DetailAparaturController;
-use App\Models\Pengajuan;
-use App\Models\ttd;
+use App\Http\Controllers\Frontend\ListpelayananController as FrontendListpelayananController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -81,6 +82,12 @@ Route::get('/', [FrontendListpelayananController::class, 'index'])->name('berand
 Route::post('/list-pengajuan/{id}/cetak-stream', [ListPengajuanController::class, 'handleCetakStream'])->name('list-pengajuan.cetak.stream');
 Route::post('/list-pengajuan/{id}/cetak-download', [ListPengajuanController::class, 'handleCetakDownload'])->name('list-pengajuan.cetak.download');
 Route::get('/list-pengajuan/stream/{persyaratan_id}/{pengajuan_id}', [ListPengajuanController::class, 'stream'])->name('list-pengajuan.stream');
+
+Route::get('/keterangan-beasiswa', [KeteranganBeasiswaController::class, 'create'])->name('frontend.keteranganbeasiswa.create');
+Route::post('/keterangan-beasiswa/cek-nim', [KeteranganBeasiswaController::class, 'cekNim'])->name('frontend.keteranganbeasiswa.cekNim');
+Route::get('/keterangan-beasiswa/detail/{nim}', [KeteranganBeasiswaController::class, 'detail'])->name('frontend.keteranganbeasiswa.detail');
+Route::post('/keterangan-beasiswa/store-mahasiswa', [KeteranganBeasiswaController::class, 'storeMahasiswa'])->name('frontend.keteranganbeasiswa.storeMahasiswa');
+Route::post('/keterangan-beasiswa/store', [KeteranganBeasiswaController::class, 'store'])->name('frontend.keteranganbeasiswa.store');
 
 // Route dengan middleware auth
 Route::middleware(['auth'])->group(function () {
