@@ -51,10 +51,29 @@ Route::get('/pengajuan/{id}/detail/{nim?}', [PengajuanController::class, 'detail
 // Simpan data orang tua (khusus SK Aktif Kuliah)
 Route::post('/pengajuan/store-orangtua', [PengajuanController::class, 'storeOrangTua'])
     ->name('pengajuan.storeOrangTua');
-// Route untuk update data orang tua dan alumni
-Route::put('/pengajuan/{id}/detail/{nim?}', [PengajuanController::class, 'updateOrangTua'])->name('pengajuan.orangtua.update');
-Route::put('/pengajuan/alumni/{nim}', [PengajuanController::class, 'updateAlumni'])->name('pengajuan.alumni.update');
+// ... rute yang sudah ada
 
+// =========================================================================
+// MEKANISME EDIT DATA ORANG TUA DAN ALUMNI
+// =========================================================================
+
+// Halaman form edit data orang tua
+Route::get('/pengajuan/{id}/edit-orangtua/{nim}', [PengajuanController::class, 'editOrangTua'])
+    ->name('pengajuan.editOrangTua');
+
+// Proses update data orang tua
+Route::put('/pengajuan/{id}/update-orangtua/{nim}', [PengajuanController::class, 'updateOrangTua'])
+    ->name('pengajuan.updateOrangTua');
+
+// Halaman form edit data alumni
+Route::get('/pengajuan/{id}/edit-alumni/{nim}', [PengajuanController::class, 'editAlumni'])
+    ->name('pengajuan.editAlumni');
+
+// Proses update data alumni
+Route::put('/pengajuan/{id}/update-alumni/{nim}', [PengajuanController::class, 'updateAlumni'])
+    ->name('pengajuan.updateAlumni');
+
+// ... rute yang sudah ada
 // Simpan data alumni (khusus SK Alumni)
 Route::post('/pengajuan/store-alumni', [PengajuanController::class, 'storeAlumni'])
     ->name('pengajuan.storeAlumni');

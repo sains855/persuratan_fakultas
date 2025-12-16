@@ -52,7 +52,8 @@
 
                 {{-- Flash error (single message) --}}
                 @if (session('error'))
-                    <div class="auto-hide mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg flex items-start justify-between">
+                    <div
+                        class="auto-hide mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg flex items-start justify-between">
                         <div class="flex-1">
                             <p class="font-medium">{{ session('error') }}</p>
                         </div>
@@ -99,7 +100,8 @@
 
                             {{-- Nama Mahasiswa --}}
                             <div class="mb-4">
-                                <label for="nama" class="block text-sm font-medium text-gray-600">Nama Lengkap <span class="text-red-500">*</span></label>
+                                <label for="nama" class="block text-sm font-medium text-gray-600">Nama Lengkap <span
+                                        class="text-red-500">*</span></label>
                                 <input type="text" name="nama" id="nama" value="{{ old('nama') }}" required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('nama') border-red-500 @enderror"
                                     placeholder="Masukkan Nama Lengkap">
@@ -110,8 +112,10 @@
 
                             {{-- Tempat Lahir --}}
                             <div class="mb-4">
-                                <label for="tempat_lahir" class="block text-sm font-medium text-gray-600">Tempat Lahir <span class="text-red-500">*</span></label>
-                                <input type="text" name="tempat_lahir" id="tempat_lahir" value="{{ old('tempat_lahir') }}" required
+                                <label for="tempat_lahir" class="block text-sm font-medium text-gray-600">Tempat Lahir <span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" name="tempat_lahir" id="tempat_lahir"
+                                    value="{{ old('tempat_lahir') }}" required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('tempat_lahir') border-red-500 @enderror"
                                     placeholder="Masukkan Tempat Lahir">
                                 @error('tempat_lahir')
@@ -121,9 +125,10 @@
 
                             {{-- Tanggal Lahir --}}
                             <div class="mb-4">
-                                <label for="tgl_lahir" class="block text-sm font-medium text-gray-600">Tanggal Lahir <span class="text-red-500">*</span></label>
-                                <input type="date" name="tgl_lahir" id="tgl_lahir" value="{{ old('tgl_lahir') }}" required
-                                    max="{{ date('Y-m-d') }}"
+                                <label for="tgl_lahir" class="block text-sm font-medium text-gray-600">Tanggal Lahir <span
+                                        class="text-red-500">*</span></label>
+                                <input type="date" name="tgl_lahir" id="tgl_lahir" value="{{ old('tgl_lahir') }}"
+                                    required max="{{ date('Y-m-d') }}"
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('tgl_lahir') border-red-500 @enderror">
                                 @error('tgl_lahir')
                                     <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
@@ -132,7 +137,8 @@
 
                             {{-- Fakultas --}}
                             <div class="mb-4">
-                                <label for="Fakultas" class="block text-sm font-medium text-gray-600">Fakultas <span class="text-red-500">*</span></label>
+                                <label for="Fakultas" class="block text-sm font-medium text-gray-600">Fakultas <span
+                                        class="text-red-500">*</span></label>
                                 <input type="text" name="Fakultas" id="Fakultas" value="{{ old('Fakultas') }}" required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('Fakultas') border-red-500 @enderror"
                                     placeholder="Masukkan Fakultas">
@@ -143,8 +149,10 @@
 
                             {{-- Program Studi/Jurusan --}}
                             <div class="mb-4">
-                                <label for="Prodi_jurusan" class="block text-sm font-medium text-gray-600">Program Studi/Jurusan <span class="text-red-500">*</span></label>
-                                <input type="text" name="Prodi_jurusan" id="Prodi_jurusan" value="{{ old('Prodi_jurusan') }}" required
+                                <label for="Prodi_jurusan" class="block text-sm font-medium text-gray-600">Program
+                                    Studi/Jurusan <span class="text-red-500">*</span></label>
+                                <input type="text" name="Prodi_jurusan" id="Prodi_jurusan"
+                                    value="{{ old('Prodi_jurusan') }}" required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('Prodi_jurusan') border-red-500 @enderror"
                                     placeholder="Masukkan Program Studi/Jurusan">
                                 @error('Prodi_jurusan')
@@ -154,7 +162,8 @@
 
                             {{-- Alamat --}}
                             <div class="mb-4">
-                                <label for="alamat" class="block text-sm font-medium text-gray-600">Alamat <span class="text-red-500">*</span></label>
+                                <label for="alamat" class="block text-sm font-medium text-gray-600">Alamat <span
+                                        class="text-red-500">*</span></label>
                                 <textarea name="alamat" id="alamat" rows="3" required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('alamat') border-red-500 @enderror"
                                     placeholder="Masukkan Alamat Lengkap">{{ old('alamat') }}</textarea>
@@ -165,8 +174,10 @@
 
                             {{-- Nomor HP --}}
                             <div class="mb-4">
-                                <label for="No_Hp" class="block text-sm font-medium text-gray-600">Nomor HP <span class="text-red-500">*</span></label>
-                                <input type="text" name="No_Hp" id="No_Hp" value="{{ old('No_Hp') }}" required
+                                <label for="No_Hp" class="block text-sm font-medium text-gray-600">Nomor HP <span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" name="No_Hp" id="No_Hp" value="{{ old('No_Hp') }}"
+                                    required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('No_Hp') border-red-500 @enderror"
                                     placeholder="contoh: 081234567890">
                                 @error('No_Hp')
@@ -176,8 +187,10 @@
 
                             {{-- Email --}}
                             <div class="mb-4">
-                                <label for="email" class="block text-sm font-medium text-gray-600">Email <span class="text-red-500">*</span></label>
-                                <input type="email" name="email" id="email" value="{{ old('email') }}" required
+                                <label for="email" class="block text-sm font-medium text-gray-600">Email <span
+                                        class="text-red-500">*</span></label>
+                                <input type="email" name="email" id="email" value="{{ old('email') }}"
+                                    required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('email') border-red-500 @enderror"
                                     placeholder="contoh: mahasiswa@email.com">
                                 @error('email')
@@ -195,7 +208,7 @@
                         </div>
                     </form>
 
-                {{-- ✅ JIKA DATA ORANG TUA PERLU DIISI DULU (Surat Keterangan Aktif Kuliah) --}}
+                    {{-- ✅ JIKA DATA ORANG TUA PERLU DIISI DULU (Surat Keterangan Aktif Kuliah) --}}
                 @elseif ($showOrangTuaForm)
                     <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                         <p class="text-sm text-blue-700">
@@ -222,8 +235,10 @@
 
                             {{-- Nama Orang Tua --}}
                             <div class="mb-4">
-                                <label for="nama" class="block text-sm font-medium text-gray-600">Nama Orang Tua <span class="text-red-500">*</span></label>
-                                <input type="text" name="nama" id="nama" value="{{ old('nama') }}" required
+                                <label for="nama" class="block text-sm font-medium text-gray-600">Nama Orang Tua <span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" name="nama" id="nama" value="{{ old('nama') }}"
+                                    required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('nama') border-red-500 @enderror"
                                     placeholder="Masukkan Nama Orang Tua">
                                 @error('nama')
@@ -233,8 +248,10 @@
 
                             {{-- pekerjaaan --}}
                             <div class="mb-4">
-                                <label for="pekerjaaan" class="block text-sm font-medium text-gray-600">pekerjaan <span class="text-red-500">*</span></label>
-                                <input type="text" name="pekerjaaan" id="pekerjaaan" value="{{ old('pekerjaaan') }}" required
+                                <label for="pekerjaaan" class="block text-sm font-medium text-gray-600">pekerjaan <span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" name="pekerjaaan" id="pekerjaaan" value="{{ old('pekerjaaan') }}"
+                                    required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('pekerjaaan') border-red-500 @enderror"
                                     placeholder="Masukkan pekerjaaan">
                                 @error('pekerjaaan')
@@ -244,8 +261,10 @@
 
                             {{-- NIP/No. Pensiun/NRP --}}
                             <div class="mb-4">
-                                <label for="NIP_NOPensiun_NRP" class="block text-sm font-medium text-gray-600">NIP/No. Pensiun/NRP</label>
-                                <input type="text" name="NIP_NOPensiun_NRP" id="NIP_NOPensiun_NRP" value="{{ old('NIP_NOPensiun_NRP') }}"
+                                <label for="NIP_NOPensiun_NRP" class="block text-sm font-medium text-gray-600">NIP/No.
+                                    Pensiun/NRP</label>
+                                <input type="text" name="NIP_NOPensiun_NRP" id="NIP_NOPensiun_NRP"
+                                    value="{{ old('NIP_NOPensiun_NRP') }}"
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('NIP_NOPensiun_NRP') border-red-500 @enderror"
                                     placeholder="Masukkan NIP/No. Pensiun/NRP (jika ada)">
                                 @error('NIP_NOPensiun_NRP')
@@ -277,7 +296,8 @@
 
                             {{-- Alamat --}}
                             <div class="mb-4">
-                                <label for="alamat" class="block text-sm font-medium text-gray-600">Alamat <span class="text-red-500">*</span></label>
+                                <label for="alamat" class="block text-sm font-medium text-gray-600">Alamat <span
+                                        class="text-red-500">*</span></label>
                                 <textarea name="alamat" id="alamat" rows="3" required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('alamat') border-red-500 @enderror"
                                     placeholder="Masukkan Alamat Lengkap">{{ old('alamat') }}</textarea>
@@ -288,7 +308,8 @@
 
                             {{-- Nomor HP Orang Tua --}}
                             <div class="mb-4">
-                                <label for="no_hp" class="block text-sm font-medium text-gray-600">Nomor HP Orang Tua</label>
+                                <label for="no_hp" class="block text-sm font-medium text-gray-600">Nomor HP Orang
+                                    Tua</label>
                                 <input type="text" name="no_hp" id="no_hp" value="{{ old('no_hp') }}"
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('no_hp') border-red-500 @enderror"
                                     placeholder="contoh: 081234567890">
@@ -307,7 +328,7 @@
                         </div>
                     </form>
 
-                {{-- ✅ JIKA DATA ALUMNI PERLU DIISI DULU (Surat Keterangan Alumni) --}}
+                    {{-- ✅ JIKA DATA ALUMNI PERLU DIISI DULU (Surat Keterangan Alumni) --}}
                 @elseif ($showAlumniForm)
                     <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                         <p class="text-sm text-blue-700">
@@ -334,8 +355,10 @@
 
                             {{-- No Ijazah --}}
                             <div class="mb-4">
-                                <label for="no_ijazah" class="block text-sm font-medium text-gray-600">Nomor Ijazah <span class="text-red-500">*</span></label>
-                                <input type="text" name="no_ijazah" id="no_ijazah" value="{{ old('no_ijazah') }}" required
+                                <label for="no_ijazah" class="block text-sm font-medium text-gray-600">Nomor Ijazah <span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" name="no_ijazah" id="no_ijazah" value="{{ old('no_ijazah') }}"
+                                    required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('no_ijazah') border-red-500 @enderror"
                                     placeholder="Masukkan Nomor Ijazah">
                                 @error('no_ijazah')
@@ -345,10 +368,11 @@
 
                             {{-- Tahun Studi Mulai --}}
                             <div class="mb-4">
-                                <label for="tahun_studi_mulai" class="block text-sm font-medium text-gray-600">Tahun Studi Mulai <span class="text-red-500">*</span></label>
+                                <label for="tahun_studi_mulai" class="block text-sm font-medium text-gray-600">Tahun Studi
+                                    Mulai <span class="text-red-500">*</span></label>
                                 <input type="number" name="tahun_studi_mulai" id="tahun_studi_mulai"
-                                    value="{{ old('tahun_studi_mulai') }}" required
-                                    min="1900" max="{{ date('Y') }}"
+                                    value="{{ old('tahun_studi_mulai') }}" required min="1900"
+                                    max="{{ date('Y') }}"
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('tahun_studi_mulai') border-red-500 @enderror"
                                     placeholder="contoh: 2018">
                                 @error('tahun_studi_mulai')
@@ -358,10 +382,11 @@
 
                             {{-- Tahun Studi Selesai --}}
                             <div class="mb-4">
-                                <label for="tahun_studi_selesai" class="block text-sm font-medium text-gray-600">Tahun Studi Selesai <span class="text-red-500">*</span></label>
+                                <label for="tahun_studi_selesai" class="block text-sm font-medium text-gray-600">Tahun
+                                    Studi Selesai <span class="text-red-500">*</span></label>
                                 <input type="number" name="tahun_studi_selesai" id="tahun_studi_selesai"
-                                    value="{{ old('tahun_studi_selesai') }}" required
-                                    min="1900" max="{{ date('Y') }}"
+                                    value="{{ old('tahun_studi_selesai') }}" required min="1900"
+                                    max="{{ date('Y') }}"
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('tahun_studi_selesai') border-red-500 @enderror"
                                     placeholder="contoh: 2022">
                                 @error('tahun_studi_selesai')
@@ -371,7 +396,8 @@
 
                             {{-- Tanggal Yudisium --}}
                             <div class="mb-4">
-                                <label for="tgl_yudisium" class="block text-sm font-medium text-gray-600">Tanggal Yudisium <span class="text-red-500">*</span></label>
+                                <label for="tgl_yudisium" class="block text-sm font-medium text-gray-600">Tanggal Yudisium
+                                    <span class="text-red-500">*</span></label>
                                 <input type="date" name="tgl_yudisium" id="tgl_yudisium"
                                     value="{{ old('tgl_yudisium') }}" required
                                     class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('tgl_yudisium') border-red-500 @enderror">
@@ -390,10 +416,11 @@
                         </div>
                     </form>
 
-                {{-- ✅ JIKA DATA LENGKAP - TAMPILKAN FORM PENGAJUAN NORMAL --}}
+                    {{-- ✅ JIKA DATA LENGKAP - TAMPILKAN FORM PENGAJUAN NORMAL --}}
                 @else
                     {{-- Form Pengajuan --}}
-                    <form action="{{ route('pengajuan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                    <form action="{{ route('pengajuan.store') }}" method="POST" enctype="multipart/form-data"
+                        class="space-y-5">
                         @csrf
                         <input type="hidden" name="pelayanan_id" value="{{ $pelayanan->id }}">
                         <input type="hidden" name="nim" value="{{ $mahasiswa->nim }}">
@@ -413,34 +440,54 @@
                         </div>
 
                         {{-- ✅ TAMPILKAN DATA TAMBAHAN SESUAI JENIS SURAT --}}
-                        @if ($pelayanan->nama == "Surat Keterangan Aktif Kuliah" && $orangTua)
+                        {{-- ✅ TAMPILKAN DATA TAMBAHAN SESUAI JENIS SURAT --}}
+                        @if ($pelayanan->nama == 'Surat Keterangan Aktif Kuliah' && $orangTua)
                             <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                                <p class="text-sm font-medium text-blue-700 mb-2">Data Orang Tua:</p>
+                                {{-- Tombol Edit ditambahkan di sini --}}
+                                <div class="flex justify-between items-center mb-2">
+                                    <p class="text-sm font-medium text-blue-700">Data Orang Tua:</p>
+                                    <a href="{{ route('pengajuan.editOrangTua', ['id' => $pelayanan->id, 'nim' => $mahasiswa->nim]) }}"
+                                        class="text-xs text-blue-600 hover:text-blue-800 font-semibold border-b border-blue-600">
+                                        Edit
+                                    </a>
+                                </div>
+                                {{-- Akhir Tombol Edit --}}
                                 <div class="text-sm text-gray-600 space-y-1">
                                     <p><span class="font-medium">Nama:</span> {{ $orangTua->nama }}</p>
                                     <p><span class="font-medium">pekerjan:</span> {{ $orangTua->pekerjaaan }}</p>
-                                    @if($orangTua->instansi)
+                                    @if ($orangTua->instansi)
                                         <p><span class="font-medium">Instansi:</span> {{ $orangTua->instansi }}</p>
                                     @endif
                                 </div>
                             </div>
                         @endif
-
-                        @if ($pelayanan->nama == "Surat Keterangan Alumni" && $alumni)
+                        @if ($pelayanan->nama == 'Surat Keterangan Alumni' && $alumni)
                             <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
-                                <p class="text-sm font-medium text-green-700 mb-2">Data Alumni:</p>
+                                {{-- Tombol Edit ditambahkan di sini --}}
+                                <div class="flex justify-between items-center mb-2">
+                                    <p class="text-sm font-medium text-green-700">Data Alumni:</p>
+                                    <a href="{{ route('pengajuan.editAlumni', ['id' => $pelayanan->id, 'nim' => $mahasiswa->nim]) }}"
+                                        class="text-xs text-green-600 hover:text-green-800 font-semibold border-b border-green-600">
+                                        Edit
+                                    </a>
+                                </div>
+                                {{-- Akhir Tombol Edit --}}
                                 <div class="text-sm text-gray-600 space-y-1">
                                     <p><span class="font-medium">No. Ijazah:</span> {{ $alumni->no_ijazah }}</p>
-                                    <p><span class="font-medium">Periode Studi:</span> {{ $alumni->tahun_studi_mulai }} - {{ $alumni->tahun_studi_selesai }}</p>
-                                    <p><span class="font-medium">Tanggal Yudisium:</span> {{ \Carbon\Carbon::parse($alumni->tgl_yudisium)->format('d F Y') }}</p>
+                                    <p><span class="font-medium">Periode Studi:</span> {{ $alumni->tahun_studi_mulai }} -
+                                        {{ $alumni->tahun_studi_selesai }}</p>
+                                    <p><span class="font-medium">Tanggal Yudisium:</span>
+                                        {{ \Carbon\Carbon::parse($alumni->tgl_yudisium)->format('d F Y') }}</p>
                                 </div>
                             </div>
                         @endif
 
                         {{-- Nomor WhatsApp --}}
                         <div>
-                            <label for="no_hp" class="block text-sm font-medium text-gray-600">Nomor WhatsApp <span class="text-red-500">*</span></label>
-                            <input type="text" name="no_hp" id="no_hp" value="{{ old('no_hp', $mahasiswa->No_Hp ?? '') }}" required
+                            <label for="no_hp" class="block text-sm font-medium text-gray-600">Nomor WhatsApp <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" name="no_hp" id="no_hp"
+                                value="{{ old('no_hp', $mahasiswa->No_Hp ?? '') }}" required
                                 class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('no_hp') border-red-500 @enderror"
                                 placeholder="contoh: 081234567890">
                             @error('no_hp')

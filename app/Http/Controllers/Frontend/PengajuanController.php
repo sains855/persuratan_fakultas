@@ -136,8 +136,11 @@ class PengajuanController extends Controller
      * Simpan data orang tua (untuk Surat Keterangan Aktif Kuliah)
      * Disesuaikan dengan struktur migration orang_tuas
      */
-    public function storeOrangTua(Request $request)
+    public function updateOrangTua(Request $request, $id = null, $nim = null)
     {
+        // Jika $nim tidak ada (berarti dari storeMahasiswa), ambil dari request
+        $currentNim = $nim ?? $request->nim;
+
         $request->validate([
             'nim' => 'required|exists:mahasiswas,nim',
             'nama' => 'required|string|max:255',
@@ -157,23 +160,20 @@ class PengajuanController extends Controller
         ]);
 
         try {
-            // Cek apakah data orang tua sudah ada
-            $existingOrangTua = OrangTua::where('mahasiswa_nim', $request->nim)->first();
+            $orangTua = OrangTua::where('mahasiswa_nim', $currentNim)->first();
+            $isUpdate = (bool)$orangTua; // True jika data sudah ada (mode update)
 
-            if ($existingOrangTua) {
-                return back()->with('error', 'Data orang tua sudah tersimpan sebelumnya. Gunakan tombol edit untuk mengubah data.');
-            }
-
-            // Validasi NIP/No Pensiun/NRP jika diisi, harus unik
+            // Validasi NIP/No Pensiun/NRP jika diisi, harus unik (kecuali milik sendiri)
             if ($request->NIP_NOPensiun_NRP) {
-                $existingNIP = OrangTua::where('NIP_NOPensiun_NRP', $request->NIP_NOPensiun_NRP)->first();
+                $existingNIP = OrangTua::where('NIP_NOPensiun_NRP', $request->NIP_NOPensiun_NRP)
+                    ->where('mahasiswa_nim', '!=', $currentNim)
+                    ->first();
                 if ($existingNIP) {
-                    return back()->with('error', 'NIP/No. Pensiun/NRP sudah terdaftar.')->withInput();
+                    return back()->with('error', 'NIP/No. Pensiun/NRP sudah terdaftar untuk orang tua mahasiswa lain.')->withInput();
                 }
             }
 
-            // Simpan data orang tua
-            OrangTua::create([
+            $dataToSave = [
                 'mahasiswa_nim' => $request->nim,
                 'nama' => $request->nama,
                 'pekerjaaan' => $request->pekerjaaan,
@@ -182,31 +182,48 @@ class PengajuanController extends Controller
                 'instansi' => $request->instansi,
                 'alamat' => $request->alamat,
                 'no_hp' => $request->no_hp,
-            ]);
+            ];
 
-            Log::info('Data orang tua berhasil disimpan', [
-                'nim' => $request->nim,
-                'nama' => $request->nama,
-                'pekerjaaan' => $request->pekerjaaan
-            ]);
+            if ($isUpdate) {
+                // Lakukan update
+                $orangTua->update($dataToSave);
 
-            return back()->with('success_orangtua', 'Data orang tua berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
+                Log::info('Data orang tua berhasil diupdate', [
+                    'nim' => $currentNim,
+                    'nama' => $request->nama
+                ]);
 
+                return redirect()->route('pengajuan.detail', ['id' => $id, 'nim' => $currentNim])
+                    ->with('success_orangtua', 'Data orang tua berhasil **diperbarui**.');
+            } else {
+                // Lakukan create (seperti di storeMahasiswa)
+                OrangTua::create($dataToSave);
+
+                Log::info('Data orang tua berhasil disimpan (Create)', [
+                    'nim' => $currentNim,
+                    'nama' => $request->nama
+                ]);
+
+                return back()->with('success_orangtua', 'Data orang tua berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
+            }
         } catch (\Exception $e) {
-            Log::error('Error saat menyimpan data orang tua', [
+            Log::error('Error saat menyimpan/mengupdate data orang tua', [
                 'error' => $e->getMessage(),
-                'nim' => $request->nim
+                'nim' => $currentNim
             ]);
 
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
-                         ->withInput();
+                ->withInput();
         }
     }
     /**
      * Simpan data alumni (untuk Surat Keterangan Alumni)
      */
-    public function storeAlumni(Request $request)
+    public function updateAlumni(Request $request, $id = null, $nim = null)
     {
+        // Jika $nim tidak ada (berarti dari storeMahasiswa), ambil dari request
+        $currentNim = $nim ?? $request->nim;
+
         $request->validate([
             'nim' => 'required|exists:mahasiswas,nim',
             'no_ijazah' => 'required|string|max:100',
@@ -218,50 +235,61 @@ class PengajuanController extends Controller
         // Validasi tambahan: tahun selesai harus >= tahun mulai
         if ($request->tahun_studi_selesai < $request->tahun_studi_mulai) {
             return back()->with('error', 'Tahun studi selesai tidak boleh lebih awal dari tahun studi mulai.')
-                         ->withInput();
+                ->withInput();
         }
 
         try {
-            // Cek apakah data alumni sudah ada
-            $existingAlumni = Alumni::where('mahasiswa_nim', $request->nim)->first();
+            $alumni = Alumni::where('mahasiswa_nim', $currentNim)->first();
+            $isUpdate = (bool)$alumni; // True jika data sudah ada (mode update)
 
-            if ($existingAlumni) {
-                return back()->with('error', 'Data alumni sudah tersimpan sebelumnya. Gunakan tombol edit untuk mengubah data.');
-            }
-
-            // Validasi nomor ijazah harus unik
-            $existingIjazah = Alumni::where('no_ijazah', $request->no_ijazah)->first();
+            // Validasi nomor ijazah harus unik (kecuali milik sendiri)
+            $existingIjazah = Alumni::where('no_ijazah', $request->no_ijazah)
+                ->where('mahasiswa_nim', '!=', $currentNim)
+                ->first();
             if ($existingIjazah) {
-                return back()->with('error', 'Nomor ijazah sudah terdaftar.')->withInput();
+                return back()->with('error', 'Nomor ijazah sudah terdaftar untuk alumni lain.')->withInput();
             }
 
-            // Simpan data alumni
-            Alumni::create([
+            $dataToSave = [
                 'mahasiswa_nim' => $request->nim,
                 'no_ijazah' => $request->no_ijazah,
                 'tahun_studi_mulai' => $request->tahun_studi_mulai,
                 'tahun_studi_selesai' => $request->tahun_studi_selesai,
                 'tgl_yudisium' => $request->tgl_yudisium,
-            ]);
+            ];
 
-            Log::info('Data alumni berhasil disimpan', [
-                'nim' => $request->nim,
-                'no_ijazah' => $request->no_ijazah
-            ]);
+            if ($isUpdate) {
+                // Lakukan update
+                $alumni->update($dataToSave);
 
-            return back()->with('success_alumni', 'Data alumni berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
+                Log::info('Data alumni berhasil diupdate', [
+                    'nim' => $currentNim,
+                    'no_ijazah' => $request->no_ijazah
+                ]);
 
+                return redirect()->route('pengajuan.detail', ['id' => $id, 'nim' => $currentNim])
+                    ->with('success_alumni', 'Data alumni berhasil **diperbarui**.');
+            } else {
+                // Lakukan create (seperti di storeMahasiswa)
+                Alumni::create($dataToSave);
+
+                Log::info('Data alumni berhasil disimpan (Create)', [
+                    'nim' => $currentNim,
+                    'no_ijazah' => $request->no_ijazah
+                ]);
+
+                return back()->with('success_alumni', 'Data alumni berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
+            }
         } catch (\Exception $e) {
-            Log::error('Error saat menyimpan data alumni', [
+            Log::error('Error saat menyimpan/mengupdate data alumni', [
                 'error' => $e->getMessage(),
-                'nim' => $request->nim
+                'nim' => $currentNim
             ]);
 
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
-                         ->withInput();
+                ->withInput();
         }
     }
-
     /**
      * Simpan data mahasiswa baru (jika NIM belum terdaftar)
      */
@@ -316,7 +344,6 @@ class PengajuanController extends Controller
             ]);
 
             return back()->with('success_mahasiswa', 'Data mahasiswa berhasil disimpan. Silakan lanjutkan mengisi form pengajuan.');
-
         } catch (\Exception $e) {
             Log::error('Error saat menyimpan data mahasiswa', [
                 'error' => $e->getMessage(),
@@ -324,7 +351,7 @@ class PengajuanController extends Controller
             ]);
 
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
-                         ->withInput();
+                ->withInput();
         }
     }
 
@@ -436,7 +463,6 @@ class PengajuanController extends Controller
             ]);
 
             return redirect()->back()->with('success', 'Berhasil mengajukan permohonan. Silakan tunggu proses verifikasi.');
-
         } catch (\Exception $e) {
             Log::error('Error saat membuat pengajuan', [
                 'error' => $e->getMessage(),
@@ -446,5 +472,27 @@ class PengajuanController extends Controller
 
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+    public function editOrangTua($id, $nim)
+    {
+        $pelayanan = Pelayanan::findOrFail($id);
+        $mahasiswa = Mahasiswa::where('nim', $nim)->firstOrFail();
+        $orangTua = OrangTua::where('mahasiswa_nim', $nim)->firstOrFail();
+
+        $title = "Edit Data Orang Tua untuk Pengajuan " . $pelayanan->nama;
+
+        // View ini perlu Anda buat (lihat bagian 3)
+        return view('frontend.orangtua.edit', compact('title', 'pelayanan', 'mahasiswa', 'orangTua'));
+    }
+    public function editAlumni($id, $nim)
+    {
+        $pelayanan = Pelayanan::findOrFail($id);
+        $mahasiswa = Mahasiswa::where('nim', $nim)->firstOrFail();
+        $alumni = Alumni::where('mahasiswa_nim', $nim)->firstOrFail();
+
+        $title = "Edit Data Alumni untuk Pengajuan " . $pelayanan->nama;
+
+        // View ini perlu Anda buat (lihat bagian 3)
+        return view('frontend.alumni.edit', compact('title', 'pelayanan', 'mahasiswa', 'alumni'));
     }
 }
