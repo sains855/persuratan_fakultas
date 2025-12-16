@@ -79,8 +79,8 @@ class ListPengajuanController extends Controller
     private function isMobileAppRequest(Request $request)
     {
         return $request->hasHeader('X-Requested-With') &&
-               $request->header('X-Requested-With') === 'XMLHttpRequest' &&
-               (str_contains($request->userAgent() ?? '', 'MEAMBO-Mobile-App') ||
+            $request->header('X-Requested-With') === 'XMLHttpRequest' &&
+            (str_contains($request->userAgent() ?? '', 'MEAMBO-Mobile-App') ||
                 str_contains($request->header('User-Agent') ?? '', 'MEAMBO-Mobile-App'));
     }
 
@@ -94,7 +94,7 @@ class ListPengajuanController extends Controller
         return $this->generatePdf($request, $id, 'download');
     }
 
-   /**
+    /**
      * Method private terpusat untuk men-generate PDF.
      * ✅ SUDAH DISESUAIKAN DENGAN TEMPLATE BARU (FMIPA UHO)
      */
@@ -147,12 +147,12 @@ class ListPengajuanController extends Controller
                 $dataForView['tanggal_lahir'] = Carbon::parse($mahasiswa->tgl_lahir)->isoFormat('D MMMM Y');
                 $dataForView['jenis_kelamin'] = ucwords(strtolower($mahasiswa->jenis_kelamin));
                 $dataForView['agama'] = ucwords(strtolower($mahasiswa->agama));
-$dataForView['prodi'] = ucwords(strtolower($mahasiswa->Prodi_jurusan ?? '-'));
+                $dataForView['prodi'] = ucwords(strtolower($mahasiswa->Prodi_jurusan ?? '-'));
                 $dataForView['semester'] = $mahasiswa->semester;
                 $dataForView['alamat'] = $mahasiswa->alamat;
 
                 // Tambahan Data Baru yang dibutuhkan Template
-$dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->No_Hp ?? '-';
+                $dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->No_Hp ?? '-';
                 $dataForView['email'] = $mahasiswa->email ?? '-';
                 $dataForView['ipk'] = $mahasiswa->ipk ?? '-'; // Pastikan ada kolom ipk di tabel mahasiswas
 
@@ -164,15 +164,14 @@ $dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->No_Hp ?? '-';
             // Template baru butuh NIP Ayah, Pangkat, Instansi
             if ($pelayananNama === "Surat Keterangan Aktif Kuliah" && $mahasiswa->orangTua) {
                 $ortu = $mahasiswa->orangTua;
-                $dataForView['nama_ayah'] = ucwords(strtolower($ortu->nama_ayah));
-                $dataForView['pekerjaan_ayah'] = ucwords(strtolower($ortu->pekerjaan_ayah));
-                $dataForView['alamat_orangtua'] = $ortu->alamat_ayah ?? $mahasiswa->alamat; // Fallback ke alamat mhs
+                $dataForView['nama_orangtua'] = ucwords(strtolower($ortu->nama_ayah));
+                $dataForView['pekerjaan_orangtua'] = ucwords(strtolower($ortu->pekerjaan_ayah));
+                $dataForView['nip_orangtua'] = $ortu->nip_ayah ?? '-';
+                $dataForView['pangkat_orangtua'] = $ortu->pangkat_ayah ?? '-';
+                $dataForView['instansi_orangtua'] = $ortu->instansi_ayah ?? '-';
+                $dataForView['no_orangtua'] = $ortu->no_hp_ayah ?? '-';
+                $dataForView['alamat_orangtua'] = $ortu->alamat_ayah ?? $mahasiswa->alamat;
 
-                // Field tambahan (Pastikan kolom ini ada di database, atau kosongkan jika tidak ada)
-                $dataForView['nip_ayah'] = $ortu->nip_ayah ?? '-';
-                $dataForView['pangkat_ayah'] = $ortu->pangkat_ayah ?? '-';
-                $dataForView['instansi_ayah'] = $ortu->instansi_ayah ?? '-';
-                $dataForView['nohp_ayah'] = $ortu->no_hp_ayah ?? '-';
 
                 // Semester Romawi & Tahun Akademik (Manual atau dari Database)
                 $dataForView['semester_romawi'] = $this->toRoman($mahasiswa->semester);
@@ -192,9 +191,9 @@ $dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->No_Hp ?? '-';
 
             // 5. Data Khusus: Mahasiswa Prestasi
             if ($pelayananNama === "Surat Keterangan Mahasiswa Prestasi") {
-                 // Ambil tahun masuk dari NIM (misal F1G120... berarti 2020) atau dari database
-                 $angkatan = '20' . substr($mahasiswa->nim, 4, 2);
-                 $dataForView['tahun_masuk'] = $angkatan;
+                // Ambil tahun masuk dari NIM (misal F1G120... berarti 2020) atau dari database
+                $angkatan = '20' . substr($mahasiswa->nim, 4, 2);
+                $dataForView['tahun_masuk'] = $angkatan;
             }
 
             // Replace Placeholder Keterangan
@@ -220,7 +219,6 @@ $dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->No_Hp ?? '-';
             } else {
                 return $pdf->stream('surat_' . $pengajuan->id . '.pdf');
             }
-
         } catch (\Exception $e) {
             Log::error('Gagal generate PDF: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal: ' . $e->getMessage());
@@ -228,7 +226,8 @@ $dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->No_Hp ?? '-';
     }
 
     // Helper: Mengubah Angka ke Romawi (Untuk Semester)
-    private function toRoman($number) {
+    private function toRoman($number)
+    {
         $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
         $returnValue = '';
         while ($number > 0) {
@@ -244,17 +243,26 @@ $dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->No_Hp ?? '-';
     }
 
     // Helper: Terbilang IPK (Contoh: 3.50 -> Tiga Koma Lima Nol)
-    private function terbilangKoma($nilai) {
+    private function terbilangKoma($nilai)
+    {
         $nilai = number_format((float)$nilai, 2, '.', ''); // Pastikan 2 desimal
         $angka = [
-            '0' => 'Nol', '1' => 'Satu', '2' => 'Dua', '3' => 'Tiga', '4' => 'Empat',
-            '5' => 'Lima', '6' => 'Enam', '7' => 'Tujuh', '8' => 'Delapan', '9' => 'Sembilan'
+            '0' => 'Nol',
+            '1' => 'Satu',
+            '2' => 'Dua',
+            '3' => 'Tiga',
+            '4' => 'Empat',
+            '5' => 'Lima',
+            '6' => 'Enam',
+            '7' => 'Tujuh',
+            '8' => 'Delapan',
+            '9' => 'Sembilan'
         ];
 
         $text = "";
         $chars = str_split($nilai);
-        foreach($chars as $char) {
-            if($char == '.') {
+        foreach ($chars as $char) {
+            if ($char == '.') {
                 $text .= " Koma";
             } else {
                 $text .= " " . $angka[$char];
@@ -309,7 +317,6 @@ $dataForView['no_hp'] = $pengajuan->no_hp ?? $mahasiswa->No_Hp ?? '-';
                 'Cache-Control' => 'no-cache, must-revalidate',
                 'X-Content-Type-Options' => 'nosniff',
             ]);
-
         } catch (\Exception $e) {
             Log::error('Error stream dokumen', [
                 'persyaratan_id' => $persyaratan_id,

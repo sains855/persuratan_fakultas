@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\TtdController;
 use App\Http\Controllers\ListpelayananController;
 use App\Http\Controllers\Backend\BeritaController;
 use App\Http\Controllers\Frontend\BerandaController;
+use App\Http\Controllers\Backend\KeteranganController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\MahasiswaController;
 use App\Http\Controllers\Backend\PelayananController;
@@ -124,6 +125,16 @@ Route::middleware(['auth'])->group(function () {
         return $pdf->stream('surat.pdf');
     });
 
+
+
+    // ... rute lainnya
+
+    Route::controller(KeteranganController::class)->group(function () {
+        Route::get('/keterangan-beasiswa-admin', 'index')->name('keterangan_beasiswa.index');
+        Route::post('/keterangan-beasiswa-admin', 'store')->name('keterangan_beasiswa.store');
+        // Menggunakan GET untuk delete sementara untuk kemudahan tombol di view, tapi sebaiknya gunakan DELETE via Form/AJAX untuk RESTful
+        Route::get('/keterangan-beasiswa/{keteranganBeasiswa}/delete', 'delete')->name('keterangan_beasiswa.delete');
+    });
     Route::get('/logout', [AuthController::class, 'authLogout'])->name('auth.logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

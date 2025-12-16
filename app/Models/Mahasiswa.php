@@ -4,30 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Mahasiswa extends Model
 {
-    protected $table = 'mahasiswas'; // opsional, tapi bagus untuk eksplisit
+    protected $table = 'mahasiswas';
 
     protected $primaryKey = 'nim';
-    public $incrementing = false; // <- penting!
-    protected $keyType = 'string'; // <- penting!
+    public $incrementing = false;
+    protected $keyType = 'string';
 
-    protected $guarded = []; // nim bisa ikut diisi, atau pakai $fillable kalau mau lebih spesifik
+    protected $guarded = [];
 
     public function dokumenPersyaratan()
     {
-        return $this->hasMany(DokumenPersyaratan::class, 'nim');
-    }
-
-
-
-    public function alumni()
-    {
-        return $this->belongsTo(Alumni::class, 'mahasiswa_nim', 'id');
+        return $this->hasMany(DokumenPersyaratan::class, 'nim', 'nim');
     }
 
     public function orangTua()
     {
-        return $this->belongsTo(OrangTua::class, 'orang_tua_id', 'id');
+        return $this->hasOne(OrangTua::class, 'mahasiswa_nim', 'nim');
+    }
+
+    public function alumni()
+    {
+        return $this->hasOne(Alumni::class, 'mahasiswa_nim', 'nim');
     }
 }

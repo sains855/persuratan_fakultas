@@ -9,7 +9,7 @@
                 class="w-14 h-14 sm:w-16 sm:h-16 object-contain rounded-lg shadow-md">
         </div>
         <div class="flex flex-col">
-            <h2 class="text-lg font-semibold text-white leading-tight">Kel. Tipulu</h2>
+            <h2 class="text-lg font-semibold text-white leading-tight">FMIPA UHO</h2>
             <p class="text-xs text-gray-400">Dasbor Admin</p>
         </div>
     </div>
@@ -24,7 +24,7 @@
         {{-- Master Data --}}
         @php
             // Tentukan apakah salah satu submenu sedang aktif
-            $masterActive = in_array($title, ['Mahasiswa', 'Persyaratan', 'Pelayanan', 'Manajemen Landing Page', 'Berita', 'Aparatur']);
+            $masterActive = in_array($title, ['Mahasiswa', 'Persyaratan', 'Pelayanan', 'Manajemen Landing Page', 'Keterangan Beasiswa', 'Aparatur']);
         @endphp
 
         <div class="space-y-1">
@@ -51,8 +51,8 @@
                     class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Persyaratan' ? 'bg-red-800' : '' }}">Persyaratan</a>
                 <a href="{{ route('pelayanan') }}"
                     class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Pelayanan' ? 'bg-red-800' : '' }}">Pelayanan</a>
-                <a href="#"
-                    class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Berita' ? 'bg-red-800' : '' }}">Berita</a>
+                <a href="{{ route('keterangan_beasiswa.index') }}"
+                    class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Keterangan Beasiswa' ? 'bg-red-800' : '' }}">Keterangan Beasiswa</a>
                 <a href="{{ route('ttd') }}"
                     class="block px-3 py-2 rounded-md hover:bg-red-800 text-sm {{ $title == 'Ttd' ? 'bg-red-800' : '' }}">Tanda Tangan</a>
             </div>
