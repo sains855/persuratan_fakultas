@@ -160,6 +160,42 @@
                                 @enderror
                             </div>
 
+                            <div class="mb-4">
+                                <label for="semester" class="block text-sm font-medium text-gray-600">Semester
+                                    <span class="text-red-500">*</span></label>
+                                <input type="number" name="semester" id="semester"
+                                    value="{{ old('semester') }}" required
+                                    class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('Prodi_jurusan') border-red-500 @enderror"
+                                    placeholder="Masukkan semester">
+                                @error('semester')
+                                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="ipk" class="block text-sm font-medium text-gray-600">IPK <span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" name="ipk" id="ipk" value="{{ old('ipk') }}"
+                                    required
+                                    class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('nama') border-red-500 @enderror"
+                                    placeholder="Masukkan IPK">
+                                @error('ipk')
+                                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="ipk_terbilang" class="block text-sm font-medium text-gray-600">IPK Terbilang
+                                    <span class="text-red-500">*</span></label>
+                                <input type="text" name="ipk_terbilang" id="ipk_terbilang"
+                                    value="{{ old('ipk_terbilang') }}" required
+                                    class="mt-2 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none @error('nama') border-red-500 @enderror"
+                                    placeholder="Masukkan IPK Terbilang">
+                                @error('ipk_terbilang')
+                                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+
                             {{-- Alamat --}}
                             <div class="mb-4">
                                 <label for="alamat" class="block text-sm font-medium text-gray-600">Alamat <span
@@ -438,6 +474,22 @@
                             <input type="text" value="{{ $mahasiswa->nim }}" readonly
                                 class="mt-2 w-full px-4 py-2 border rounded-lg bg-gray-100">
                         </div>
+                        {{-- Data IPK dengan tombol edit --}}
+                        <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                            <div class="flex justify-between items-center mb-2">
+                                <p class="text-sm font-medium text-gray-700">Data IPK:</p>
+                                <a href="{{ route('pengajuan.editMahasiswa', ['id' => $pelayanan->id, 'nim' => $mahasiswa->nim]) }}"
+                                    class="text-xs text-blue-600 hover:text-blue-800 font-semibold border-b border-blue-600">
+                                    Edit
+                                </a>
+                            </div>
+                            <div class="text-sm text-gray-600 space-y-1">
+                                <p><span class="font-medium">IPK:</span>
+                                    {{ $mahasiswa->ipk }}</p>
+                                <p><span class="font-medium">IPK Terbilang:</span>
+                                    {{ $mahasiswa->ipk_terbilang }}</p>
+                            </div>
+                        </div>
 
                         {{-- ✅ TAMPILKAN DATA TAMBAHAN SESUAI JENIS SURAT --}}
                         {{-- ✅ TAMPILKAN DATA TAMBAHAN SESUAI JENIS SURAT --}}
@@ -494,7 +546,6 @@
                                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
-
                         {{-- Dokumen Persyaratan --}}
                         <div class="border-t border-gray-200 pt-4">
                             <h3 class="text-lg font-semibold text-gray-700 mb-4">Dokumen Persyaratan</h3>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('pekerjaaan');
-            $table->string('NIP_NOPensiun_NRP')->unique()->nullable();
+            $table->string('NIP_NOPensiun_NRP')->nullable();
             $table->string('pangkat')->nullable();
             $table->string('instansi')->nullable();
             $table->string('alamat');

@@ -164,14 +164,6 @@ class PengajuanController extends Controller
             $isUpdate = (bool)$orangTua; // True jika data sudah ada (mode update)
 
             // Validasi NIP/No Pensiun/NRP jika diisi, harus unik (kecuali milik sendiri)
-            if ($request->NIP_NOPensiun_NRP) {
-                $existingNIP = OrangTua::where('NIP_NOPensiun_NRP', $request->NIP_NOPensiun_NRP)
-                    ->where('mahasiswa_nim', '!=', $currentNim)
-                    ->first();
-                if ($existingNIP) {
-                    return back()->with('error', 'NIP/No. Pensiun/NRP sudah terdaftar untuk orang tua mahasiswa lain.')->withInput();
-                }
-            }
 
             $dataToSave = [
                 'mahasiswa_nim' => $request->nim,
@@ -301,6 +293,9 @@ class PengajuanController extends Controller
             'tempat_lahir' => 'required|string|max:255',
             'tgl_lahir' => 'required|date|before:today',
             'Fakultas' => 'required|string|max:255',
+            'semester' => 'required|string|max:10',
+            'ipk' => 'nullable|numeric',
+            'ipk_terbilang' => 'nullable|string|max:255',
             'Prodi_jurusan' => 'required|string|max:255',
             'alamat' => 'required|string',
             'No_Hp' => 'required|string|digits_between:10,15',
@@ -315,7 +310,6 @@ class PengajuanController extends Controller
             'Fakultas.required' => 'Fakultas harus dipilih.',
             'Prodi_jurusan.required' => 'Program Studi/Jurusan harus dipilih.',
             'alamat.required' => 'Alamat harus diisi.',
-            'ipk' => 'nullable|numeric|between:0,4',
             'No_Hp.required' => 'Nomor HP harus diisi.',
             'No_Hp.digits_between' => 'Nomor HP harus antara 10-15 digit.',
             'email.required' => 'Email harus diisi.',
@@ -330,6 +324,9 @@ class PengajuanController extends Controller
                 'nama' => $request->nama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tgl_lahir' => $request->tgl_lahir,
+                'semester' => $request->semester,
+                'ipk' => $request->ipk,
+                'ipk_terbilang' => $request->ipk_terbilang,
                 'Fakultas' => $request->Fakultas,
                 'Prodi_jurusan' => $request->Prodi_jurusan,
                 'alamat' => $request->alamat,
@@ -355,6 +352,16 @@ class PengajuanController extends Controller
         }
     }
 
+    public function editMahasiswa($id, $nim)
+    {
+        $pelayanan = Pelayanan::findOrFail($id);
+        $mahasiswa = Mahasiswa::where('nim', $nim)->firstOrFail();
+
+        $title = "Edit Data IPK Mahasiswa untuk Pengajuan " . $pelayanan->nama;
+
+        // Arahkan ke view baru untuk mengedit data IPK mahasiswa
+        return view('frontend.mahasiswa.edit', compact('title', 'pelayanan', 'mahasiswa'));
+    }
     /**
      * Simpan pengajuan surat
      */
@@ -494,5 +501,55 @@ class PengajuanController extends Controller
 
         // View ini perlu Anda buat (lihat bagian 3)
         return view('frontend.alumni.edit', compact('title', 'pelayanan', 'mahasiswa', 'alumni'));
+    }
+    // File: app/Http/Controllers/Frontend/PengajuanController.php (lanjutan)
+
+// ... kode sebelumnya ...
+
+    /**
+     * Update data IPK mahasiswa
+     */
+    public function updateMahasiswa(Request $request, $id, $nim)
+    {
+        $request->validate([
+            'nim' => 'required|exists:mahasiswas,nim',
+            'semester' => 'required|integer|min:1',
+            'ipk' => 'required|numeric|min:0.00|max:4.00',
+            'ipk_terbilang' => 'required|string|max:255',
+        ], [
+            'ipk.required' => 'IPK harus diisi.',
+            'ipk.numeric' => 'IPK harus berupa angka.',
+            'semester.required' => 'Semester harus diisi.',
+            'ipk.min' => 'IPK minimal 0.00.',
+            'ipk.max' => 'IPK maksimal 4.00.',
+            'ipk_terbilang.required' => 'IPK Terbilang harus diisi.',
+        ]);
+
+        try {
+            $mahasiswa = Mahasiswa::where('nim', $nim)->firstOrFail();
+
+            $mahasiswa->update([
+                'ipk' => $request->ipk,
+                'semester' => $request->semester,
+                'ipk_terbilang' => $request->ipk_terbilang,
+            ]);
+
+            Log::info('Data IPK mahasiswa berhasil diupdate', [
+                'nim' => $mahasiswa->nim,
+                'semester' => $request->semester,
+                'ipk' => $request->ipk
+            ]);
+
+            return redirect()->route('pengajuan.detail', ['id' => $id, 'nim' => $nim])
+                ->with('success_editipk', 'Data IPK dan IPK Terbilang mahasiswa berhasil **diperbarui**.');
+        } catch (\Exception $e) {
+            Log::error('Error saat mengupdate data IPK mahasiswa', [
+                'error' => $e->getMessage(),
+                'nim' => $nim
+            ]);
+
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 }

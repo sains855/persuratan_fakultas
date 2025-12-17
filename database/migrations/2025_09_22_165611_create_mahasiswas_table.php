@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('tempat_lahir');
             $table->date('tgl_lahir');
             $table->double('ipk')->nullable();
+            $table->string('ipk_terbilang')->nullable();
             $table->string('Fakultas');
             $table->string('Prodi_jurusan');
+            $table->string('semester');
             $table->text('alamat');
             $table->string('No_Hp');
             $table->string('email')->unique();

@@ -50,7 +50,7 @@ Route::get('/pengajuan/{id}/detail/{nim?}', [PengajuanController::class, 'detail
     ->name('pengajuan.detail');
 
 // Simpan data orang tua (khusus SK Aktif Kuliah)
-Route::post('/pengajuan/store-orangtua', [PengajuanController::class, 'storeOrangTua'])
+Route::post('/pengajuan/store-orangtua', [PengajuanController::class, 'updateOrangTua'])
     ->name('pengajuan.storeOrangTua');
 // ... rute yang sudah ada
 
@@ -74,9 +74,15 @@ Route::get('/pengajuan/{id}/edit-alumni/{nim}', [PengajuanController::class, 'ed
 Route::put('/pengajuan/{id}/update-alumni/{nim}', [PengajuanController::class, 'updateAlumni'])
     ->name('pengajuan.updateAlumni');
 
-// ... rute yang sudah ada
+Route::get('/pengajuan/{id}/edit-mahasiswa/{nim}', [PengajuanController::class, 'editMahasiswa'])
+    ->name('pengajuan.editMahasiswa');
+
+// Route untuk menyimpan update data IPK mahasiswa
+Route::post('/pengajuan/{id}/update-mahasiswa/{nim}', [PengajuanController::class, 'updateMahasiswa'])
+    ->name('pengajuan.updateMahasiswa');
+
 // Simpan data alumni (khusus SK Alumni)
-Route::post('/pengajuan/store-alumni', [PengajuanController::class, 'storeAlumni'])
+Route::post('/pengajuan/store-alumni', [PengajuanController::class, 'updateAlumni'])
     ->name('pengajuan.storeAlumni');
 
 // Simpan data mahasiswa baru (jika NIM belum ada)
