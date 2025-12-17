@@ -87,7 +87,7 @@
                         <a href="{{ $prefix }}#layanan"
                             class="text-gray-600 hover:text-maroon-600 font-medium">Layanan</a>
                         <a href="{{ $prefix }}#Layanan Akademik"
-                            class="text-gray-600 hover:text-maroon-600 font-medium">Layanan Akademik</a>
+                            class="text-gray-600 hover:text-maroon-600 font-medium">Layanan Kemahasiswaan</a>
                     </nav>
                 </div>
                 <div class="flex items-center">

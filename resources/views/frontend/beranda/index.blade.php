@@ -12,13 +12,6 @@
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight animate-fade-in">
                         Selamat Datang di Portal Resmi Persuratan FMIPA UHO</h1>
                     <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4 animate-fade-in-up-delay">
-                        <a href="#layanan"
-                            class="bg-yellow-500 text-gray-900 font-bold py-3 px-8 rounded-lg text-lg hover:bg-yellow-400 transition-transform hover:scale-105 w-full sm:w-auto">Lihat
-                            Layanan Kami</a>
-                        <a href="#"
-                            class="bg-white/20 backdrop-blur-sm text-white font-medium py-3 px-8 rounded-lg text-lg hover:bg-white/30 transition-transform hover:scale-105 w-full sm:w-auto">Cara
-                            Penggunaan Sistem</a>
-                    </div>
                 </div>
             </div>
         </section>
@@ -60,7 +53,7 @@
 
                 {{-- Layanan Keterangan Beasiswa --}}
                 <div class="border-t border-gray-200 pt-12">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Layanan Akademik Lainnya</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Layanan Kemahasiswaan Lainnya</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {{-- Card Keterangan Beasiswa --}}
                         <div
