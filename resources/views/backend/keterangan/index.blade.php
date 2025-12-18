@@ -220,17 +220,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
-                            <a href="{{ route('keterangan_beasiswa.edit', $data->id) }}"
-                                class="bg-yellow-500 text-white px-3 py-1 rounded text-xs hover:bg-yellow-600 transition flex items-center gap-1">
-                                <i class="fa fa-edit"></i> Edit
-                            </a>
-                            <button onclick="confirmDelete('{{ route('keterangan_beasiswa.delete', $data->id) }}', '{{ $data->mahasiswa_nim }}')"
-                                class="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600 transition flex items-center gap-1">
-                                <i class="fa fa-trash"></i> Hapus
-                            </button>
-                        </div>
                     </div>
                 @empty
                     <div class="bg-white rounded-lg border border-red-200 p-6 text-center text-gray-500">
